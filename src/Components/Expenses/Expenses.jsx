@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ExpenseItem from "./ExpenseItem";
 import "./Expenses.css";
 import Card from "../UI/Card";
@@ -7,31 +7,17 @@ import Chart from "../Chart/Chart";
 
 const Expenses = (props) => {
     const [userSelectedYear, setUserSelectedYear] = useState("2022");
-
-    useEffect(()=>{
-        console.log('in Expenses.jsx, the list before filtering', props.expenses);
-    }, [props.expenses]);
-
-    const expense = (props.expenses).filter(
+    const expense = props.expenses.filter(
         (item) => String(item.date.getFullYear()) === userSelectedYear
     );
 
-    console.log('in Expense.jsx, the list after filtering', expense);
-
-    const [newExpense, setNewExpense] = useState([...expense]);
-
-    useEffect(()=>{
-        console.log('in Expense.jsx, the list after filtering', newExpense);
-    }, [newExpense]);
-    
+    var newExpense = expense;
 
     const showUpdatedList = (year) => {
-        // console.log("In showUpdatedList function with year", year);
         var updateExpense = props.expenses.filter(
             (item) => String(item.date.getFullYear()) === year
         );
-        console.log('update Expense list', updateExpense);
-        setNewExpense([...updateExpense]);
+        newExpense = [...updateExpense];
     };
 
     const updateSelectedYear = (year) => {
@@ -39,6 +25,10 @@ const Expenses = (props) => {
         console.log("Year : ", year);
         setUserSelectedYear(year);
         showUpdatedList(year);
+    };
+
+    const reNewList = (delItem) => {
+        props.removeFromList(delItem);
     };
 
     return (
@@ -49,7 +39,13 @@ const Expenses = (props) => {
                 <p>No Expenses Found</p>
             ) : (
                 newExpense.map((item) => {
-                    return <ExpenseItem key={item.id} item={item} />;
+                    return (
+                        <ExpenseItem
+                            key={item.id}
+                            item={item}
+                            reNewList={reNewList}
+                        />
+                    );
                 })
             )}
         </Card>
