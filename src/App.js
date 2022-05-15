@@ -35,12 +35,20 @@ function App() {
         setExpenseList([...expenseList, newExpenseData]);
     }
 
+    const removeFromList = (delItem) => {
+        var updateExpense = expenseList.filter(
+            (item) => item.id !== delItem.id
+        )
+        console.log('in removeFromList :', updateExpense);
+        setExpenseList([...updateExpense]);
+    }
+
     console.log('Updated List :', expenseList);
 
     return (
         <div className="App">
-			<NewExpenses updateList={updateList} expenses={expenseList} />
-            <Expenses expenses={expenseList} />
+            <NewExpenses updateList={updateList} expenses={expenseList} />
+            <Expenses expenses={expenseList} removeFromList={removeFromList} />
         </div>
     );
 }
