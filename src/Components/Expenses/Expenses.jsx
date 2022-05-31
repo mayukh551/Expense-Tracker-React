@@ -6,25 +6,22 @@ import ExpenseFilter from "../Expense Filter/ExpenseFilter";
 import Chart from "../Chart/Chart";
 
 const Expenses = (props) => {
-    const [userSelectedYear, setUserSelectedYear] = useState("2022");
-    const expense = props.expenses.filter(
-        (item) => String(item.date.getFullYear()) === userSelectedYear
-    );
+    const [userSelectedYear, setUserSelectedYear] = useState("All");
+    console.log("From top of Expense");
+    var newExpense;
 
-    var newExpense = expense;
-
-    const showUpdatedList = (year) => {
-        var updateExpense = props.expenses.filter(
-            (item) => String(item.date.getFullYear()) === year
+    if (userSelectedYear === "All") newExpense = props.expenses;
+    else {
+        // store updated List of expenses
+        const expense = props.expenses.filter(
+            (item) => String(item.date.getFullYear()) === userSelectedYear
         );
-        newExpense = [...updateExpense];
-    };
+        newExpense = expense;
+    }
 
     const updateSelectedYear = (year) => {
-        // show updated List of expenses
         console.log("Year : ", year);
         setUserSelectedYear(year);
-        showUpdatedList(year);
     };
 
     const reNewList = (delItem) => {
@@ -35,6 +32,7 @@ const Expenses = (props) => {
         <Card className="expenses">
             <Chart dataPoints={newExpense} />
             <ExpenseFilter updateSelectedYear={updateSelectedYear} />
+            {console.log(newExpense)}
             {newExpense.length === 0 ? (
                 <p>No Expenses Found</p>
             ) : (
