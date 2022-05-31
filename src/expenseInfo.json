@@ -3,24 +3,25 @@
         "id": "e1",
         "title": "Car Insurance",
         "amount": "354.54",
-        "date": "new Date(2019, 7, 14)"
+        "date": "2019-07-14"
     },
     {
         "id": "e2",
         "title": "Toilet Paper",
         "amount": "54.50",
-        "date": "new Date(2020, 3, 24)"
+        "date": "2020-03-24"
+        
     },
     {
         "id": "e3",
         "title": "Groceries",
         "amount": "154.57",
-        "date": "new Date(2020, 5, 15)"
+        "date": "2020-05-15"
     },
     {
         "id": "e4",
         "title": "Gas",
         "amount": "298.54",
-        "date": "new Date(2019, 6, 11)"
+        "date": "2019-06-11"
     }
 ]

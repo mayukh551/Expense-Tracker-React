@@ -3,6 +3,8 @@ import React from "react";
 import "./ExpenseForm.css";
 
 const ConditionalForm = ({
+    enteredTitle,
+    enteredAmount,
     titleChangeHandler,
     amountChangeHandler,
     dateChangeHandler,

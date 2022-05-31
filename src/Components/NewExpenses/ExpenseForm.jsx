@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import ListContext from "../Store/context";
 import ConditionalForm from "./ConditionalForm";
 import "./ExpenseForm.css";
 
 const ExpenseForm = (props) => {
-    var [enteredTitle, setEnteredTitle] = useState("");
-    var [enteredAmount, setEnteredAmount] = useState("");
-    var [enteredDate, setEnteredDate] = useState("");
+    const expenseList = useContext(ListContext);
+
+    const [enteredTitle, setEnteredTitle] = useState("");
+    const [enteredAmount, setEnteredAmount] = useState("");
+    const [enteredDate, setEnteredDate] = useState("");
 
     const titleChangeHandler = (e) => {
         setEnteredTitle(e.target.value);
@@ -19,13 +22,14 @@ const ExpenseForm = (props) => {
     };
 
     const submitHandler = (e) => {
-        console.log(e);
+        console.log('in Submit Handler of new data');
+        console.log('Id of new data', "e" + String(expenseList.list.length + 1));
         e.preventDefault();
         const expenseData = {
-            id: "e" + String(props.expenses.length + 1),
+            id: "e" + String(expenseList.list.length + 1),
             title: enteredTitle,
-            amount: "$" + enteredAmount,
-            date: new Date(enteredDate),
+            amount: enteredAmount,
+            date: enteredDate,
         };
         console.log(expenseData);
 
@@ -35,7 +39,8 @@ const ExpenseForm = (props) => {
         setEnteredDate("");
 
         // Passing Back new Expanse Data to NewExpense Component
-        props.onSaveExpenseDataHandler(expenseData);
+        expenseList.addItem(expenseData);
+        // props.onSaveExpenseDataHandler(expenseData);
     };
 
     const cancelHandler = () => {
@@ -51,6 +56,9 @@ const ExpenseForm = (props) => {
     const newExpenseHandler = () => {
         setNewDisplay(
             <ConditionalForm
+                enteredTitle={enteredTitle}
+                enteredAmount={enteredAmount}
+                enteredDate={enteredDate}
                 titleChangeHandler={titleChangeHandler}
                 amountChangeHandler={amountChangeHandler}
                 dateChangeHandler={dateChangeHandler}
