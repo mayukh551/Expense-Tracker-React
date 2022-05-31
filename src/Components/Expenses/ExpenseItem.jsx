@@ -1,13 +1,18 @@
 import "./ExpenseItem.css";
 import ExpenseDate from "./ExpenseDate";
 import Card from "../UI/Card";
-import { Fragment, useState } from "react";
+import { Fragment, useReducer, useState } from "react";
 import NewInfoInput from "./NewInfoInput";
+
 
 const ExpenseItem = (props) => {
     // console.log(props.item);
     const [title, setTitle] = useState(props.item.title);
+    const [prevTitle, setPrevTitle] = useState(props.item.title);
     const [amount, setAmount] = useState(props.item.amount);
+    const [prevAmount, setPrevAmount] = useState(props.item.amount);
+    const [date, setDate] = useState(props.item.date);
+    const [prevDate, setPrevDate] = useState(props.item.date);
     const [updatedCard, setUpdatedCard] = useState(false);
 
     const cardUpdateHandler = () => {
@@ -19,10 +24,30 @@ const ExpenseItem = (props) => {
         props.reNewList(props.item);
     };
 
+    const month = date.getMonth();
+    const day = date.toLocaleString("en-US", { day: "2-digit" });
+    const year = date.getFullYear();
+
     return (
         <div>
             <Card className="expense-item">
-                <ExpenseDate date={props.item.date} />
+                {console.log(typeof month)}
+                {updatedCard === true ? (
+                    <NewInfoInput
+                        type={"Date"}
+                        val={`${year}-${
+                            month < 10 ? "0" + month : month
+                        }-${day}`}
+                        setNewValue={setDate}
+                        setUpdatedCard={setUpdatedCard}
+                    />
+                ) : (
+                    <>
+                        {console.log(date)}
+                        <ExpenseDate date={date} />
+                    </>
+                )}
+                {/* <ExpenseDate date={props.item.date} /> */}
 
                 <div className="expense-item__description">
                     {/* Update Title */}
@@ -52,9 +77,34 @@ const ExpenseItem = (props) => {
                     )}
                 </div>
             </Card>
-            <div className="action-buttons">
-                <button onClick={cardDeleteHandler}>Delete</button>
-                <button onClick={cardUpdateHandler}>Update</button>
+            <div className="button-arrange">
+                <div className="action-buttons">
+                    <button onClick={cardDeleteHandler}>Delete</button>
+                    {!updatedCard && (
+                        <button onClick={cardUpdateHandler}>Update</button>
+                    )}
+                </div>
+                {updatedCard && (
+                    <div className="action-buttons">
+                        <button
+                            onClick={() => {
+                                setTitle(prevTitle);
+                                setAmount(prevAmount);
+                                setDate(prevDate);
+                                setUpdatedCard(false);
+                            }}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={() => {
+                                setUpdatedCard(false);
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

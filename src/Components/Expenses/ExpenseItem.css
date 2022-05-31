@@ -60,6 +60,12 @@
   margin-left: 5px;
 }
 
+.button-arrange{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .action-buttons button {
   /* margin-top: 10px; */
   background-color: #40005d;
