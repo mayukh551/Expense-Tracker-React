@@ -5,7 +5,7 @@ const ChartBar = (props) => {
     let barFilledHeight = "0px";
 
     // if there is a max value
-    let val = parseInt(props.value.slice(1));
+    let val = parseInt(props.value.slice(0));
     console.log("maxValue and Value:", props.maxValue, val);
     if (props.maxValue > 0)
         barFilledHeight = (val / props.maxValue) * 100 + "px";
