@@ -1,6 +1,6 @@
 # React-Expense-Tracker
 
-[Website Link : ](https://github.com/facebook/create-react-app).
+![Website Link](https://github.com/facebook/create-react-app).
 
 ## Tools used:
 
