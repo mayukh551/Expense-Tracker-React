@@ -4,7 +4,7 @@
 
 ## Tools used:
 
-[![My Skills](https://skillicons.dev/icons?i=react,css,nodejs&theme=light)]
+![My Skills](https://skillicons.dev/icons?i=react,css,nodejs&theme=dark)
 
 ## React-Expense-Tracker can perform the following functions:
 
@@ -12,6 +12,6 @@
 -   Delete an Expense
 -   Update an existing Expense : Date/Item name/Price
 
-## Hosted on Netlify
+## Hosting Platform
 
-[![Hosting Platform](https://skillicons.dev/icons?i=react,css,nodejs&theme=light)]
+![](https://skillicons.dev/icons?i=netlify&theme=dark)
