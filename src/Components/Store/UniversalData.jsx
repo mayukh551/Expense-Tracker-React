@@ -17,6 +17,17 @@ const monthNames = [
     "Dec",
 ];
 
+// const fs = require('fs');
+// var list = [];
+
+// try{
+//     const database = fs.readFileSync('../../expenseInfo.json', 'utf8');
+//     list = [...database];
+// }
+// catch{
+//     console.log('Error loading data from json file');
+// }
+
 const expenseReducer = (state, action) => {
     var expenseList = state;
 
@@ -28,7 +39,7 @@ const expenseReducer = (state, action) => {
         updatedList = expenseList.filter((item) => {
             return item.id !== action.id;
         });
-        console.log('in Reduce Remove Condition', updatedList);
+        console.log("in Reduce Remove Condition", updatedList);
         return updatedList;
     } else if (action.type === "UPDATE") {
         const updatedItemIndex = expenseList.findIndex(
