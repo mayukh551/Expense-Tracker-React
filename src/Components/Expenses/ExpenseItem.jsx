@@ -4,7 +4,6 @@ import Card from "../UI/Card";
 import { Fragment, useReducer, useState } from "react";
 import NewInfoInput from "./NewInfoInput";
 
-
 const ExpenseItem = (props) => {
     // console.log(props.item);
     const [title, setTitle] = useState(props.item.title);
@@ -20,24 +19,21 @@ const ExpenseItem = (props) => {
     };
 
     const cardDeleteHandler = () => {
-        console.log(props.item);
+        console.log('In DelHandler', props.item);
         props.reNewList(props.item);
     };
 
-    const month = date.getMonth();
-    const day = date.toLocaleString("en-US", { day: "2-digit" });
-    const year = date.getFullYear();
+    const month = date.slice(5, 7);
+    const day = date.slice(8);
+    const year = date.slice(0, 4);
 
     return (
         <div>
             <Card className="expense-item">
-                {console.log(typeof month)}
                 {updatedCard === true ? (
                     <NewInfoInput
                         type={"Date"}
-                        val={`${year}-${
-                            month < 10 ? "0" + month : month
-                        }-${day}`}
+                        val={`${year}-${month}-${day}`}
                         setNewValue={setDate}
                         setUpdatedCard={setUpdatedCard}
                     />
@@ -99,6 +95,7 @@ const ExpenseItem = (props) => {
                         <button
                             onClick={() => {
                                 setUpdatedCard(false);
+                                props.updateDataHandler(props.item);
                             }}
                         >
                             Submit
