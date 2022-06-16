@@ -5,10 +5,12 @@ import UniversalData from "./Components/Store/UniversalData";
 function App() {
 
     return (
-        <UniversalData>
-            <NewExpenses />
-            <Expenses />
-        </UniversalData>
+        <div style={{backgroundColor: '#2a9d8f'}}>
+            <UniversalData>
+                <NewExpenses />
+                <Expenses />
+            </UniversalData>
+        </div>
     );
 }
 
