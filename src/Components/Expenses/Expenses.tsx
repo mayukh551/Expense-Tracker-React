@@ -9,7 +9,7 @@ import itemDS from "../../Models/ItemDS";
 async function fetchFromDB() {
     try {
         // const listFromDb = await fetch("https://mighty-eyrie-95374.herokuapp.com/expenses/");
-        const listFromDb = await fetch("https://expense-tracker-backend-bdwyx6sx0-mayukh551.vercel.app/expenses/");
+        const listFromDb = await fetch("https://expense-tracker-backend-ruddy.vercel.app/expenses/");
         // const listFromDb = await fetch(
         //     `${process.env.REACT_APP_SERVER_URL}/expenses/`
         // );
