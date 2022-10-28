@@ -1,16 +1,19 @@
-import Expenses from "./Components/Expenses/Expenses";
-import NewExpenses from "./Components/NewExpenses/NewExpenses";
-import UniversalData from "./Components/Store/UniversalData";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+import Auth from "./Components/Auth/Auth";
+import Home from "./Components/Expenses/Home";
 
 function App() {
-
     return (
-        <>
-            <UniversalData>
-                <NewExpenses />
-                <Expenses />
-            </UniversalData>
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Auth />} />
+                <Route path="/home" element={<Home />} />
+            </Routes >
+        </BrowserRouter >
     );
 }
 
