@@ -8,7 +8,6 @@ import itemDS from "../../Models/ItemDS";
 
 async function fetchFromDB() {
     try {
-        // const listFromDb = await fetch("https://mighty-eyrie-95374.herokuapp.com/expenses/");
         const listFromDb = await fetch(
             `${process.env.REACT_APP_SERVER_URL}/expenses/`
         );
