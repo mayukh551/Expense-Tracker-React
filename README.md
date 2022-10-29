@@ -1,6 +1,6 @@
 # React-Expense-Tracker
 
-[Website Link](https://expense-tracker-mayukh551.netlify.app/)
+[Website Link](https://expense-tracker-react-nine.vercel.app/)
 
 ## Tools used:
 
