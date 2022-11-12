@@ -15,8 +15,9 @@ async function fetchFromDB() {
             }
         }
         );
-        console.log("List from DB", listFromDb);
+        // console.log("List from DB", listFromDb);
         var response = await listFromDb.json();
+        console.log("List from DB", response);
         return response;
     } catch (e) {
         console.log("Error while fetching data from DB", e);

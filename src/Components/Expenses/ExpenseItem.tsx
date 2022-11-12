@@ -11,6 +11,9 @@ async function deleteFromDB(item: itemDS) {
         `${process.env.REACT_APP_SERVER_URL}/expenses/delete/${item._id}/`,
         {
             method: "DELETE",
+            headers: {
+                'x-access-token': `${localStorage.getItem('token')}`
+            }
         }
     );
 }
@@ -37,12 +40,14 @@ const ExpenseItem: React.FC<{
             amount: amount,
         };
         console.log(newItem);
-        // await fetch(`https://mighty-eyrie-95374.herokuapp.com/expenses/update/${props.item._id}`, {
         await fetch(
             `${process.env.REACT_APP_SERVER_URL}/expenses/update/${props.item._id}`,
             {
                 method: "PUT",
-                headers: { "content-type": "application/json" },
+                headers: {
+                    "content-type": "application/json",
+                    'x-access-token': `${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify(newItem),
             }
         );

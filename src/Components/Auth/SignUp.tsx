@@ -29,8 +29,7 @@ export default function SignUp() {
         const userPassword: string = password;
         console.log(userFirstName + " " + userLastName, userEmail, userPassword);
 
-        // await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
-        const response = await fetch(`http://localhost:5000/auth/register`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -40,10 +39,12 @@ export default function SignUp() {
             })
         })
 
-        const data = await response.json();
-        if (data.status === 'success') {
-            localStorage.setItem('token', data.user);
-            navigate('/home');
+        const { isSuccess, token = '', message = '' } = await response.json();
+        if (isSuccess) {
+            localStorage.setItem('token', token);
+            navigate('/expenses');
+        } else {
+            console.log(message);
         }
     };
 
@@ -121,7 +122,7 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href='' variant="body2" onClick={() => navigate('/login')}>
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>

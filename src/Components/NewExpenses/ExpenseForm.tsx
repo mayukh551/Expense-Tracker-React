@@ -10,7 +10,10 @@ const sendNewExpenseToServer = async (userData: {
 }): Promise<void> => {
     await fetch(`${process.env.REACT_APP_SERVER_URL}/expenses/new`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            'x-access-token': `${localStorage.getItem('token')}`
+        },
         body: JSON.stringify(userData),
     })
         .then(() => console.log("New Expense Sent to backend server"))
