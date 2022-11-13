@@ -8,10 +8,12 @@ const sendNewExpenseToServer = async (userData: {
     amount: string,
     date: string
 }): Promise<void> => {
-    // await fetch("https://mighty-eyrie-95374.herokuapp.com/expenses/new", {
     await fetch(`${process.env.REACT_APP_SERVER_URL}/expenses/new`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            'x-access-token': `${localStorage.getItem('token')}`
+        },
         body: JSON.stringify(userData),
     })
         .then(() => console.log("New Expense Sent to backend server"))

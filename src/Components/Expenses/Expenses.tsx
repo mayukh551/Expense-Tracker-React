@@ -9,10 +9,15 @@ import itemDS from "../../Models/ItemDS";
 async function fetchFromDB() {
     try {
         const listFromDb = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/expenses/`
+            `${process.env.REACT_APP_SERVER_URL}/expenses/`, {
+            headers: {
+                'x-access-token': `${localStorage.getItem('token')}`
+            }
+        }
         );
-        console.log("List from DB", listFromDb);
+        // console.log("List from DB", listFromDb);
         var response = await listFromDb.json();
+        console.log("List from DB", response);
         return response;
     } catch (e) {
         console.log("Error while fetching data from DB", e);
