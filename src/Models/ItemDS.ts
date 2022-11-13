@@ -1,11 +1,11 @@
 class itemDS {
-    _id: string;
+    id: string;
     title: string;
     amount: string;
     date: string;
 
     constructor(id: string, title: string, amount: string, date: string) {
-        this._id = id;
+        this.id = id;
         this.title = title;
         this.amount = amount;
         this.date = date;

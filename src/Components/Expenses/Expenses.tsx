@@ -51,7 +51,7 @@ const Expenses = () => {
 
     const reNewList = (delItem: itemDS) => {
         console.log("In removeHandler", delItem);
-        expenseList.removeItem(delItem._id);
+        expenseList.removeItem(delItem.id);
     };
 
     const updateDataHandler = (item: itemDS) => {
@@ -86,7 +86,7 @@ const Expenses = () => {
                 newExpense.map((item) => {
                     return (
                         <ExpenseItem
-                            key={item._id}
+                            key={item.id}
                             item={item}
                             reNewList={reNewList}
                             updateDataHandler={updateDataHandler}

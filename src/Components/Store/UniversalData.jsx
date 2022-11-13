@@ -28,7 +28,7 @@ const expenseReducer = (state, action) => {
         var updatedList;
         console.log(action.id);
         updatedList = expenseList.filter((item) => {
-            return item._id !== action.id;
+            return item.id !== action.id;
         });
         console.log("in Reduce Remove Condition", updatedList);
         return updatedList;

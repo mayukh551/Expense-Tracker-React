@@ -1,16 +1,13 @@
 import React, { useState, useContext } from "react";
-// import itemDS from "../../Models/ItemDS";
+import itemDS from "../../Models/ItemDS";
 import ListContext from "../Store/context";
 import "./ExpenseForm.css";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const ConditionalForm: React.FC<{
     cancelHandler: () => void;
-    sendNewExpenseToServer: (item: {
-        title: string,
-        amount: string,
-        date: string
-    }) => void
+    sendNewExpenseToServer: (item: itemDS) => void
 }> = (props) => {
     const expenseList = useContext(ListContext);
 
@@ -33,8 +30,10 @@ const ConditionalForm: React.FC<{
 
         setIsEmpty(false);
 
-        const expenseData = {
-            _id: "e" + String(expenseList.list.length + 1),
+        const newId = uuidv4();
+
+        const expenseData: itemDS = {
+            id: newId,
             title: enteredTitle,
             amount: enteredAmount,
             date: enteredDate,
@@ -47,11 +46,7 @@ const ConditionalForm: React.FC<{
         setEnteredDate("");
 
         expenseList.addItem(expenseData);
-        props.sendNewExpenseToServer({
-            title: enteredTitle,
-            amount: enteredAmount,
-            date: enteredDate
-        });
+        props.sendNewExpenseToServer(expenseData);
     };
     return (
         <>

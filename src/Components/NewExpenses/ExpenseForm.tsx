@@ -1,13 +1,9 @@
 import { useState } from "react";
+import itemDS from "../../Models/ItemDS";
 import ConditionalForm from "./ConditionalForm";
 import "./ExpenseForm.css";
-// import itemDS from "../../Models/ItemDS";
 
-const sendNewExpenseToServer = async (userData: {
-    title: string,
-    amount: string,
-    date: string
-}): Promise<void> => {
+const sendNewExpenseToServer = async (userData: itemDS): Promise<void> => {
     await fetch(`${process.env.REACT_APP_SERVER_URL}/expenses/new`, {
         method: "POST",
         headers: {

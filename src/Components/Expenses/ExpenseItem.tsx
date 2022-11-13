@@ -8,7 +8,7 @@ import itemDS from "../../Models/ItemDS";
 async function deleteFromDB(item: itemDS) {
     console.log("in deleteFromDB", item);
     await fetch(
-        `${process.env.REACT_APP_SERVER_URL}/expenses/delete/${item._id}/`,
+        `${process.env.REACT_APP_SERVER_URL}/expenses/delete/${item.id}/`,
         {
             method: "DELETE",
             headers: {
@@ -41,7 +41,7 @@ const ExpenseItem: React.FC<{
         };
         console.log(newItem);
         await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/expenses/update/${props.item._id}`,
+            `${process.env.REACT_APP_SERVER_URL}/expenses/update/${props.item.id}`,
             {
                 method: "PUT",
                 headers: {
