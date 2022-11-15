@@ -4,6 +4,8 @@ import ConditionalForm from "./ConditionalForm";
 import "./ExpenseForm.css";
 
 const sendNewExpenseToServer = async (userData: itemDS): Promise<void> => {
+    console.log(userData);
+
     await fetch(`${process.env.REACT_APP_SERVER_URL}/expenses/new`, {
         method: "POST",
         headers: {

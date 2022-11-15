@@ -34,7 +34,8 @@ const ExpenseItem: React.FC<{
 
     async function updateDataOnDB() {
         console.log("updateDataOnDB");
-        const newItem = {
+        const newItem: itemDS = {
+            id: props.item.id,
             date: date,
             title: title,
             amount: amount,
