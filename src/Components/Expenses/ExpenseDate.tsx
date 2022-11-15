@@ -8,7 +8,7 @@ const ExpenseDate: React.FC<{ date: string }> = ({ date }) => {
     const day: string = date.slice(8);
     const year: string = date.slice(0, 4);
     const expenseCtx: ExpenseContextObj = useContext(ListContext);
-    var monthName: string = expenseCtx.month[parseInt(month)];
+    var monthName: string = expenseCtx.month[parseInt(month) - 1];
 
     return (
         <div className="expense-date">
