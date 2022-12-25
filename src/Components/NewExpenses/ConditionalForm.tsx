@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import itemDS from "../../Models/ItemDS";
+import { itemDS } from "../../Models/Interfaces";
 import ListContext from "../Store/context";
 import "./ExpenseForm.css";
 import { v4 as uuidv4 } from 'uuid';

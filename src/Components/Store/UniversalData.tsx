@@ -1,23 +1,17 @@
 import React, { useReducer } from "react";
+import { itemDS } from "../../Models/Interfaces";
 import ListContext from "./context";
 // import list from "../../expenseInfo.json";
 
-const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-];
+type actionType =
+    | { type: "FILL"; value: itemDS[] }
+    | { type: "ADD"; item: itemDS }
+    | { type: "REMOVE", id: string }
+    | { type: "UPDATE", item: itemDS }
 
-const expenseReducer = (state, action) => {
+const monthNames: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",];
+
+const expenseReducer = (state: itemDS[], action: actionType) => {
     var expenseList = state;
 
     if (action.type === "FILL") {
@@ -25,28 +19,30 @@ const expenseReducer = (state, action) => {
     } else if (action.type === "ADD") {
         return [...expenseList, action.item];
     } else if (action.type === "REMOVE") {
-        var updatedList;
+        var updatedList: itemDS[];
         console.log(action.id);
-        updatedList = expenseList.filter((item) => {
+        updatedList = expenseList.filter((item: itemDS) => {
             return item.id !== action.id;
         });
         console.log("in Reduce Remove Condition", updatedList);
         return updatedList;
     } else if (action.type === "UPDATE") {
         const updatedItemIndex = expenseList.findIndex(
-            (item) => item.id === action.item.id
+            (item: itemDS) => item.id === action.item!.id
         );
 
-        expenseList[updatedItemIndex] = action.item;
+        expenseList[updatedItemIndex] = action.item!;
         return expenseList;
     }
 
     return expenseList;
 };
 
-const UniversalData = (props) => {
+const UniversalData: React.FC<{
+    children: React.ReactNode
+}> = (props) => {
     console.log("In UniversalData");
-    var list = [];
+    var list: itemDS[] = [];
     // fetchFromDB().then((data) => (list = [...data]));
     // console.log("Yes");
 
@@ -55,19 +51,19 @@ const UniversalData = (props) => {
         list
     );
 
-    const fillExpenseList = (list) => {
+    const fillExpenseList = (list: itemDS[]) => {
         dispatchExpenseState({ type: "FILL", value: list });
     };
 
-    const addItemtoList = (item) => {
+    const addItemtoList = (item: itemDS) => {
         dispatchExpenseState({ type: "ADD", item: item });
     };
 
-    const removeItemFromList = (id) => {
+    const removeItemFromList = (id: string) => {
         dispatchExpenseState({ type: "REMOVE", id: id });
     };
-    const updateIteminList = (item) => {
-        dispatchExpenseState({ type: "UDPATE", item: item });
+    const updateIteminList = (item: itemDS) => {
+        dispatchExpenseState({ type: "UPDATE", item: item });
     };
 
     return (

@@ -4,7 +4,7 @@ import "./Expenses.css";
 import Card from "../UI/Card";
 import ExpenseFilter from "../Expense Filter/ExpenseFilter";
 import ListContext from "../Store/context";
-import itemDS from "../../Models/ItemDS";
+import { itemDS } from "../../Models/Interfaces";
 
 async function fetchFromDB() {
     try {

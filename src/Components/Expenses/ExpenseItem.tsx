@@ -3,7 +3,7 @@ import ExpenseDate from "./ExpenseDate";
 import Card from "../UI/Card";
 import { useState } from "react";
 import NewInfoInput from "./NewInfoInput";
-import itemDS from "../../Models/ItemDS";
+import { itemDS } from "../../Models/Interfaces";
 
 async function deleteFromDB(item: itemDS) {
     console.log("in deleteFromDB", item);

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import ListContext from "../Store/context";
 import "./ExpenseDate.css";
-import ExpenseContextObj from "../../Models/expenseContextStructure";
+import { ExpenseContextObj } from "../../Models/Interfaces";
 
 const ExpenseDate: React.FC<{ date: string }> = ({ date }) => {
     const month: string = date.slice(5, 7);

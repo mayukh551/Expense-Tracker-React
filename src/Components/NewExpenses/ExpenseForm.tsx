@@ -1,5 +1,5 @@
 import { useState } from "react";
-import itemDS from "../../Models/ItemDS";
+import { itemDS } from "../../Models/Interfaces";
 import ConditionalForm from "./ConditionalForm";
 import "./ExpenseForm.css";
 
