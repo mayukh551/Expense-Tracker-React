@@ -5,6 +5,7 @@ import { useState } from "react";
 import NewInfoInput from "./NewInfoInput";
 import { itemDS } from "../../Models/Interfaces";
 import Button from '@mui/material/Button';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 async function deleteFromDB(item: itemDS) {
     console.log("in deleteFromDB", item);
@@ -117,7 +118,11 @@ const ExpenseItem: React.FC<{
             </Card>
             <div className="button-arrange">
                 <div className="action-buttons">
-                    <Button variant="contained" size="small" onClick={cardDeleteHandler}>Delete</Button>
+                    <Button variant="contained"
+                        endIcon={<DeleteForeverIcon />}
+                        size="small"
+                        onClick={cardDeleteHandler}
+                    >Delete</Button>
                     {!updatedCard && (
                         <Button variant="contained" size="small" onClick={cardUpdateHandler}>Update</Button>
                     )}
