@@ -3,6 +3,7 @@ import { itemDS } from "../../Models/Interfaces";
 import ListContext from "../Store/context";
 import "./ExpenseForm.css";
 import { v4 as uuidv4 } from 'uuid';
+import Button from '@mui/material/Button';
 
 
 const ConditionalForm: React.FC<{
@@ -82,10 +83,20 @@ const ConditionalForm: React.FC<{
                 </div>
             </div>
             <div className="new-expense__actions">
-                <button onClick={props.cancelHandler}>Cancel</button>
-                <button type="submit" onClick={submitHandler}>
+                {/* <button onClick={props.cancelHandler}>Cancel</button> */}
+                <Button
+                    variant="contained"
+                    size='medium'
+                    onClick={props.cancelHandler}
+                >Cancel</Button>
+                {/* <button type="submit" onClick={submitHandler}>
                     Add Expense
-                </button>
+                </button> */}
+                <Button
+                    variant="contained"
+                    size='medium'
+                    onClick={submitHandler}
+                >Add Expense</Button>
             </div>
             <div className="new-expense__empty-msg">
                 {isEmpty && <p>Please fill in all the details</p>}

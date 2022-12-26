@@ -39,7 +39,7 @@
   background-color: #40005d;
   /* border: 1px solid white; */
   padding: 0.5rem;
-  border-radius: 12px;
+  border-radius: 5px;
 }
 
 .new-Title {
@@ -71,11 +71,23 @@
   background-color: #40005d;
   color: white;
   padding: 5px 10px;
-  border-radius: 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
 }
 
-.action-buttons button:hover {
-  background-color: #390252;
+.action-buttons button:nth-of-type(1){
+  background-color: #c11143;
+}
+.action-buttons button:nth-of-type(2){
+  margin-left: 10px;
+  background-color: #005d57;
+}
+
+.action-buttons button:nth-of-type(1):hover {
+  background-color: #8a082d;
+}
+.action-buttons button:nth-of-type(2):hover {
+  background-color: #034843;
 }
 
 .action-buttons button:active {

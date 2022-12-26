@@ -18,7 +18,7 @@ const Nav: React.FC = () => {
                 className={`${classes.nav}`}
             >
                 <Button
-                    variant="outlined"
+                    variant="contained"
                     size='medium'
                     sx={{ color: '#FFFFFF' }}
                     onClick={handleLogOut}>

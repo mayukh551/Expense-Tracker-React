@@ -2,6 +2,7 @@ import { useState } from "react";
 import { itemDS } from "../../Models/Interfaces";
 import ConditionalForm from "./ConditionalForm";
 import "./ExpenseForm.css";
+import Button from '@mui/material/Button';
 
 const sendNewExpenseToServer = async (userData: itemDS): Promise<void> => {
     console.log(userData);
@@ -19,13 +20,15 @@ const sendNewExpenseToServer = async (userData: itemDS): Promise<void> => {
 };
 
 const ExpenseForm = () => {
+
     const cancelHandler = () => {
         setNewDisplay(
-            <div className="new-expense__new-action">
-                <button type="submit" onClick={newExpenseHandler}>
-                    Add New Expense
-                </button>
-            </div>
+            <Button
+                variant="contained"
+                size='medium'
+                onClick={newExpenseHandler}
+            > Add New Expense
+            </Button >
         );
     };
 
@@ -39,11 +42,12 @@ const ExpenseForm = () => {
     };
 
     const [currentFormDisplay, setNewDisplay] = useState(
-        <div className="new-expense__new-action">
-            <button type="submit" onClick={newExpenseHandler}>
-                Add New Expense
-            </button>
-        </div>
+        <Button
+            variant="contained"
+            size='medium'
+            onClick={newExpenseHandler}
+        > Add New Expense
+        </Button >
     );
 
     return (

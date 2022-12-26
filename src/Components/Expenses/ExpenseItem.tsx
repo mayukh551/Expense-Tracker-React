@@ -4,6 +4,7 @@ import Card from "../UI/Card";
 import { useState } from "react";
 import NewInfoInput from "./NewInfoInput";
 import { itemDS } from "../../Models/Interfaces";
+import Button from '@mui/material/Button';
 
 async function deleteFromDB(item: itemDS) {
     console.log("in deleteFromDB", item);
@@ -116,14 +117,16 @@ const ExpenseItem: React.FC<{
             </Card>
             <div className="button-arrange">
                 <div className="action-buttons">
-                    <button onClick={cardDeleteHandler}>Delete</button>
+                    <Button variant="contained" size="small" onClick={cardDeleteHandler}>Delete</Button>
                     {!updatedCard && (
-                        <button onClick={cardUpdateHandler}>Update</button>
+                        <Button variant="contained" size="small" onClick={cardUpdateHandler}>Update</Button>
                     )}
                 </div>
                 {updatedCard && (
                     <div className="action-buttons">
-                        <button
+                        <Button
+                            variant="contained"
+                            size="small"
                             onClick={() => {
                                 setTitle(prevTitle);
                                 setAmount(prevAmount);
@@ -132,8 +135,10 @@ const ExpenseItem: React.FC<{
                             }}
                         >
                             Cancel
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="contained"
+                            size="small"
                             onClick={() => {
                                 setUpdatedCard(false);
                                 props.updateDataHandler(props.item);
@@ -141,7 +146,7 @@ const ExpenseItem: React.FC<{
                             }}
                         >
                             Submit
-                        </button>
+                        </Button>
                     </div>
                 )}
             </div>
