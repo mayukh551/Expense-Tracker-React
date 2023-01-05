@@ -79,7 +79,10 @@ const Expenses = () => {
         <Card className="expenses">
             {/* <Chart dataPoints={newExpense} /> */}
             <ExpenseFilter updateSelectedYear={updateSelectedYear} />
-            {!isDataFetched && <p>Fetching Expenses . . .</p>}
+            {/* {!isDataFetched && <p>Fetching Expenses . . .</p>} */}
+            {!isDataFetched && (
+                <div className="loader"></div>
+            )}
             {isDataFetched && newExpense.length === 0 ? (
                 <p>No Expenses Found</p>
             ) : (
