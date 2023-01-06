@@ -82,7 +82,7 @@ const ConditionalForm: React.FC<{
                     type="date"
                     inputProps={{
                         min: "2019-01-01",
-                        max: "2022-12-31"
+                        max: `${new Date().getFullYear()}-12-31`
                     }}
                     onChange={(e) => setEnteredDate(e.target.value)} />
             </div>

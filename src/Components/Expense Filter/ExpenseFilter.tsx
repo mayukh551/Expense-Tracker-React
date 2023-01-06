@@ -10,6 +10,13 @@ const ExpensesFilter: React.FC<{
         props.updateSelectedYear(event.target.value);
     };
 
+    var yearList: number[] = [];
+
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 2019; year--) {
+        yearList.push(year)
+    }
+
     return (
         <div className="expenses-filter">
             <div className="expenses-filter__control">
@@ -19,13 +26,18 @@ const ExpensesFilter: React.FC<{
                     onChange={selectEventHandler}
                 >
                     <option value="All">All</option>
-                    <option value="2022">2022</option>
+                    {yearList.map((year) => {
+                        return (
+                            <option value={`${year}`}> {year}</option>
+                        )
+                    })}
+                    {/* <option value="2022">2022</option>
                     <option value="2021">2021</option>
                     <option value="2020">2020</option>
-                    <option value="2019">2019</option>
+                    <option value="2019">2019</option> */}
                 </select>
             </div>
-        </div>
+        </div >
     );
 };
 

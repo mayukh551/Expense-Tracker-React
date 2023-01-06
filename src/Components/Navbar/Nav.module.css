@@ -3,5 +3,30 @@
     top: 0;
     z-index: 30;
     background-color: #1F1F1F;
-    padding: 0.5em 0.5em 0.5em;
+    padding: 0.8em 0.9em;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile_control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.back-to-home-btn {
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+
+.back-to-home-btn:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
