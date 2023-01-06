@@ -8,7 +8,11 @@ import Typography from '@mui/material/Typography';
 const Analytics: React.FC = () => {
     const [hasExpenseData, setHasExpenseData] = useState<boolean>(false);
     const [expenseData, setExpenseData] = useState<analytics>({
-        maxExpense: 0,
+        maxExpense: {
+            maxPrice: 0,
+            itemName: "",
+            year: ""
+        },
         year_most_spent: new YearExpenseAnalytics(),
         year_least_spent: new YearExpenseAnalytics()
     })
@@ -28,7 +32,7 @@ const Analytics: React.FC = () => {
                 data: analytics
             } = await response.json();
 
-            console.log(data);            
+            console.log(data);
 
             if (data.data) return data.data;
             else return null
@@ -55,24 +59,24 @@ const Analytics: React.FC = () => {
         <div><Card sx={{ minWidth: 275, maxWidth: 400, margin: 'auto', marginTop: 10 }}>
             <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    Highest Expense
+                    Highest Expense till Date
                 </Typography>
                 <Typography variant="h5" component="div" sx={{ mb: 1.5 }} >
-                    {expenseData.maxExpense}
+                    ${expenseData.maxExpense.maxPrice} for <span style={{ fontWeight: 'bold' }}>{expenseData.maxExpense.itemName}</span> in {expenseData.maxExpense.year}
                 </Typography>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    Year With the Highest Expenses
+                    Year With the Highest Total Expenses
                 </Typography>
                 <Typography variant="h5" component="div" sx={{ mb: 1.5 }} >
                     ${expenseData.year_most_spent.amount} in {expenseData.year_most_spent.year}
                 </Typography>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    Year With the Lowest Expenses
+                    Year With the Lowest Total Expenses
                 </Typography>
                 <Typography variant="h5" component="div" sx={{ mb: 1.5 }} >
                     ${expenseData.year_least_spent.amount} in {expenseData.year_least_spent.year}
                 </Typography>
-                
+
             </CardContent>
         </Card></div>
     )
