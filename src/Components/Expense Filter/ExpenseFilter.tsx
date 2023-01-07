@@ -1,5 +1,4 @@
-import React, { ReactNode } from "react";
-import InputLabel from '@mui/material/InputLabel';
+import React from "react";
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "./ExpenseFilter.css";
@@ -10,7 +9,6 @@ const ExpensesFilter: React.FC<{
     sortOrder: string | null;
     userSelectedYear: string | null
 }> = (props) => {
-    // const selectEventHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectEventHandler = (event: SelectChangeEvent<string | null>) => {
         console.log(event.target.value);
         props.updateSelectedYear(event.target.value);
@@ -60,9 +58,7 @@ const ExpensesFilter: React.FC<{
                     onChange={sortEventHandler}
                     autoWidth
                 >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
+                    <MenuItem value="">None</MenuItem>
                     <MenuItem value="High - Low">High - Low</MenuItem>
                     <MenuItem value="Low - High">Low - High</MenuItem>
                 </Select>
