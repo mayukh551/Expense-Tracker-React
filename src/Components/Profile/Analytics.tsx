@@ -62,23 +62,26 @@ const Analytics: React.FC = () => {
                     Highest Expense till Date
                 </Typography>
                 <Typography variant="h5" component="div" sx={{ mb: 1.5 }} >
-                    ${expenseData.maxExpense.maxPrice} for <span style={{ fontWeight: 'bold' }}>{expenseData.maxExpense.itemName}</span> in {expenseData.maxExpense.year}
+                    {hasExpenseData ? `$${expenseData.maxExpense.maxPrice} for ${expenseData.maxExpense.itemName} in ${expenseData.maxExpense.year}`
+                        : 'Calculating . . .'}
                 </Typography>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     Year With the Highest Total Expenses
                 </Typography>
                 <Typography variant="h5" component="div" sx={{ mb: 1.5 }} >
-                    ${expenseData.year_most_spent.amount} in {expenseData.year_most_spent.year}
+                    {hasExpenseData ? `$${expenseData.year_most_spent.amount} in ${expenseData.year_most_spent.year}` :
+                        'Calculating . . .'}
                 </Typography>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     Year With the Lowest Total Expenses
                 </Typography>
                 <Typography variant="h5" component="div" sx={{ mb: 1.5 }} >
-                    ${expenseData.year_least_spent.amount} in {expenseData.year_least_spent.year}
+                    {hasExpenseData ? `$${expenseData.year_least_spent.amount} in ${expenseData.year_least_spent.year}` :
+                        'Calculating . . .'}
                 </Typography>
 
             </CardContent>
-        </Card></div>
+        </Card></div >
     )
 }
 
