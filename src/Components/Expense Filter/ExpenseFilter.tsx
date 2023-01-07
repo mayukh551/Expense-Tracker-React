@@ -1,17 +1,25 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "./ExpenseFilter.css";
 
 const ExpensesFilter: React.FC<{
     updateSelectedYear: (year: string | null) => void;
+    updateSortOrder: (order: string | null) => void;
+    sortOrder: string | null;
+    userSelectedYear: string | null
 }> = (props) => {
-    const selectEventHandler = (event: React.ChangeEventHandler<HTMLSelectElement>) => {
+    // const selectEventHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectEventHandler = (event: SelectChangeEvent<string | null>) => {
         console.log(event.target.value);
         props.updateSelectedYear(event.target.value);
     };
+
+    const sortEventHandler = (event: SelectChangeEvent<string | null>) => {
+        console.log(event.target.value);
+        props.updateSortOrder(event.target.value);
+    }
 
     var yearList: number[] = [];
 
@@ -24,25 +32,13 @@ const ExpensesFilter: React.FC<{
         <div className="expenses-filter">
             <div className="expenses-filter__control">
                 <label>Filter by year</label>
-                <select
-                    className="dropdown-years"
-                    onChange={selectEventHandler}
-                >
-                    <option value="All">All</option>
-                    {yearList.map((year) => {
-                        return (
-                            <option value={`${year}`}> {year}</option>
-                        )
-                    })}
-                </select>
-                {/* <Select
+                <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
-                    value='All'
-                    sx={{backgroundColor: 'white'}}
+                    value={props.userSelectedYear}
+                    sx={{ backgroundColor: 'white' }}
                     onChange={selectEventHandler}
                     autoWidth
-                    label="Year"
                 >
                     <MenuItem value="All">
                         <em>All</em>
@@ -52,17 +48,24 @@ const ExpensesFilter: React.FC<{
                             <MenuItem value={`${year}`}> {year}</MenuItem>
                         )
                     })}
-                </Select> */}
+                </Select>
             </div>
             <div className="expenses-filter__control">
                 <label>Sort By</label>
-                <select
-                    className="dropdown-sort"
-                // onChange={selectEventHandler}
+                <Select
+                    labelId="demo-simple-select-autowidth-label"
+                    id="demo-simple-select-autowidth"
+                    value={props.sortOrder}
+                    sx={{ backgroundColor: 'white' }}
+                    onChange={sortEventHandler}
+                    autoWidth
                 >
-                    <option value="High to Low">High to Low</option>
-                    <option value="Low to High">Low to High</option>
-                </select>
+                    <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="High - Low">High - Low</MenuItem>
+                    <MenuItem value="Low - High">Low - High</MenuItem>
+                </Select>
             </div>
         </div >
     );

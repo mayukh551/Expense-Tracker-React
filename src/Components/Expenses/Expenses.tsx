@@ -27,22 +27,41 @@ async function fetchFromDB() {
 const Expenses = () => {
     const expenseList = useContext(ListContext);
 
-    const [userSelectedYear, setUserSelectedYear] = useState<string | null>(
-        "All"
-    );
+    const [userSelectedYear, setUserSelectedYear] = useState<string | null>("All");
+    const [sortOrder, setSortOrder] = useState<string | null>("");
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
+    var filteredExpense: itemDS[];
     var newExpense: itemDS[];
-    // const isListFromDbEmpty = expenseList.list.length === 0;
 
-    if (userSelectedYear === "All") {
-        newExpense = expenseList.list;
-    } else {
+    if (userSelectedYear === "All") filteredExpense = expenseList.list.slice();
+    else {
         // store updated List of expenses
-        const expense = expenseList.list.filter(
+        filteredExpense = expenseList.list.filter(
             (item: itemDS) => String(item.date.slice(0, 4)) === userSelectedYear
         );
-        newExpense = expense;
+        console.log(filteredExpense);
     }
+
+    if (sortOrder === "Low - High") {
+        newExpense = filteredExpense.slice();
+        newExpense.sort((a: itemDS, b: itemDS) => {
+            if (a.amount < b.amount) return -1;
+            if (a.amount > b.amount) return 1;
+            return 0;
+        });
+    }
+
+    else if (sortOrder === "High - Low") {
+        newExpense = filteredExpense.slice();
+        newExpense.sort((a: itemDS, b: itemDS) => {
+            if (a.amount > b.amount) return -1;
+            if (a.amount < b.amount) return 1;
+            return 0;
+        });
+    }
+
+    else newExpense = filteredExpense.slice();
+
 
     const updateSelectedYear = (year: string | null): any => {
         console.log("Year : ", year);
@@ -58,6 +77,11 @@ const Expenses = () => {
         console.log("In updateHandler", item);
         expenseList.updateItem(item);
     };
+
+    const updateSortOrder = (order: string | null): void => {
+        console.log("sort function", order);
+        setSortOrder(order);
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -78,8 +102,12 @@ const Expenses = () => {
     return (
         <Card className="expenses">
             {/* <Chart dataPoints={newExpense} /> */}
-            <ExpenseFilter updateSelectedYear={updateSelectedYear} />
-            {/* {!isDataFetched && <p>Fetching Expenses . . .</p>} */}
+            <ExpenseFilter
+                updateSelectedYear={updateSelectedYear}
+                userSelectedYear={userSelectedYear}
+                sortOrder={sortOrder}
+                updateSortOrder={updateSortOrder}
+            />
             {!isDataFetched && (
                 <div className="loader"></div>
             )}
