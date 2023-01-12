@@ -1,23 +1,41 @@
-export type yearAnalytics = {
-    year: string,
+export interface monthAnalytics {
+    month: string,
     amount: number
 }
 
-export type analytics = {
-    maxExpense: {
-        maxPrice: number,
-        itemName: string,
-        year: string
-    },
-    year_most_spent: yearAnalytics,
-    year_least_spent: yearAnalytics
+export interface yearAnalytics {
+    totalPurchaseAmount: number,
+    totalItems: number,
+    highestExpense: number,
+    lowestExpense: number
+}
+
+export interface analytics {
+    year_stats: yearAnalytics,
+    month_stats: {
+        highExpenseMonthDetails: monthAnalytics,
+        lowExpenseMonthDetails: monthAnalytics
+    }
 }
 
 export class YearExpenseAnalytics {
-    year: string;
+    totalPurchaseAmount: number;
+    totalItems: number;
+    highestExpense: number;
+    lowestExpense: number;
+    constructor(totalPurchaseAmount: number, totalItems: number, highestExpense: number, lowestExpense: number) {
+        this.totalPurchaseAmount = totalPurchaseAmount;
+        this.totalItems = totalItems;
+        this.highestExpense = highestExpense;
+        this.lowestExpense = lowestExpense;
+    }
+}
+
+export class MonthExpenseAnalytics {
+    month: string;
     amount: number;
-    constructor() {
-        this.year = "";
-        this.amount = 0;
+    constructor(month: string, amount: number) {
+        this.month = month;
+        this.amount = amount;
     }
 }
