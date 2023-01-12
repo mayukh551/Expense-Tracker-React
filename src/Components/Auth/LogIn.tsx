@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -22,10 +20,6 @@ export default function SignIn() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log({
-            email,
-            password
-        });
 
         const userEmail = email;
         const userPassword = password;
@@ -92,10 +86,6 @@ export default function SignIn() {
                             autoComplete="current-password"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
                         <Button
                             type="submit"
                             fullWidth
@@ -111,8 +101,8 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link onClick={() => navigate('/')} variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/')} variant="body2">
+                                    Don't have an account? Sign Up
                                 </Link>
                             </Grid>
                         </Grid>

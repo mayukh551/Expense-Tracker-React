@@ -27,7 +27,6 @@ export default function SignUp() {
         const userLastName: string = lastName;
         const userEmail: string = email;
         const userPassword: string = password;
-        console.log(userFirstName + " " + userLastName, userEmail, userPassword);
 
         const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
             method: 'POST',
@@ -122,7 +121,7 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link variant="body2" onClick={() => navigate('/login')}>
+                                <Link sx={{ cursor: 'pointer' }} variant="body2" onClick={() => navigate('/login')}>
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>
