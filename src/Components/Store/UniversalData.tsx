@@ -17,7 +17,7 @@ const expenseReducer = (state: itemDS[], action: actionType) => {
     if (action.type === "FILL") {
         return [...action.value];
     } else if (action.type === "ADD") {
-        return [...expenseList, action.item];
+        return [action.item, ...expenseList];
     } else if (action.type === "REMOVE") {
         var updatedList: itemDS[];
         console.log(action.id);
