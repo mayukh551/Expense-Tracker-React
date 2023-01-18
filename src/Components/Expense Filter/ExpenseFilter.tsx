@@ -1,6 +1,5 @@
 import React from "react";
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 import "./ExpenseFilter.css";
 import SelectBtn from "../UI/SelectBtn";
 
@@ -36,23 +35,18 @@ const ExpensesFilter: React.FC<{
                     defaultVal={'All'}
                     val={props.userSelectedYear}
                     selectEventHandler={selectEventHandler}
-                    style={{ backgroundColor: 'white'}}
+                    style={{ backgroundColor: 'white' }}
                 />
             </div>
             <div className="expenses-filter__control">
                 <label>Sort By</label>
-                <Select
-                    labelId="demo-simple-select-autowidth-label"
-                    id="demo-simple-select-autowidth"
-                    value={props.sortOrder}
-                    sx={{ backgroundColor: 'white' }}
-                    onChange={sortEventHandler}
-                    autoWidth
-                >
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="High - Low">High - Low</MenuItem>
-                    <MenuItem value="Low - High">Low - High</MenuItem>
-                </Select>
+                <SelectBtn
+                    options={['High - Low', 'Low - High']}
+                    defaultVal={'None'}
+                    val={props.sortOrder}
+                    selectEventHandler={sortEventHandler}
+                    style={{ backgroundColor: 'white' }}
+                />
             </div>
         </div >
     );
