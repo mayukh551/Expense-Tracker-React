@@ -1,16 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react'
 import '../Profile.css'
 
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import { Line } from "react-chartjs-2";
 import ListContext from '../../Store/context';
 import { itemDS, ExpenseContextObj } from '../../../Models/Interfaces';
@@ -29,7 +20,8 @@ const options = {
 };
 
 
-const getExpenses = (expenses: number[], expenseList: ExpenseContextObj, year: string): number[] => {
+const getExpenses = (expenseList: ExpenseContextObj, year: string): number[] => {
+    var expenses: number[] = [];
     expenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     var sum: number = 0;
 
@@ -42,7 +34,7 @@ const getExpenses = (expenses: number[], expenseList: ExpenseContextObj, year: s
         }
     })
     console.log(expenses);
-    // to check if a specific year has any expenses or
+    // to check if a specific year has any expenses or not
     if (sum > 0)
         localStorage.setItem('expenses', JSON.stringify(expenses));
     else {
@@ -85,23 +77,18 @@ const YearExpenseChart: React.FC = () => {
     };
 
     useEffect(() => {
-        var expenses: number[] = [];
-        expenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var expenses;
         if (localStorage.getItem("expenses")) {
             console.log('recieved local storage');
-            if (expenseList.list.length > 0) {
-                // updating the localStorage
-                expenses = getExpenses(expenses, expenseList, chartYear);
-            }
-            else {
-                const getExpenses: string = localStorage.getItem("expenses")!;
-                expenses = JSON.parse(getExpenses);
-            }
+            // updating the localStorage
+            if (expenseList.list.length > 0) expenses = getExpenses(expenseList, chartYear);
+
+            // const getExpenses: string = localStorage.getItem("expenses")!;
+            else expenses = JSON.parse(localStorage.getItem("expenses")!);
         }
 
-        else {
-            expenses = getExpenses(expenses, expenseList, chartYear);
-        }
+        else expenses = getExpenses(expenseList, chartYear);
+
         setExpenseData([...expenses]);
     }, [chartYear, expenseList, expenseList.list, year]);
 

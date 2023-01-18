@@ -2,6 +2,7 @@ import React from "react";
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "./ExpenseFilter.css";
+import SelectBtn from "../UI/SelectBtn";
 
 const ExpensesFilter: React.FC<{
     updateSelectedYear: (year: string | null) => void;
@@ -30,23 +31,13 @@ const ExpensesFilter: React.FC<{
         <div className="expenses-filter">
             <div className="expenses-filter__control">
                 <label>Filter by year</label>
-                <Select
-                    labelId="demo-simple-select-autowidth-label"
-                    id="demo-simple-select-autowidth"
-                    value={props.userSelectedYear}
-                    sx={{ backgroundColor: 'white' }}
-                    onChange={selectEventHandler}
-                    autoWidth
-                >
-                    <MenuItem value="All">
-                        <em>All</em>
-                    </MenuItem>
-                    {yearList.map((year) => {
-                        return (
-                            <MenuItem value={`${year}`}> {year}</MenuItem>
-                        )
-                    })}
-                </Select>
+                <SelectBtn
+                    options={yearList}
+                    defaultVal={'All'}
+                    val={props.userSelectedYear}
+                    selectEventHandler={selectEventHandler}
+                    style={{ backgroundColor: 'white'}}
+                />
             </div>
             <div className="expenses-filter__control">
                 <label>Sort By</label>
