@@ -28,16 +28,42 @@ const options = {
     }
 };
 
+
+const getExpenses = (expenses: number[], expenseList: ExpenseContextObj, year: string): number[] => {
+    expenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var sum: number = 0;
+
+    // inserting expense amount into array
+    expenseList.list.forEach((item: itemDS) => {
+        if (item.date.slice(0, 4) === year) {
+            const monthNo: number = parseInt(item.date.slice(5, 7));
+            expenses[monthNo - 1] += parseInt(item.amount);
+            sum += parseInt(item.amount);
+        }
+    })
+    console.log(expenses);
+    // to check if a specific year has any expenses or
+    if (sum > 0)
+        localStorage.setItem('expenses', JSON.stringify(expenses));
+    else {
+        expenses = [];
+        localStorage.setItem('expenses', JSON.stringify(expenses));
+    }
+    return expenses;
+}
+
+
+
 const YearExpenseChart: React.FC = () => {
 
     const expenseList: ExpenseContextObj = useContext(ListContext);
     const [expenseData, setExpenseData] = useState<number[]>();
-    const [chartYear, setChartYear] = useState<string>('2023');
     const year: string = String(new Date().getFullYear());
+    const [chartYear, setChartYear] = useState<string>(year);
     const labels = expenseList.month;
     var yearList: string[] = [];
 
-    const currentYear = new Date().getFullYear();
+    const currentYear = parseInt(year);
     for (let year = currentYear - 1; year >= 2019; year--) {
         yearList.push(String(year));
     }
@@ -60,19 +86,12 @@ const YearExpenseChart: React.FC = () => {
 
     useEffect(() => {
         var expenses: number[] = [];
+        expenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         if (localStorage.getItem("expenses")) {
             console.log('recieved local storage');
             if (expenseList.list.length > 0) {
                 // updating the localStorage
-                expenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                expenseList.list.forEach((item: itemDS) => {
-                    if (item.date.slice(0, 4) === chartYear) {
-                        // console.log(item.amount);
-                        const monthNo: number = parseInt(item.date.slice(5, 7));
-                        expenses[monthNo - 1] += parseInt(item.amount);
-                    }
-                })
-                localStorage.setItem('expenses', JSON.stringify(expenses));
+                expenses = getExpenses(expenses, expenseList, chartYear);
             }
             else {
                 const getExpenses: string = localStorage.getItem("expenses")!;
@@ -81,18 +100,10 @@ const YearExpenseChart: React.FC = () => {
         }
 
         else {
-            console.log(expenseList.list);
-            expenseList.list.forEach((item: itemDS) => {
-                if (item.date.slice(0, 4) === year) {
-                    expenses.push(parseInt(item.amount));
-                }
-            })
-            console.log(expenses);
-
-            localStorage.setItem('expenses', JSON.stringify(expenses));
+            expenses = getExpenses(expenses, expenseList, chartYear);
         }
         setExpenseData([...expenses]);
-    }, [chartYear, expenseList.list, year]);
+    }, [chartYear, expenseList, expenseList.list, year]);
 
 
     return (
@@ -105,7 +116,8 @@ const YearExpenseChart: React.FC = () => {
                     selectEventHandler={selectEventHandler}
                     style={{ backgroundColor: 'white', width: '100px' }}
                 />
-                <Line options={options} data={data} />
+                {expenseData !== undefined && expenseData.length === 0 && <h4>No expenses found</h4>}
+                {expenseData !== undefined && expenseData.length > 0 && <Line options={options} data={data} />}
             </div>
             <h4>Expenses in {chartYear}</h4>
         </div>
