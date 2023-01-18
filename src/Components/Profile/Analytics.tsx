@@ -65,7 +65,7 @@ const Analytics: React.FC = () => {
 
     return (
         <div className="analytics-stats-container">
-            <Card sx={{ minWidth: 275, maxWidth: 400, marginTop: 10, marginRight: 10 }}>
+            <Card sx={{ minWidth: 275, maxWidth: 400, marginRight: 10 }}>
                 <CardContent>
                     <Typography sx={{ fontSize: 25 }} color="text.primary" fontWeight={600} gutterBottom>
                         Year Stats
@@ -99,7 +99,7 @@ const Analytics: React.FC = () => {
             </Card>
 
 
-            <Card sx={{ minWidth: 275, maxWidth: 400, marginTop: 10 }}>
+            <Card sx={{ minWidth: 275, maxWidth: 400}}>
                 <CardContent>
                     <Typography sx={{ fontSize: 25 }} color="text.primary" fontWeight={600} gutterBottom>
                         Month Stats

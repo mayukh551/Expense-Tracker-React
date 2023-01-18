@@ -1,4 +1,6 @@
 .analytics-stats-container{
+    padding-top: 2rem;
+    padding-bottom: 3rem;
     display: flex;
     flex-direction: row;
     justify-content: center;

@@ -1,0 +1,16 @@
+.chart-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.chart-wrapper h4{
+    text-align: center;
+}
+
+.chart {
+    padding: 1rem 2rem;
+    border: 0 solid black;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}

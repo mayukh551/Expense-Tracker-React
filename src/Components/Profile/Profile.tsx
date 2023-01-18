@@ -1,22 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import './Profile.css'
 import Analytics from './Analytics'
 import Nav from '../Navbar/Nav'
-
+import YearExpenseChart from './Chart/YearExpenseChart';
 
 const Profile: React.FC = () => {
 
     const hasVisitedProfile: boolean = true;
-
-    useEffect(() => {
-
-    })
-
     return (
         <div>
             <Nav hasProfile={hasVisitedProfile} />
-            <div>
-                <Analytics />
-            </div>
+            <YearExpenseChart />
+            <Analytics />
         </div>
     )
 }

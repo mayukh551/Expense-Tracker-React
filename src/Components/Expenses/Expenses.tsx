@@ -4,7 +4,7 @@ import "./Expenses.css";
 import Card from "../UI/Card";
 import ExpenseFilter from "../Expense Filter/ExpenseFilter";
 import ListContext from "../Store/context";
-import { itemDS } from "../../Models/Interfaces";
+import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 
 async function fetchFromDB() {
     try {
@@ -25,7 +25,7 @@ async function fetchFromDB() {
 }
 
 const Expenses = () => {
-    const expenseList = useContext(ListContext);
+    const expenseList: ExpenseContextObj = useContext(ListContext);
 
     const [userSelectedYear, setUserSelectedYear] = useState<string | null>("All");
     const [sortOrder, setSortOrder] = useState<string | null>("");
