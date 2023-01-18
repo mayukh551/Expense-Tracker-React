@@ -54,21 +54,11 @@ const ConditionalForm: React.FC<{
     return (
         <>
             <div className="new-expense__controls">
-                <TextField id="outlined-basic" label="Title" variant="outlined"
+                <TextField id="filled-basic" label="Title" variant="filled"
                     className="input_title"
                     value={enteredTitle}
-                    // error={isEmpty}
                     onChange={(e) => setEnteredTitle(e.target.value)} />
-                {/* <div className="new-expense__control">
-                    <label>Title</label>
-                    <input
-                        type="text"
-                        value={enteredTitle}
-                        onChange={(e) => setEnteredTitle(e.target.value)}
-                        id="title-input"
-                    />
-                </div> */}
-                <TextField id="outlined-basic" label="Amount" variant="outlined"
+                <TextField id="filled-basic" label="Amount" variant="filled"
                     className="input_title"
                     value={enteredAmount}
                     type="number"
@@ -76,7 +66,7 @@ const ConditionalForm: React.FC<{
                         min: 1
                     }}
                     onChange={(e) => setEnteredAmount(e.target.value)} />
-                <TextField id="outlined-basic" label="" variant="outlined"
+                <TextField id="filled-basic" label="" variant="filled"
                     className="input_title"
                     value={enteredDate}
                     type="date"
@@ -87,15 +77,11 @@ const ConditionalForm: React.FC<{
                     onChange={(e) => setEnteredDate(e.target.value)} />
             </div>
             <div className="new-expense__actions">
-                {/* <button onClick={props.cancelHandler}>Cancel</button> */}
                 <Button
                     variant="contained"
                     size='medium'
                     onClick={props.cancelHandler}
                 >Cancel</Button>
-                {/* <button type="submit" onClick={submitHandler}>
-                    Add Expense
-                </button> */}
                 <Button
                     variant="contained"
                     size='medium'

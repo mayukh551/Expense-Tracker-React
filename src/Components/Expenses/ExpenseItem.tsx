@@ -150,7 +150,7 @@ const ExpenseItem: React.FC<{
                                 updateDataOnDB();
                             }}
                         >
-                            Submit
+                            Save
                         </Button>
                     </div>
                 )}
