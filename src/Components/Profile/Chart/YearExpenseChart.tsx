@@ -106,7 +106,7 @@ const YearExpenseChart: React.FC = () => {
                 {expenseData !== undefined && expenseData.length === 0 && <h4>No expenses found</h4>}
                 {expenseData !== undefined && expenseData.length > 0 && <Line options={options} data={data} />}
             </div>
-            <h4>Expenses in {chartYear}</h4>
+            <h4>{chartYear}</h4>
         </div>
     )
 }

@@ -3,6 +3,7 @@ import './Profile.css'
 import Analytics from './Analytics'
 import Nav from '../Navbar/Nav'
 import YearExpenseChart from './Chart/YearExpenseChart';
+import MonthExpenseChart from './Chart/MonthExpenseChart';
 
 const Profile: React.FC = () => {
 
@@ -11,6 +12,7 @@ const Profile: React.FC = () => {
         <div>
             <Nav hasProfile={hasVisitedProfile} />
             <YearExpenseChart />
+            <MonthExpenseChart />
             <Analytics />
         </div>
     )
