@@ -1,28 +1,94 @@
 import { SelectChangeEvent } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { Line } from 'react-chartjs-2';
 import SelectBtn from '../../UI/SelectBtn';
 import '../Profile.css'
 
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
 const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const
+    }
+  }
+};
+
 
 const MonthExpenseChart = () => {
   const currentMonth: number = new Date().getMonth();
-  const [chartMonth, setChartMonth] = useState<string>(monthList[currentMonth]);
   var yearList: string[] = [];
   const year: string = String(new Date().getFullYear());
-  const [chartYear, setChartYear] = useState<string>(year);
   const currentYear = parseInt(year);
+  const [expenseData, setExpenseData] = useState<number[]>([]);
+  const [chartMonth, setChartMonth] = useState<string>(monthList[currentMonth]);
+  const [chartYear, setChartYear] = useState<string>(year);
+  const [labels, setLabel] = useState<number[]>([])
+
+
   for (let year = currentYear - 1; year >= 2019; year--) {
     yearList.push(String(year));
   }
 
+  // function daysInMonth(year: number, month: number): void {
+  //   const totalDays: number = new Date(month, year, 0).getDate();
+  //   let newLabels = []
+  //   for (let day = 1; day <= totalDays; day++)
+  //     newLabels.push(day);
+  // }
+
   const monthSelectEventHandler = (event: SelectChangeEvent<string>) => {
     setChartMonth(event.target.value);
+    // daysInMonth(parseInt(chartYear), monthList.indexOf(event.target.value) + 1);
   }
 
   const yearSelectEventHandler = (event: SelectChangeEvent<string>) => {
     setChartYear(event.target.value);
+    // daysInMonth(parseInt(event.target.value), monthList.indexOf(chartMonth) + 1);
   }
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Monthly Expenses",
+        data: expenseData,
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)"
+      }
+    ]
+  };
+
+  useEffect(() => {
+    async function fetchMonthAnalytics() {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/profile/month/${chartMonth}/${chartYear}`, {
+        headers: {
+          'x-access-token': `${localStorage.getItem('token')}`
+        }
+      });
+      const result = await response.json();
+      console.log(result.data);
+      return result;
+    }
+
+    fetchMonthAnalytics()
+      .then(({ data, labels }) => {
+        if (data != null) {
+          setExpenseData([...data])
+          setLabel([...labels]);
+        }
+        else {
+          setExpenseData([]);
+          setLabel([]);
+        }
+      })
+  }, [chartMonth, chartYear]);
+
 
   return (
     <div className="chart-wrapper">
@@ -41,8 +107,9 @@ const MonthExpenseChart = () => {
           selectEventHandler={yearSelectEventHandler}
           style={{ backgroundColor: 'white', width: '100px', marginLeft: '40px' }}
         />
-        {/* {expenseData !== undefined && expenseData.length === 0 && <h4>No expenses found</h4>}
-        {expenseData !== undefined && expenseData.length > 0 && <Line options={options} data={data} />} */}
+        {expenseData!.length === 0 && <h4>No expenses found</h4>}
+        {expenseData!.length > 0 && <Line options={options} data={data} />}
+
       </div>
       <h4>{chartMonth}, {chartYear}</h4>
     </div>

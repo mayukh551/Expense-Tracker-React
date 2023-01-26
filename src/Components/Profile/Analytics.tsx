@@ -19,7 +19,7 @@ const Analytics: React.FC = () => {
     useEffect(() => {
         async function fetchAnalytics(): Promise<analytics | null> {
             const response = await fetch(
-                `${process.env.REACT_APP_SERVER_URL}/expenses/profile/`, {
+                `${process.env.REACT_APP_SERVER_URL}/profile/`, {
                 headers: {
                     'x-access-token': `${localStorage.getItem('token')}`,
                 }

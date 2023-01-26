@@ -1,10 +1,8 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../Profile.css'
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import { Line } from "react-chartjs-2";
-import ListContext from '../../Store/context';
-import { itemDS, ExpenseContextObj } from '../../../Models/Interfaces';
 import SelectBtn from '../../UI/SelectBtn';
 import { SelectChangeEvent } from '@mui/material/Select';
 
@@ -19,46 +17,22 @@ const options = {
     }
 };
 
-
-const getExpenses = (expenseList: ExpenseContextObj, year: string): number[] => {
-    var expenses: number[] = [];
-    expenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var sum: number = 0;
-
-    // inserting expense amount into array
-    expenseList.list.forEach((item: itemDS) => {
-        if (item.date.slice(0, 4) === year) {
-            const monthNo: number = parseInt(item.date.slice(5, 7));
-            expenses[monthNo - 1] += parseInt(item.amount);
-            sum += parseInt(item.amount);
-        }
-    })
-    console.log(expenses);
-    // to check if a specific year has any expenses or not
-    if (sum > 0)
-        localStorage.setItem('expenses', JSON.stringify(expenses));
-    else {
-        expenses = [];
-        localStorage.setItem('expenses', JSON.stringify(expenses));
-    }
-    return expenses;
-}
-
-
+const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const YearExpenseChart: React.FC = () => {
 
-    const expenseList: ExpenseContextObj = useContext(ListContext);
-    const [expenseData, setExpenseData] = useState<number[]>();
+    // const expenseList: ExpenseContextObj = useContext(ListContext);
+    const [expenseData, setExpenseData] = useState<number[]>([]);
     const year: string = String(new Date().getFullYear());
     const [chartYear, setChartYear] = useState<string>(year);
-    const labels = expenseList.month;
+    const labels: string[] = monthList;
     var yearList: string[] = [];
 
     const currentYear = parseInt(year);
     for (let year = currentYear - 1; year >= 2019; year--) {
         yearList.push(String(year));
     }
+    console.log(expenseData)
 
     const data = {
         labels,
@@ -72,25 +46,33 @@ const YearExpenseChart: React.FC = () => {
         ]
     };
 
+    console.log(data);
+
     const selectEventHandler = (event: SelectChangeEvent<string>) => {
         setChartYear(event.target.value);
     };
 
     useEffect(() => {
-        var expenses;
-        if (localStorage.getItem("expenses")) {
-            console.log('recieved local storage');
-            // updating the localStorage
-            if (expenseList.list.length > 0) expenses = getExpenses(expenseList, chartYear);
-
-            // const getExpenses: string = localStorage.getItem("expenses")!;
-            else expenses = JSON.parse(localStorage.getItem("expenses")!);
+        async function fetchYearAnalytics() {
+            const response = await fetch(
+                `${process.env.REACT_APP_SERVER_URL}/profile/year/${chartYear}`, {
+                headers: {
+                    'x-access-token': `${localStorage.getItem('token')}`
+                }
+            });
+            const { data } = await response.json();
+            console.log(data);
+            return data;
         }
 
-        else expenses = getExpenses(expenseList, chartYear);
-
-        setExpenseData([...expenses]);
-    }, [chartYear, expenseList, expenseList.list, year]);
+        fetchYearAnalytics()
+            .then((data) => {
+                if (data != null)
+                    setExpenseData([...data])
+                else
+                    setExpenseData([]);
+            })
+    }, [chartYear]);
 
 
     return (
@@ -103,8 +85,8 @@ const YearExpenseChart: React.FC = () => {
                     selectEventHandler={selectEventHandler}
                     style={{ backgroundColor: 'white', width: '100px' }}
                 />
-                {expenseData !== undefined && expenseData.length === 0 && <h4>No expenses found</h4>}
-                {expenseData !== undefined && expenseData.length > 0 && <Line options={options} data={data} />}
+                {expenseData!.length === 0 && <h4>No expenses found</h4>}
+                {expenseData!.length > 0 && <Line options={options} data={data} />}
             </div>
             <h4>{chartYear}</h4>
         </div>

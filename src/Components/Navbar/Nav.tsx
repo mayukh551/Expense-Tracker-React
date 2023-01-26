@@ -40,7 +40,7 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
                         </div>
                     )}
                     <div className={`${classes.profile_control}`}>
-                        <Link to='/expenses/profile'>
+                        <Link to='/profile'>
                             <AccountCircleIcon sx={{
                                 color: lightBlue[50],
                                 fontSize: 40,
