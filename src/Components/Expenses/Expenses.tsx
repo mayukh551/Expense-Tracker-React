@@ -21,6 +21,13 @@ async function fetchFromDB() {
     }
 }
 
+function sortExpenses<T>(a: T, b: T, v: number): number {
+    // v carries 1 or -1
+    if (a < b) return -v;
+    if (a > b) return v;
+    return 0;
+}
+
 const Expenses = () => {
     const expenseList: ExpenseContextObj = useContext(ListContext);
 
@@ -39,25 +46,20 @@ const Expenses = () => {
         console.log(filteredExpense);
     }
 
-    if (sortOrder === "Low - High") {
-        newExpense = filteredExpense.slice();
-        newExpense.sort((a: itemDS, b: itemDS) => {
-            if (a.amount < b.amount) return -1;
-            if (a.amount > b.amount) return 1;
-            return 0;
-        });
-    }
+    newExpense = filteredExpense.slice();
 
-    else if (sortOrder === "High - Low") {
-        newExpense = filteredExpense.slice();
-        newExpense.sort((a: itemDS, b: itemDS) => {
-            if (a.amount > b.amount) return -1;
-            if (a.amount < b.amount) return 1;
-            return 0;
-        });
-    }
+    if (sortOrder === "Low - High")
+        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.amount, b.amount, 1));
 
-    else newExpense = filteredExpense.slice();
+    else if (sortOrder === "High - Low")
+        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.amount, b.amount, -1));
+
+    else if (sortOrder === "A - Z")
+        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.title, b.title, 1));
+
+    else if (sortOrder === "Z - A")
+        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.title, b.title, -1));
+
 
 
     const updateSelectedYear = (year: string | null): any => {

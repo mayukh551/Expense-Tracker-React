@@ -41,7 +41,7 @@ const ExpensesFilter: React.FC<{
             <div className="expenses-filter__control">
                 <label>Sort By</label>
                 <SelectBtn
-                    options={['High - Low', 'Low - High']}
+                    options={['High - Low', 'Low - High', 'A - Z', 'Z - A']}
                     defaultVal={'None'}
                     val={props.sortOrder}
                     selectEventHandler={sortEventHandler}
