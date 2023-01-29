@@ -6,18 +6,15 @@ import NewInfoInput from "./NewInfoInput";
 import { itemDS } from "../../Models/Interfaces";
 import Button from '@mui/material/Button';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import axios from "axios";
 
 async function deleteFromDB(item: itemDS) {
     console.log("in deleteFromDB", item);
-    await fetch(
-        `${process.env.REACT_APP_SERVER_URL}/expenses/delete/${item.id}/`,
-        {
-            method: "DELETE",
-            headers: {
-                'x-access-token': `${localStorage.getItem('token')}`
-            }
+    await axios.delete(`${process.env.REACT_APP_SERVER_URL}/expenses/delete/${item.id}/`, {
+        headers: {
+            'x-access-token': `${localStorage.getItem('token')}`
         }
-    );
+    });
 }
 
 const ExpenseItem: React.FC<{
@@ -43,17 +40,13 @@ const ExpenseItem: React.FC<{
             amount: amount,
         };
         console.log(newItem);
-        await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/expenses/update/${props.item.id}`,
-            {
-                method: "PUT",
-                headers: {
-                    "content-type": "application/json",
-                    'x-access-token': `${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify(newItem),
+        await axios.put(
+            `${process.env.REACT_APP_SERVER_URL}/expenses/update/${props.item.id}`, newItem, {
+            headers: {
+                "content-type": "application/json",
+                'x-access-token': `${localStorage.getItem('token')}`
             }
-        );
+        });
     }
 
     const cardUpdateHandler = () => {

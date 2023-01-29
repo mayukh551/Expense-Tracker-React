@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const theme = createTheme();
 
@@ -23,18 +24,16 @@ export default function SignIn() {
 
         const userEmail = email;
         const userPassword = password;
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
-            method: 'POST',
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
+            email: userEmail,
+            password: userPassword
+        }, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: userEmail,
-                password: userPassword
-            })
+            }
         })
 
-        const { isSuccess, token = '', message = '' } = await response.json();
+        const { isSuccess, token = '', message = '' } = await response.data;
         console.log({
             isSuccess,
             token

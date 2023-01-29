@@ -5,20 +5,17 @@ import Card from "../UI/Card";
 import ExpenseFilter from "../Expense Filter/ExpenseFilter";
 import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
+import axios from "axios";
 
 async function fetchFromDB() {
     try {
-        const listFromDb = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/expenses/`, {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/expenses/`, {
             headers: {
                 'x-access-token': `${localStorage.getItem('token')}`
             }
-        }
-        );
-        // console.log("List from DB", listFromDb);
-        var response = await listFromDb.json();
-        console.log("List from DB", response);
-        return response;
+        })
+        console.log("List from DB", response.data);
+        return response.data;
     } catch (e) {
         console.log("Error while fetching data from DB", e);
     }
@@ -85,7 +82,8 @@ const Expenses = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetchFromDB();
+            // await fetchFromDB();
+            const response: itemDS[] = await fetchFromDB();
             var ls: itemDS[] = [];
             for (let i = 0; i < response.length; i++) {
                 ls.push(response[i]);

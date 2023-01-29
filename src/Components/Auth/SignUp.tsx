@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const theme = createTheme();
 
@@ -28,17 +29,15 @@ export default function SignUp() {
         const userEmail: string = email;
         const userPassword: string = password;
 
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
-            method: 'POST',
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
+            name: userFirstName + ' ' + userLastName,
+            email: userEmail,
+            password: userPassword
+        }, {
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: userFirstName + ' ' + userLastName,
-                email: userEmail,
-                password: userPassword
-            })
         })
 
-        const { isSuccess, token = '', message = '' } = await response.json();
+        const { isSuccess, token = '', message = '' } = await response.data;
         if (isSuccess) {
             localStorage.setItem('token', token);
             navigate('/expenses');
