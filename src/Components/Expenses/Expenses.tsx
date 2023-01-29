@@ -66,12 +66,10 @@ const Expenses = () => {
 
     useEffect(() => {
         async function fetchData() {
-            // await fetchFromDB();
             const response: itemDS[] = await fetchFromDB();
             var ls: itemDS[] = [];
-            for (let i = 0; i < response.length; i++) {
+            for (let i = 0; i < response.length; i++)
                 ls.push(response[i]);
-            }
 
             expenseList.fillList(ls);
             setIsDataFetched((prevCond: boolean) => !prevCond);
@@ -83,7 +81,6 @@ const Expenses = () => {
 
     return (
         <Card className="expenses">
-            {/* <Chart dataPoints={newExpense} /> */}
             <ExpenseFilter
                 updateSelectedYear={updateSelectedYear}
                 userSelectedYear={userSelectedYear}
