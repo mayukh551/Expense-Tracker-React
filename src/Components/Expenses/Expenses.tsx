@@ -6,6 +6,7 @@ import ExpenseFilter from "../Expense Filter/ExpenseFilter";
 import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import axios from "axios";
+import sortExpenses from "../Services/sortExpenses";
 
 async function fetchFromDB() {
     try {
@@ -21,12 +22,6 @@ async function fetchFromDB() {
     }
 }
 
-function sortExpenses<T>(a: T, b: T, v: number): number {
-    // v carries 1 or -1
-    if (a < b) return -v;
-    if (a > b) return v;
-    return 0;
-}
 
 const Expenses = () => {
     const expenseList: ExpenseContextObj = useContext(ListContext);
@@ -47,20 +42,7 @@ const Expenses = () => {
     }
 
     newExpense = filteredExpense.slice();
-
-    if (sortOrder === "Low - High")
-        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.amount, b.amount, 1));
-
-    else if (sortOrder === "High - Low")
-        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.amount, b.amount, -1));
-
-    else if (sortOrder === "A - Z")
-        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.title, b.title, 1));
-
-    else if (sortOrder === "Z - A")
-        newExpense.sort((a: itemDS, b: itemDS) => sortExpenses(a.title, b.title, -1));
-
-
+    newExpense = sortExpenses(sortOrder, newExpense);
 
     const updateSelectedYear = (year: string | null): any => {
         console.log("Year : ", year);
