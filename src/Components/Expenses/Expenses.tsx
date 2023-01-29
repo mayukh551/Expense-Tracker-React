@@ -42,7 +42,7 @@ const Expenses = () => {
     }
 
     newExpense = filteredExpense.slice();
-    newExpense = sortExpenses(sortOrder, newExpense);
+    newExpense = sortExpenses(sortOrder, newExpense); // sort by user's choice
 
     const updateSelectedYear = (year: string | null): any => {
         console.log("Year : ", year);
