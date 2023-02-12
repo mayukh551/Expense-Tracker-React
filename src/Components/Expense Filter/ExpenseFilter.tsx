@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SelectChangeEvent } from '@mui/material/Select';
 import "./ExpenseFilter.css";
 import SelectBtn from "../UI/SelectBtn";
+import ListContext from "../Store/context";
+import { ExpenseContextObj } from "../../Models/Interfaces";
 
 const ExpensesFilter: React.FC<{
     updateSelectedYear: (year: string) => void;
+    updateSelectedMonth: (month: string) => void;
+    userSelectedMonth: string;
     updateSortOrder: (order: string) => void;
-    sortOrder: string | null;
-    userSelectedYear: string | null
+    sortOrder: string;
+    userSelectedYear: string
 }> = (props) => {
-    const selectEventHandler = (event: SelectChangeEvent<string>) => {
+
+    const expenseList: ExpenseContextObj = useContext(ListContext);
+
+    const filterYearHandler = (event: SelectChangeEvent<string>) => {
         console.log(event.target.value);
         props.updateSelectedYear(event.target.value);
     };
@@ -19,24 +26,40 @@ const ExpensesFilter: React.FC<{
         props.updateSortOrder(event.target.value);
     }
 
-    var yearList: number[] = [];
+    const filterMonthHandler = (event: SelectChangeEvent<string>) => {
+        console.log(event.target.value);
+        props.updateSelectedMonth(event.target.value);
+    }
 
+    var yearList: number[] = [];
     const currentYear = new Date().getFullYear();
     for (let year = currentYear - 1; year >= 2019; year--) {
         yearList.push(year)
     }
 
+    var monthList: string[] = expenseList.month;
+    const currentMonth: string = monthList[new Date().getMonth() - 1];
+
     return (
         <div className="expenses-filter">
             <div className="expenses-filter__control">
-                <label>Filter by year</label>
-                <SelectBtn
-                    options={yearList}
-                    defaultVal={currentYear}
-                    val={props.userSelectedYear}
-                    selectEventHandler={selectEventHandler}
-                    style={{ backgroundColor: 'white' }}
-                />
+                <label>Filter</label>
+                <div className="expense-filter-options">
+                    <SelectBtn
+                        options={monthList.slice(1)}
+                        defaultVal={currentMonth}
+                        val={props.userSelectedMonth}
+                        selectEventHandler={filterMonthHandler}
+                        style={{ backgroundColor: 'white' }}
+                    />
+                    <SelectBtn
+                        options={yearList}
+                        defaultVal={currentYear}
+                        val={props.userSelectedYear}
+                        selectEventHandler={filterYearHandler}
+                        style={{ backgroundColor: 'white' }}
+                    />
+                </div>
             </div>
             <div className="expenses-filter__control">
                 <label>Sort By</label>

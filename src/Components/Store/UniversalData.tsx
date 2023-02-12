@@ -9,7 +9,7 @@ type actionType =
     | { type: "REMOVE", id: string }
     | { type: "UPDATE", item: itemDS }
 
-const monthNames: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",];
+const monthList: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",];
 
 const expenseReducer = (state: itemDS[], action: actionType) => {
     var expenseList = state;
@@ -70,7 +70,7 @@ const UniversalData: React.FC<{
         <ListContext.Provider
             value={{
                 list: expenseState,
-                month: monthNames,
+                month: monthList,
                 fillList: fillExpenseList,
                 addItem: addItemtoList,
                 removeItem: removeItemFromList,

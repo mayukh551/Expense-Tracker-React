@@ -27,19 +27,27 @@ async function fetchFromDB() {
 const Expenses = () => {
     const expenseList: ExpenseContextObj = useContext(ListContext);
     const defaultYear = String(new Date().getFullYear());
+    var monthList: string[] = expenseList.month;
+    const defaultMonth: string = monthList[new Date().getMonth() - 1];
     const [userSelectedYear, setUserSelectedYear] = useState<string>(defaultYear);
+    const [userSelectedMonth, setUserSelectedMonth] = useState<string>(defaultMonth);
     const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
     // var filteredExpense: itemDS[];
     var newExpense: itemDS[];
 
     const expensesHolder: itemDS[] = expenseList.list.slice();
-    newExpense = filterExpenses(expensesHolder, userSelectedYear); // filter by user's choice / default value
+    newExpense = filterExpenses(expensesHolder, userSelectedYear, userSelectedMonth, monthList); // filter by user's choice / default value
     newExpense = sortExpenses(sortOrder, newExpense); // sort by user's choice / default value
 
     const updateSelectedYear = (year: string): any => {
         console.log("Year : ", year);
         setUserSelectedYear(year);
+    };
+
+    const updateSelectedMonth = (month: string): any => {
+        console.log("Year : ", month);
+        setUserSelectedMonth(month);
     };
 
     const reNewList = (delItem: itemDS) => {
@@ -77,6 +85,8 @@ const Expenses = () => {
             <ExpenseFilter
                 updateSelectedYear={updateSelectedYear}
                 userSelectedYear={userSelectedYear}
+                userSelectedMonth={userSelectedMonth}
+                updateSelectedMonth={updateSelectedMonth}
                 sortOrder={sortOrder}
                 updateSortOrder={updateSortOrder}
             />
