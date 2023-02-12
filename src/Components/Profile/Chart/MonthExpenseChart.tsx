@@ -20,7 +20,7 @@ const options = {
 
 
 const MonthExpenseChart = () => {
-  const currentMonth: number = new Date().getMonth();
+  const currentMonth: number = new Date().getMonth() - 1;
   var yearList: string[] = [];
   const year: string = String(new Date().getFullYear());
   const currentYear = parseInt(year);
@@ -34,21 +34,12 @@ const MonthExpenseChart = () => {
     yearList.push(String(year));
   }
 
-  // function daysInMonth(year: number, month: number): void {
-  //   const totalDays: number = new Date(month, year, 0).getDate();
-  //   let newLabels = []
-  //   for (let day = 1; day <= totalDays; day++)
-  //     newLabels.push(day);
-  // }
-
   const monthSelectEventHandler = (event: SelectChangeEvent<string>) => {
     setChartMonth(event.target.value);
-    // daysInMonth(parseInt(chartYear), monthList.indexOf(event.target.value) + 1);
   }
 
   const yearSelectEventHandler = (event: SelectChangeEvent<string>) => {
     setChartYear(event.target.value);
-    // daysInMonth(parseInt(event.target.value), monthList.indexOf(chartMonth) + 1);
   }
 
   const data = {

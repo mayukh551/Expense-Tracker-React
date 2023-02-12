@@ -7,6 +7,7 @@ import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import axios from "axios";
 import sortExpenses from "../Services/sortExpenses";
+import filterExpenses from "../Services/filterExpenses";
 
 async function fetchFromDB() {
     try {
@@ -25,26 +26,18 @@ async function fetchFromDB() {
 
 const Expenses = () => {
     const expenseList: ExpenseContextObj = useContext(ListContext);
-
-    const [userSelectedYear, setUserSelectedYear] = useState<string | null>("All");
-    const [sortOrder, setSortOrder] = useState<string | null>("");
+    const defaultYear = String(new Date().getFullYear());
+    const [userSelectedYear, setUserSelectedYear] = useState<string>(defaultYear);
+    const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
-    var filteredExpense: itemDS[];
+    // var filteredExpense: itemDS[];
     var newExpense: itemDS[];
 
-    if (userSelectedYear === "All") filteredExpense = expenseList.list.slice();
-    else {
-        // store updated List of expenses
-        filteredExpense = expenseList.list.filter(
-            (item: itemDS) => String(item.date.slice(0, 4)) === userSelectedYear
-        );
-        console.log(filteredExpense);
-    }
+    const expensesHolder: itemDS[] = expenseList.list.slice();
+    newExpense = filterExpenses(expensesHolder, userSelectedYear); // filter by user's choice / default value
+    newExpense = sortExpenses(sortOrder, newExpense); // sort by user's choice / default value
 
-    newExpense = filteredExpense.slice();
-    newExpense = sortExpenses(sortOrder, newExpense); // sort by user's choice
-
-    const updateSelectedYear = (year: string | null): any => {
+    const updateSelectedYear = (year: string): any => {
         console.log("Year : ", year);
         setUserSelectedYear(year);
     };
@@ -59,7 +52,7 @@ const Expenses = () => {
         expenseList.updateItem(item);
     };
 
-    const updateSortOrder = (order: string | null): void => {
+    const updateSortOrder = (order: string): void => {
         console.log("sort function", order);
         setSortOrder(order);
     }

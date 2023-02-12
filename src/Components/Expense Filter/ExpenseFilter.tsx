@@ -4,17 +4,17 @@ import "./ExpenseFilter.css";
 import SelectBtn from "../UI/SelectBtn";
 
 const ExpensesFilter: React.FC<{
-    updateSelectedYear: (year: string | null) => void;
-    updateSortOrder: (order: string | null) => void;
+    updateSelectedYear: (year: string) => void;
+    updateSortOrder: (order: string) => void;
     sortOrder: string | null;
     userSelectedYear: string | null
 }> = (props) => {
-    const selectEventHandler = (event: SelectChangeEvent<string | null>) => {
+    const selectEventHandler = (event: SelectChangeEvent<string>) => {
         console.log(event.target.value);
         props.updateSelectedYear(event.target.value);
     };
 
-    const sortEventHandler = (event: SelectChangeEvent<string | null>) => {
+    const sortEventHandler = (event: SelectChangeEvent<string>) => {
         console.log(event.target.value);
         props.updateSortOrder(event.target.value);
     }
@@ -22,7 +22,7 @@ const ExpensesFilter: React.FC<{
     var yearList: number[] = [];
 
     const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= 2019; year--) {
+    for (let year = currentYear - 1; year >= 2019; year--) {
         yearList.push(year)
     }
 
@@ -32,7 +32,7 @@ const ExpensesFilter: React.FC<{
                 <label>Filter by year</label>
                 <SelectBtn
                     options={yearList}
-                    defaultVal={'All'}
+                    defaultVal={currentYear}
                     val={props.userSelectedYear}
                     selectEventHandler={selectEventHandler}
                     style={{ backgroundColor: 'white' }}
@@ -42,7 +42,7 @@ const ExpensesFilter: React.FC<{
                 <label>Sort By</label>
                 <SelectBtn
                     options={['High - Low', 'Low - High', 'A - Z', 'Z - A']}
-                    defaultVal={'None'}
+                    defaultVal={'Recent'}
                     val={props.sortOrder}
                     selectEventHandler={sortEventHandler}
                     style={{ backgroundColor: 'white' }}
