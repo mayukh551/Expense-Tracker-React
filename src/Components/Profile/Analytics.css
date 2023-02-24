@@ -5,4 +5,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+    column-gap: 30px;
+    /* background-color: #ffc32c; */
 }
