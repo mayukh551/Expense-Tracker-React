@@ -28,7 +28,7 @@ const Expenses = () => {
     const expenseList: ExpenseContextObj = useContext(ListContext);
     const defaultYear = String(new Date().getFullYear());
     var monthList: string[] = expenseList.month;
-    const defaultMonth: string = monthList[new Date().getMonth() - 1];
+    const defaultMonth: string = monthList[new Date().getMonth()];
     const [userSelectedYear, setUserSelectedYear] = useState<string>(defaultYear);
     const [userSelectedMonth, setUserSelectedMonth] = useState<string>(defaultMonth);
     const [sortOrder, setSortOrder] = useState<string>("Recent");

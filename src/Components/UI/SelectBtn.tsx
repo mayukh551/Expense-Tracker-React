@@ -5,7 +5,6 @@ import Select from '@mui/material/Select';
 const SelectBtn: React.FC<any> = (props) => {
     const options = props.options;
     const style = props.style;
-    const defaultVal = props.defaultVal;
     const val = props.val;
 
     return (
@@ -16,7 +15,7 @@ const SelectBtn: React.FC<any> = (props) => {
             sx={style}
             onChange={props.selectEventHandler}
         >
-            <MenuItem value={`${defaultVal}`}>{defaultVal}</MenuItem>
+            {/* <MenuItem value={`${defaultVal}`}>{defaultVal}</MenuItem> */}
             {options.map((option: string) => {
                 return (
                     <MenuItem value={`${option}`}>{option}</MenuItem>

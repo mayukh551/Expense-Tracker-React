@@ -33,12 +33,14 @@ const ExpensesFilter: React.FC<{
 
     var yearList: number[] = [];
     const currentYear = new Date().getFullYear();
-    for (let year = currentYear - 1; year >= 2019; year--) {
+    for (let year = currentYear; year >= 2019; year--) {
         yearList.push(year)
     }
 
     var monthList: string[] = expenseList.month;
-    const currentMonth: string = monthList[new Date().getMonth() - 1];
+    const currentMonth: string = monthList[new Date().getMonth()];
+    console.log(currentMonth);
+
 
     return (
         <div className="expenses-filter">
@@ -46,15 +48,16 @@ const ExpensesFilter: React.FC<{
                 <label>Filter</label>
                 <div className="expense-filter-options">
                     <SelectBtn
-                        options={monthList.slice(1)}
-                        defaultVal={currentMonth}
+                        // options={monthList.slice(1)}
+                        options={monthList}
+                        // defaultVal={currentMonth}
                         val={props.userSelectedMonth}
                         selectEventHandler={filterMonthHandler}
                         style={{ backgroundColor: 'white' }}
                     />
                     <SelectBtn
                         options={yearList}
-                        defaultVal={currentYear}
+                        // defaultVal={currentYear}
                         val={props.userSelectedYear}
                         selectEventHandler={filterYearHandler}
                         style={{ backgroundColor: 'white' }}
@@ -64,8 +67,8 @@ const ExpensesFilter: React.FC<{
             <div className="expenses-filter__control">
                 <label>Sort By</label>
                 <SelectBtn
-                    options={['High - Low', 'Low - High', 'A - Z', 'Z - A']}
-                    defaultVal={'Recent'}
+                    options={['Recent', 'High - Low', 'Low - High', 'A - Z', 'Z - A']}
+                    // defaultVal={'Recent'}
                     val={props.sortOrder}
                     selectEventHandler={sortEventHandler}
                     style={{ backgroundColor: 'white' }}

@@ -29,7 +29,7 @@ const YearExpenseChart: React.FC = () => {
     var yearList: string[] = [];
 
     const currentYear = parseInt(year);
-    for (let year = currentYear - 1; year >= 2019; year--) {
+    for (let year = currentYear; year >= 2019; year--) {
         yearList.push(String(year));
     }
     console.log(expenseData)
@@ -80,7 +80,6 @@ const YearExpenseChart: React.FC = () => {
             <div className="chart" style={{ width: '600px', margin: 'auto', marginTop: '20px' }}>
                 <SelectBtn
                     options={yearList}
-                    defaultVal={currentYear}
                     val={chartYear}
                     selectEventHandler={selectEventHandler}
                     style={{ backgroundColor: 'white', width: '100px' }}

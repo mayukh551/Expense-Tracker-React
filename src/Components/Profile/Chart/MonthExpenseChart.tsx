@@ -20,7 +20,7 @@ const options = {
 
 
 const MonthExpenseChart = () => {
-  const currentMonth: number = new Date().getMonth() - 1;
+  const currentMonth: number = new Date().getMonth();
   var yearList: string[] = [];
   const year: string = String(new Date().getFullYear());
   const currentYear = parseInt(year);
@@ -30,7 +30,7 @@ const MonthExpenseChart = () => {
   const [labels, setLabel] = useState<number[]>([])
 
 
-  for (let year = currentYear - 1; year >= 2019; year--) {
+  for (let year = currentYear; year >= 2019; year--) {
     yearList.push(String(year));
   }
 
@@ -85,15 +85,13 @@ const MonthExpenseChart = () => {
     <div className="chart-wrapper">
       <div className="chart" style={{ width: '600px', margin: 'auto', marginTop: '50px' }}>
         <SelectBtn
-          options={monthList.slice(1)}
-          defaultVal={monthList[currentMonth]}
+          options={monthList}
           val={chartMonth}
           selectEventHandler={monthSelectEventHandler}
           style={{ backgroundColor: 'white', width: '100px' }}
         />
         <SelectBtn
           options={yearList}
-          defaultVal={currentYear}
           val={chartYear}
           selectEventHandler={yearSelectEventHandler}
           style={{ backgroundColor: 'white', width: '100px', marginLeft: '40px' }}
