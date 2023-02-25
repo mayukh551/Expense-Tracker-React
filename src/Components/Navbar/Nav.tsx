@@ -5,6 +5,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import classes from './Nav.module.css';
 import { lightBlue } from '@mui/material/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import InsertChartIcon from '@mui/icons-material/InsertChart';
 
 const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
                     )}
                     <div className={`${classes.profile_control}`}>
                         <Link to='/profile'>
-                            <AccountCircleIcon sx={{
+                            <InsertChartIcon sx={{
                                 color: lightBlue[50],
                                 fontSize: 40,
                                 marginRight: 2,
