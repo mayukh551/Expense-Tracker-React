@@ -9,9 +9,12 @@ import axios from "axios";
 import sortExpenses from "../Services/sortExpenses";
 import filterExpenses from "../Services/filterExpenses";
 
-async function fetchFromDB() {
+async function fetchFromDB(month: string, year: string, sortBy: string) {
+
+    const query: string = `month=${month}&year=${year}&sortBy=${sortBy}`;
+
     try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/expenses/`, {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/expenses?${query}`, {
             headers: {
                 'x-access-token': `${localStorage.getItem('token')}`
             }
@@ -36,9 +39,9 @@ const Expenses = () => {
     // var filteredExpense: itemDS[];
     var newExpense: itemDS[];
 
-    const expensesHolder: itemDS[] = expenseList.list.slice();
-    newExpense = filterExpenses(expensesHolder, userSelectedYear, userSelectedMonth, monthList); // filter by user's choice / default value
-    newExpense = sortExpenses(sortOrder, newExpense); // sort by user's choice / default value
+    const expensesHolder: itemDS[] = expenseList.list.slice(); // gets a copy of original list
+    // newExpense = filterExpenses(expensesHolder, userSelectedYear, userSelectedMonth, monthList); // filter by user's choice / default value
+    newExpense = sortExpenses(sortOrder, expensesHolder); // sort by user's choice / default value
 
     const updateSelectedYear = (year: string): any => {
         console.log("Year : ", year);
@@ -67,7 +70,13 @@ const Expenses = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const response: itemDS[] = await fetchFromDB();
+            var chosenMonth: string;
+            if (expenseList.month.indexOf(userSelectedMonth) + 1 < 9)
+                chosenMonth = `0${expenseList.month.indexOf(userSelectedMonth) + 1}`
+            else
+                chosenMonth = `${expenseList.month.indexOf(userSelectedMonth) + 1}`
+
+            const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, '');
             var ls: itemDS[] = [];
             for (let i = 0; i < response.length; i++)
                 ls.push(response[i]);
@@ -78,7 +87,7 @@ const Expenses = () => {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [userSelectedYear, userSelectedMonth]);
 
     return (
         <Card className="expenses">
