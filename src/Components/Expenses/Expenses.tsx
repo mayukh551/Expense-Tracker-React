@@ -7,7 +7,7 @@ import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import axios from "axios";
 import sortExpenses from "../Services/sortExpenses";
-import filterExpenses from "../Services/filterExpenses";
+
 
 async function fetchFromDB(month: string, year: string, sortBy: string) {
 
@@ -70,8 +70,9 @@ const Expenses = () => {
 
     useEffect(() => {
         async function fetchData() {
+            setIsDataFetched(false);
             var chosenMonth: string;
-            if (expenseList.month.indexOf(userSelectedMonth) + 1 < 9)
+            if (expenseList.month.indexOf(userSelectedMonth) + 1 <= 9)
                 chosenMonth = `0${expenseList.month.indexOf(userSelectedMonth) + 1}`
             else
                 chosenMonth = `${expenseList.month.indexOf(userSelectedMonth) + 1}`
@@ -82,7 +83,7 @@ const Expenses = () => {
                 ls.push(response[i]);
 
             expenseList.fillList(ls);
-            setIsDataFetched((prevCond: boolean) => !prevCond);
+            setIsDataFetched(true);
         }
 
         fetchData();
