@@ -6,16 +6,9 @@ import NewInfoInput from "./NewInfoInput";
 import { itemDS } from "../../Models/Interfaces";
 import Button from '@mui/material/Button';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import axios from "axios";
+import updateDataOnDB from "../../API/updateExpense";
+import deleteFromDB from "../../API/deleteExpense";
 
-async function deleteFromDB(item: itemDS) {
-    console.log("in deleteFromDB", item);
-    await axios.delete(`${process.env.REACT_APP_SERVER_URL}/expenses/delete/${item.id}/`, {
-        headers: {
-            'x-access-token': `${localStorage.getItem('token')}`
-        }
-    });
-}
 
 const ExpenseItem: React.FC<{
     item: itemDS;
@@ -30,24 +23,6 @@ const ExpenseItem: React.FC<{
     const [date, setDate] = useState<string>(props.item.date);
     const [prevDate, setPrevDate] = useState<string>(props.item.date);
     const [updatedCard, setUpdatedCard] = useState<boolean>(false);
-
-    async function updateDataOnDB() {
-        console.log("updateDataOnDB");
-        const newItem: itemDS = {
-            id: props.item.id,
-            date: date,
-            title: title,
-            amount: amount,
-        };
-        console.log(newItem);
-        await axios.put(
-            `${process.env.REACT_APP_SERVER_URL}/expenses/update/${props.item.id}`, newItem, {
-            headers: {
-                "content-type": "application/json",
-                'x-access-token': `${localStorage.getItem('token')}`
-            }
-        });
-    }
 
     const cardUpdateHandler = () => {
         setUpdatedCard(true);
@@ -140,7 +115,11 @@ const ExpenseItem: React.FC<{
                             onClick={() => {
                                 setUpdatedCard(false);
                                 props.updateDataHandler(props.item);
-                                updateDataOnDB();
+                                updateDataOnDB(props.item, {
+                                    date: date,
+                                    title: title,
+                                    amount: amount,
+                                });
                             }}
                         >
                             Save
