@@ -34,12 +34,14 @@ const ConditionalForm: React.FC<{
 
         setIsEmpty(false);
 
-        const newId = uuidv4();
+        const newId: string = uuidv4();
+        console.log(enteredQuantity);
+
 
         const expenseData: itemDS = {
             id: newId,
             title: enteredTitle,
-            amount: enteredAmount,
+            amount: String(parseInt(enteredAmount) * enteredQuantity),
             date: enteredDate,
             quantity: enteredQuantity
         };
@@ -49,12 +51,13 @@ const ConditionalForm: React.FC<{
         setEnteredTitle("");
         setEnteredAmount("");
         setEnteredDate("");
+        setEnteredQuantity(1);
 
         expenseList.addItem(expenseData);
         props.sendNewExpenseToServer(expenseData);
     };
 
-    const isQuantityDisabled: boolean = enteredAmount !== "" ? false : true;
+    const isQuantityDisabled: boolean = enteredAmount !== "" && enteredAmount !== "0" ? false : true;
 
     return (
         <>
