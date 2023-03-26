@@ -4,6 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from 'react-chartjs-2';
 import SelectBtn from '../../UI/SelectBtn';
 import '../Profile.css'
+import { useCookies } from 'react-cookie';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -20,13 +21,19 @@ const options = {
 
 
 const MonthExpenseChart = () => {
-  const currentMonth: number = new Date().getMonth();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [cookies, setCookies] = useCookies(['month', 'year']);
+
+  console.log('In Monthly Chart', cookies.month, cookies.year);
+
+  // const currentMonth: number = new Date().getMonth();
   var yearList: string[] = [];
   const year: string = String(new Date().getFullYear());
   const currentYear = parseInt(year);
   const [expenseData, setExpenseData] = useState<number[]>([]);
-  const [chartMonth, setChartMonth] = useState<string>(monthList[currentMonth]);
-  const [chartYear, setChartYear] = useState<string>(year);
+  const [chartMonth, setChartMonth] = useState<string>(cookies.month);
+  const [chartYear, setChartYear] = useState<string>(cookies.year);
   const [labels, setLabel] = useState<number[]>([])
 
 

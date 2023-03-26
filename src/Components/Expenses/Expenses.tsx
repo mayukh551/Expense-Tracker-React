@@ -7,6 +7,7 @@ import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import axios from "axios";
 import sortExpenses from "../Services/sortExpenses";
+import { useCookies } from 'react-cookie';
 
 
 async function fetchFromDB(month: string, year: string, sortBy: string) {
@@ -28,14 +29,24 @@ async function fetchFromDB(month: string, year: string, sortBy: string) {
 
 
 const Expenses = () => {
+    const [cookies, setCookie] = useCookies(['month', 'year']);
+
     const expenseList: ExpenseContextObj = useContext(ListContext);
     const defaultYear = String(new Date().getFullYear());
     var monthList: string[] = expenseList.month;
     const defaultMonth: string = monthList[new Date().getMonth()];
-    const [userSelectedYear, setUserSelectedYear] = useState<string>(defaultYear);
-    const [userSelectedMonth, setUserSelectedMonth] = useState<string>(defaultMonth);
+
+    if (!cookies.month)
+        setCookie('month', defaultMonth);
+    if (!cookies.year)
+        setCookie('year', defaultYear);
+
+    const [userSelectedYear, setUserSelectedYear] = useState<string>(cookies.year);
+    const [userSelectedMonth, setUserSelectedMonth] = useState<string>(cookies.month);
     const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
+
+
     // var filteredExpense: itemDS[];
     var newExpense: itemDS[];
 
@@ -45,11 +56,13 @@ const Expenses = () => {
 
     const updateSelectedYear = (year: string): any => {
         console.log("Year : ", year);
+        setCookie("year", year);
         setUserSelectedYear(year);
     };
 
     const updateSelectedMonth = (month: string): any => {
         console.log("Year : ", month);
+        setCookie("month", month);
         setUserSelectedMonth(month);
     };
 
