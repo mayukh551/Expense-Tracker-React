@@ -16,6 +16,7 @@ const ConditionalForm: React.FC<{
     const [enteredTitle, setEnteredTitle] = useState<string>("");
     const [enteredAmount, setEnteredAmount] = useState<string>("");
     const [enteredDate, setEnteredDate] = useState<string>("");
+    const [enteredQuantity, setEnteredQuantity] = useState<number>(1);
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     // const errorInputProp = isEmpty ? true : null;
 
@@ -40,6 +41,7 @@ const ConditionalForm: React.FC<{
             title: enteredTitle,
             amount: enteredAmount,
             date: enteredDate,
+            quantity: enteredQuantity
         };
         console.log(expenseData);
 
@@ -51,6 +53,9 @@ const ConditionalForm: React.FC<{
         expenseList.addItem(expenseData);
         props.sendNewExpenseToServer(expenseData);
     };
+
+    const isQuantityDisabled: boolean = enteredAmount !== "" ? false : true;
+
     return (
         <>
             <div className="new-expense__controls">
@@ -60,12 +65,15 @@ const ConditionalForm: React.FC<{
                     onChange={(e) => setEnteredTitle(e.target.value)} />
                 <TextField id="filled-basic" label="Amount" variant="filled"
                     className="input_title"
-                    value={enteredAmount}
+                    value={parseInt(enteredAmount) * enteredQuantity}
                     type="number"
                     inputProps={{
                         min: 1
                     }}
-                    onChange={(e) => setEnteredAmount(e.target.value)} />
+                    onChange={(e) => {
+                        setEnteredAmount(e.target.value);
+                        setEnteredQuantity(1);
+                    }} />
                 <TextField id="filled-basic" label="" variant="filled"
                     className="input_title"
                     value={enteredDate}
@@ -75,6 +83,24 @@ const ConditionalForm: React.FC<{
                         max: `${new Date().getFullYear()}-12-31`
                     }}
                     onChange={(e) => setEnteredDate(e.target.value)} />
+                <TextField id="filled-basic" label="Quantity" variant="filled"
+                    disabled={isQuantityDisabled}
+                    className="input_title"
+                    value={enteredQuantity}
+                    type="number"
+                    inputProps={{
+                        min: 1,
+                        max: 100000
+                    }}
+                    onChange={(e) => {
+                        const val: number = parseInt(e.target.value);
+                        if (val < 1)
+                            setEnteredQuantity(1);
+                        else if (val > 100000)
+                            setEnteredQuantity(100000);
+                        else
+                            setEnteredQuantity(val);
+                    }} />
             </div>
             <div className="new-expense__actions">
                 <Button

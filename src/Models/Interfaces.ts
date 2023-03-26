@@ -2,7 +2,10 @@ export interface itemDS {
     id: string;
     title: string;
     amount: string;
-    date: string
+    date: string,
+    month?: string;
+    year?: string;
+    quantity?: number
 }
 
 export interface User {
