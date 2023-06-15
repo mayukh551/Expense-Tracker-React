@@ -6,25 +6,26 @@ import ExpenseFilter from "../Expense Filter/ExpenseFilter";
 import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import sortExpenses from "../Services/sortExpenses";
-import { useCookies } from 'react-cookie';
 import fetchFromDB from "../../API/fetchExpenses";
 
 
 const Expenses = () => {
-    const [cookies, setCookie] = useCookies(['month', 'year']);
 
     const expenseList: ExpenseContextObj = useContext(ListContext);
-    const defaultYear = String(new Date().getFullYear());
+    // const defaultYear = String(new Date().getFullYear());
     var monthList: string[] = expenseList.month;
-    const defaultMonth: string = monthList[new Date().getMonth()];
+    // const defaultMonth: string = monthList[new Date().getMonth()];
 
-    if (!cookies.month)
-        setCookie('month', defaultMonth);
-    if (!cookies.year)
-        setCookie('year', defaultYear);
+    if (!localStorage.getItem('month'))
+        localStorage.setItem('month', monthList[new Date().getMonth()]);
+    if (!localStorage.getItem('year'))
+        localStorage.setItem('year', String(new Date().getFullYear()));
 
-    const [userSelectedYear, setUserSelectedYear] = useState<string>(cookies.year);
-    const [userSelectedMonth, setUserSelectedMonth] = useState<string>(cookies.month);
+    const defaultYear = localStorage.getItem('year');
+    const defaultMonth = localStorage.getItem('month');
+
+    const [userSelectedMonth, setUserSelectedMonth] = useState<string>(defaultMonth!);
+    const [userSelectedYear, setUserSelectedYear] = useState<string>(defaultYear!);
     const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
 
@@ -38,13 +39,13 @@ const Expenses = () => {
 
     const updateSelectedYear = (year: string): any => {
         console.log("Year : ", year);
-        setCookie("year", year);
+        localStorage.setItem("year", year);
         setUserSelectedYear(year);
     };
 
     const updateSelectedMonth = (month: string): any => {
         console.log("Year : ", month);
-        setCookie("month", month);
+        localStorage.setItem("month", month);
         setUserSelectedMonth(month);
     };
 

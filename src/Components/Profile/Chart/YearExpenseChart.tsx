@@ -5,7 +5,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from "react-chartjs-2";
 import SelectBtn from '../../UI/SelectBtn';
 import { SelectChangeEvent } from '@mui/material/Select';
-import { useCookies } from 'react-cookie';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -22,13 +21,10 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 
 const YearExpenseChart: React.FC = () => {
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookies] = useCookies(['month', 'year']);
-
     // const expenseList: ExpenseContextObj = useContext(ListContext);
     const [expenseData, setExpenseData] = useState<number[]>([]);
     const year: string = String(new Date().getFullYear());
-    const [chartYear, setChartYear] = useState<string>(cookies.year);
+    const [chartYear, setChartYear] = useState<string>(localStorage.getItem('year')!);
     const labels: string[] = monthList;
     var yearList: string[] = [];
 
