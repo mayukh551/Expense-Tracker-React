@@ -20,7 +20,7 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <>
+        <div className='bg-amber-400 h-screen overflow-y-scroll'>
             {isLoggedIn &&
                 <UniversalData>
                     <>
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
                     </>
                 </UniversalData>
             }
-        </>
+        </div>
 
     )
 }
