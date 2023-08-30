@@ -6,6 +6,7 @@ export interface itemDS {
     month?: string;
     year?: string;
     quantity?: number
+    category?: string;
 }
 
 export interface User {
