@@ -8,6 +8,8 @@ import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import sortExpenses from "../Services/sortExpenses";
 import fetchFromDB from "../../API/fetchExpenses";
 import { UserContext } from "../Store/userContext";
+import filterExpensesByName from "../Services/searchFilter";
+import SearchExpense from "../Expense Filter/SearchExpense";
 
 
 const Expenses = () => {
@@ -32,6 +34,7 @@ const Expenses = () => {
     const [userSelectedYear, setUserSelectedYear] = useState<string>(defaultYear!);
     const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
 
     // var filteredExpense: itemDS[];
@@ -40,6 +43,8 @@ const Expenses = () => {
     const expensesHolder: itemDS[] = expenseList.list.slice(); // gets a copy of original list
     // newExpense = filterExpenses(expensesHolder, userSelectedYear, userSelectedMonth, monthList); // filter by user's choice / default value
     newExpense = sortExpenses(sortOrder, expensesHolder); // sort by user's choice / default value
+
+    newExpense = filterExpensesByName(newExpense, searchTerm);
 
     const updateSelectedYear = (year: string): any => {
         console.log("Year : ", year);
@@ -67,6 +72,12 @@ const Expenses = () => {
         console.log("sort function", order);
         setSortOrder(order);
     }
+
+    const updateSearchTerm = (term: string) => {
+        console.log("search term", term);
+        setSearchTerm(term);
+    }
+
 
     useEffect(() => {
         async function fetchData() {
@@ -103,6 +114,9 @@ const Expenses = () => {
                 sortOrder={sortOrder}
                 updateSortOrder={updateSortOrder}
             />
+            <div className="mt-8 mb-10">
+                <SearchExpense updateSearchTerm={updateSearchTerm} />
+            </div>
             {!isDataFetched && (
                 <div className="loader"></div>
             )}

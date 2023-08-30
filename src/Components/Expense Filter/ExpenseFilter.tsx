@@ -4,6 +4,7 @@ import "./ExpenseFilter.css";
 import SelectBtn from "../UI/SelectBtn";
 import ListContext from "../Store/context";
 import { ExpenseContextObj } from "../../Models/Interfaces";
+import SearchExpense from "./SearchExpense";
 
 const ExpensesFilter: React.FC<{
     updateSelectedYear: (year: string) => void;
@@ -74,6 +75,7 @@ const ExpensesFilter: React.FC<{
                     style={{ backgroundColor: 'white' }}
                 />
             </div>
+            
         </div >
     );
 };
