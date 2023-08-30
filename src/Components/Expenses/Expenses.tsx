@@ -7,14 +7,18 @@ import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import sortExpenses from "../Services/sortExpenses";
 import fetchFromDB from "../../API/fetchExpenses";
+import { UserContext } from "../Store/userContext";
 
 
 const Expenses = () => {
 
     const expenseList: ExpenseContextObj = useContext(ListContext);
+    const userData = useContext(UserContext);
     // const defaultYear = String(new Date().getFullYear());
     var monthList: string[] = expenseList.month;
     // const defaultMonth: string = monthList[new Date().getMonth()];
+
+    console.log(userData);
 
     if (!localStorage.getItem('month'))
         localStorage.setItem('month', monthList[new Date().getMonth()]);
@@ -79,6 +83,9 @@ const Expenses = () => {
                 ls.push(response[i]);
 
             expenseList.fillList(ls);
+
+            console.log(userData);
+
             setIsDataFetched(true);
         }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NewExpenses from '../NewExpenses/NewExpenses'
-import UniversalData from '../Store/UniversalData'
+import { UniversalData, UserContextProvider } from '../Store/UniversalData'
 import Expenses from './Expenses'
 import { useNavigate } from 'react-router-dom';
 import Nav from '../Navbar/Nav';
@@ -23,11 +23,13 @@ const Home: React.FC = () => {
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
             {isLoggedIn &&
                 <UniversalData>
-                    <>
-                        <Nav />
-                        <NewExpenses />
-                        <Expenses />
-                    </>
+                    <UserContextProvider>
+                        <>
+                            <Nav />
+                            <NewExpenses />
+                            <Expenses />
+                        </>
+                    </UserContextProvider>
                 </UniversalData>
             }
         </div>

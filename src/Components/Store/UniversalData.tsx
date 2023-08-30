@@ -1,7 +1,8 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { itemDS } from "../../Models/Interfaces";
 import ListContext from "./context";
-// import list from "../../expenseInfo.json";
+import { UserContextType } from "./userContext";
+import { UserContext } from "./userContext";
 
 type actionType =
     | { type: "FILL"; value: itemDS[] }
@@ -38,7 +39,7 @@ const expenseReducer = (state: itemDS[], action: actionType) => {
     return expenseList;
 };
 
-const UniversalData: React.FC<{
+export const UniversalData: React.FC<{
     children: React.ReactNode
 }> = (props) => {
     console.log("In UniversalData");
@@ -82,4 +83,44 @@ const UniversalData: React.FC<{
     );
 };
 
-export default UniversalData;
+
+//************************************************* USER ****************************************
+
+export const UserContextProvider: React.FC<{ children: React.ReactNode }> = (props) => {
+    const [budget, setBudget] = useState({ monthly: 0, yearly: 0 });
+    const [age, setAge] = useState(0);
+    const [salary, setSalary] = useState(0);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+
+    console.log("In UserContextProvider");
+
+    // write code to update age, budget and salary
+    const updateBudget = (newBudget: { monthly: number, yearly: number }) => setBudget({ monthly: newBudget.monthly, yearly: newBudget.yearly });
+
+    const updateAge = (newAge: number) => { console.log(newAge); setAge(newAge); }
+
+    const updateSalary = (newSalary: number) => setSalary(newSalary);
+
+    const updateName = (newName: string) => setName(newName);
+
+    const updateEmail = (newEmail: string) => setEmail(newEmail);
+
+
+    const contextValue: UserContextType = {
+        budget,
+        age,
+        salary,
+        name,
+        email,
+        updateBudget,
+        updateAge,
+        updateSalary,
+        updateName,
+        updateEmail
+    };
+
+    return (
+        <UserContext.Provider value={contextValue}>{props.children}</UserContext.Provider>
+    );
+};

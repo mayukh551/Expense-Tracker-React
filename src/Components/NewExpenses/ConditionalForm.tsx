@@ -5,6 +5,7 @@ import "./ExpenseForm.css";
 import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import { TextField } from "@mui/material";
+import SelectBtn from "../UI/SelectBtn";
 
 
 const ConditionalForm: React.FC<{
@@ -13,6 +14,8 @@ const ConditionalForm: React.FC<{
 }> = (props) => {
     const expenseList = useContext(ListContext);
 
+    // const categoryList: string[] = expenseList.category;
+    const categoryList: string[] = ["Home", "Food", "Travel", "Shopping", "Others"];
     const [enteredTitle, setEnteredTitle] = useState<string>("");
     const [enteredAmount, setEnteredAmount] = useState<string>("");
     const [enteredDate, setEnteredDate] = useState<string>("");
@@ -104,6 +107,8 @@ const ConditionalForm: React.FC<{
                         else
                             setEnteredQuantity(val);
                     }} />
+                {/* Put options for Category */}
+                <SelectBtn options={categoryList} val={'Home'} style={{ backgroundColor: 'white' }} />
             </div>
             <div className="new-expense__actions">
                 <Button

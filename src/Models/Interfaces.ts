@@ -23,3 +23,14 @@ export interface ExpenseContextObj {
     removeItem: (id: string) => void,
     updateItem: (item: itemDS) => void
 }
+
+export interface User {
+    name: string;
+    email: string;
+    salary: number;
+    age: number;
+    budget: {
+        monthly: number;
+        yearly: number;
+    };
+}

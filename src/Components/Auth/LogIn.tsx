@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,14 +10,19 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../Store/userContext';
+import { User } from '../../Models/Interfaces';
 
 const theme = createTheme();
 
 export default function SignIn() {
     const navigate = useNavigate();
 
+    const userData = useContext(UserContext);
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    // const [userState, setUserState] = useState<User>();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -33,19 +38,45 @@ export default function SignIn() {
             }
         })
 
-        const { isSuccess, token = '', message = '' } = await response.data;
+        const { isSuccess, token = '', message = '', user } = await response.data;
+
         console.log({
             isSuccess,
-            token
+            token,
+            user
         });
 
-        if (isSuccess) {
+        if (isSuccess && user) {
+            userData.updateAge(user.age);
+            userData.updateEmail(user.email);
+            userData.updateName(user.name);
+            userData.updateSalary(user.salary);
+            userData.updateBudget({
+                monthly: user.budget.monthly,
+                yearly: user.budget.yearly
+            });
+            
             navigate('/expenses');
             localStorage.setItem('token', token);
         }
 
         else console.log(message)
     };
+
+    // useEffect(() => {
+
+    //     if (userState) {
+    //         console.log('hey there');
+    //         userData.updateAge(userState.age);
+    //         userData.updateEmail(userState.email);
+    //         userData.updateName(userState.name);
+    //         userData.updateSalary(userState.salary);
+    //         userData.updateBudget({
+    //             monthly: userState.budget.monthly,
+    //             yearly: userState.budget.yearly
+    //         });
+    //     }
+    // }, [userState]);
 
     return (
         <ThemeProvider theme={theme}>
