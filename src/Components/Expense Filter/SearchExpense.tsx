@@ -4,10 +4,10 @@ const SearchExpense: React.FC<{ searchTerm: string; updateSearchTerm: (term: str
 
     // const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
-        // setSearchTerm(event.target.value);
-    }
+    // const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     console.log(event.target.value);
+    //     // setSearchTerm(event.target.value);
+    // }
 
     const searchTerm = props.searchTerm;
 
