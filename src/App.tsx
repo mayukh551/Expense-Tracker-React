@@ -7,20 +7,21 @@ import SignUp from "./Components/Auth/SignUp";
 import LogIn from "./Components/Auth/LogIn";
 import Home from "./Components/Expenses/Home";
 import Profile from "./Components/Profile/Profile";
-import { CookiesProvider } from 'react-cookie';
+import Account from "./Components/Account/Account";
 
 function App() {
     return (
-        <CookiesProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<SignUp />} />
-                    <Route path="login" element={<LogIn />} />
-                    <Route path="expenses" element={<Home />} />
-                    <Route path="profile" element={<Profile />} />
-                </Routes >
-            </BrowserRouter >
-        </CookiesProvider>
+
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<SignUp />} />
+                <Route path="login" element={<LogIn />} />
+                <Route path="expenses" element={<Home />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="account" element={<Account />} />
+            </Routes >
+        </BrowserRouter >
+
     );
 }
 

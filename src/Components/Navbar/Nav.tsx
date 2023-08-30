@@ -1,17 +1,15 @@
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { Link, useNavigate } from 'react-router-dom';
-// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import classes from './Nav.module.css';
 import { lightBlue } from '@mui/material/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
-import { useCookies } from 'react-cookie';
 
 const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
     const navigate = useNavigate();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookie, removeCookie] = useCookies(['month', 'year']);
 
     const backHome = (): void => {
         navigate('/expenses');
@@ -19,8 +17,8 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
 
     const handleLogOut = (): void => {
         localStorage.removeItem('token');
-        removeCookie('month');
-        removeCookie('year');
+        localStorage.removeItem('month');
+        localStorage.removeItem('year');
         navigate('/');
     }
 
@@ -48,6 +46,14 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
                     <div className={`${classes.profile_control}`}>
                         <Link to='/profile'>
                             <InsertChartIcon sx={{
+                                color: lightBlue[50],
+                                fontSize: 40,
+                                marginRight: 2,
+                                cursor: 'pointer'
+                            }} />
+                        </Link>
+                        <Link to='/account'>
+                            <AccountCircleIcon sx={{
                                 color: lightBlue[50],
                                 fontSize: 40,
                                 marginRight: 2,

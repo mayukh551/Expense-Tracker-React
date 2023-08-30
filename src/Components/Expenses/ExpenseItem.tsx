@@ -23,6 +23,8 @@ const ExpenseItem: React.FC<{
     const [date, setDate] = useState<string>(props.item.date);
     const [prevDate, setPrevDate] = useState<string>(props.item.date);
     const [updatedCard, setUpdatedCard] = useState<boolean>(false);
+    const [prevCategory, setPrevCategory] = useState<string>(props.item.category ? props.item.category : "Others");
+    const [category, setCategory] = useState<string>(props.item.category ? props.item.category : "Others");
 
     const cardUpdateHandler = () => {
         setUpdatedCard(true);
@@ -60,14 +62,26 @@ const ExpenseItem: React.FC<{
                     {/* Update Title */}
 
                     {updatedCard === true ? (
-                        <NewInfoInput
-                            type={"text"}
-                            val={title}
-                            setNewValue={setTitle}
-                            setUpdatedCard={setUpdatedCard}
-                        />
+                        <>
+                            <NewInfoInput
+                                type={"text"}
+                                val={title}
+                                setNewValue={setTitle}
+                                setUpdatedCard={setUpdatedCard}
+                            />
+
+                            <NewInfoInput
+                                type={"text"}
+                                val={category}
+                                setNewValue={setCategory}
+                                setUpdatedCard={setUpdatedCard}
+                            />
+                        </>
                     ) : (
-                        <h2>{title}</h2>
+                        <h2><span className="">{title}</span>
+                            <span className="ml-4 bg-green-600 text-black font-bold px-2 py-2 rounded-md text-sm">
+                                {category}
+                            </span></h2>
                     )}
 
                     {/* Update Amount */}
@@ -104,6 +118,7 @@ const ExpenseItem: React.FC<{
                                 setTitle(prevTitle);
                                 setAmount(prevAmount);
                                 setDate(prevDate);
+                                setCategory(prevCategory);
                                 setUpdatedCard(false);
                             }}
                         >
