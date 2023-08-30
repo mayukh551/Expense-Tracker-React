@@ -9,7 +9,8 @@ const filterExpensesByName = (expenses: itemDS[], searchTerm: string): itemDS[] 
         expense.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    return filterExpenses.length === 0 ? expenses : filterExpenses;
+    // return filterExpenses.length === 0 ? expenses : filterExpenses;
+    return filterExpenses;
 };
 
 export default filterExpensesByName;
