@@ -46,7 +46,7 @@ export default function SignIn() {
             user
         });
 
-        if (isSuccess && user) {
+        if (user) {
             userData.updateAge(user.age);
             userData.updateEmail(user.email);
             userData.updateName(user.name);
@@ -55,7 +55,9 @@ export default function SignIn() {
                 monthly: user.budget.monthly,
                 yearly: user.budget.yearly
             });
-            
+        }
+
+        if (isSuccess) {
             navigate('/expenses');
             localStorage.setItem('token', token);
         }
