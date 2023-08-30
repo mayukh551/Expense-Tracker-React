@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-const SearchExpense: React.FC<{ updateSearchTerm: (term: string) => void }> = (props) => {
+const SearchExpense: React.FC<{ searchTerm: string; updateSearchTerm: (term: string) => void }> = (props) => {
 
-    const [searchTerm, setSearchTerm] = useState<string>('');
+    // const [searchTerm, setSearchTerm] = useState<string>('');
 
     const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         console.log(event.target.value);
-        setSearchTerm(event.target.value);
+        // setSearchTerm(event.target.value);
     }
+
+    const searchTerm = props.searchTerm;
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -44,7 +46,7 @@ const SearchExpense: React.FC<{ updateSearchTerm: (term: string) => void }> = (p
                     placeholder="Looking for something?"
                     required
                     value={searchTerm}
-                    onChange={searchHandler}
+                    onChange={(e) => props.updateSearchTerm(e.target.value)}
                 />
                 <button
                     type="submit"

@@ -115,7 +115,9 @@ const Expenses = () => {
                 updateSortOrder={updateSortOrder}
             />
             <div className="mt-8 mb-10">
-                <SearchExpense updateSearchTerm={updateSearchTerm} />
+                <SearchExpense
+                    searchTerm={searchTerm}
+                    updateSearchTerm={updateSearchTerm} />
             </div>
             {!isDataFetched && (
                 <div className="loader"></div>
