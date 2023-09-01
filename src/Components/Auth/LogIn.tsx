@@ -47,14 +47,14 @@ export default function SignIn() {
         });
 
         if (user) {
-            userData.updateAge(user.age);
+            // userData.updateAge(user.age);
             userData.updateEmail(user.email);
             userData.updateName(user.name);
-            userData.updateSalary(user.salary);
-            userData.updateBudget({
-                monthly: user.budget.monthly,
-                yearly: user.budget.yearly
-            });
+            // userData.updateSalary(user.salary);
+            // userData.updateBudget({
+            //     monthly: user.budget.monthly,
+            //     yearly: user.budget.yearly
+            // });
         }
 
         if (isSuccess) {

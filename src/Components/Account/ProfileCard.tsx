@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react'
 import editIcon from '../../assets/editing.png';
 import AccountUICard from '../UI/AccountUICard';
 import TextField from '@mui/material/TextField';
 
-const ProfileCard: React.FC = () => {
+const ProfileCard: React.FC<{
+    age: number,
+    name: string,
+    email: string,
+    phone: string,
+    updateAccount: (data: any) => void,
+    setAge: Dispatch<SetStateAction<number>>
+    setName: Dispatch<SetStateAction<string>>
+    setEmail: Dispatch<SetStateAction<string>>
+    setPhone: Dispatch<SetStateAction<string>>
+}> = (props) => {
 
     const [isEdit, setIsEdit] = useState(false);
 
     const [profilePic, setProfilePic] = useState('https://i.pravatar.cc/300'); // TODO: change this to actual image
-    const [name, setName] = useState('Mayukh Bhowmick');
-    const [email, setEmail] = useState('mactavish171@gmail.com');
-    const [phone, setPhone] = useState('8965574365');
-    const [age, setAge] = useState(26);
+
+    const { name, email, phone, age } = props;
 
     const toggle = () => {
         setIsEdit(isEdit => !isEdit);
@@ -19,19 +27,16 @@ const ProfileCard: React.FC = () => {
 
     const onSave = () => {
         // set new data
-        // console.log(monthlybudget, yearlybudget);
+        props.updateAccount({
+            name, email, phone, age
+        });
+
         setIsEdit(false);
     }
 
     const onCancel = () => {
         setIsEdit(false);
     }
-
-    //TODO : Fix This, cache the profile photo instead of retreiving it every time from server
-    useEffect(() => {
-        if (localStorage.getItem('profilePic')) setProfilePic(localStorage.getItem('profilePic')!);
-        else localStorage.setItem('profilePic', profilePic);
-    }, []);
 
     return (
         <AccountUICard>
@@ -50,7 +55,7 @@ const ProfileCard: React.FC = () => {
                         id="name"
                         label="Name"
                         value={name}
-                        onChange={(event) => setName(event.target.value)}
+                        onChange={(event) => props.setName(event.target.value)}
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -60,7 +65,7 @@ const ProfileCard: React.FC = () => {
                         id="email"
                         label="Email"
                         value={email}
-                        onChange={(event) => setEmail(event.target.value)}
+                        onChange={(event) => props.setEmail(event.target.value)}
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -70,7 +75,7 @@ const ProfileCard: React.FC = () => {
                         id="phone"
                         label="Phone (+91)"
                         value={phone}
-                        onChange={(event) => setPhone(event.target.value)}
+                        onChange={(event) => props.setPhone(event.target.value)}
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -81,7 +86,7 @@ const ProfileCard: React.FC = () => {
                         label="Age"
                         type="number"
                         value={age}
-                        onChange={(event) => setAge(parseInt(event.target.value))}
+                        onChange={(event) => props.setAge(parseInt(event.target.value))}
                         fullWidth
                         margin="normal"
                         variant="outlined"
