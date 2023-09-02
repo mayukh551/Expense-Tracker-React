@@ -8,7 +8,7 @@ import axios from 'axios';
 const Account: React.FC = () => {
     const hasVisitedProfile: boolean = true;
 
-    const [profilePic, setProfilePic] = useState('https://i.pravatar.cc/300'); // TODO: change this to actual image
+    const [profilePic, setProfilePic] = useState('https://i.stack.imgur.com/YaL3s.jpg'); // TODO: change this to actual image
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
@@ -53,7 +53,7 @@ const Account: React.FC = () => {
                     // console.log(response.data);
                     const { data } = response;
                     console.log(data);
-                    const { name, email, phone, age, budget, salary, category } = data.data;
+                    const { name, email, phone, age, budget, salary, category, profile_img } = data.data;
 
                     // set the state vairables
                     setName(name);
@@ -66,6 +66,7 @@ const Account: React.FC = () => {
                         monthly: budget.monthly,
                         yearly: budget.yearly
                     });
+                    setProfilePic(profile_img);
                 }
 
             } catch (e) {
@@ -92,6 +93,7 @@ const Account: React.FC = () => {
                     email={email}
                     phone={phone}
                     age={age}
+                    profilePic={profilePic}
                     updateAccount={updateAccount}
                     setName={setName}
                     setEmail={setEmail}

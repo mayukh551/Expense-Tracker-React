@@ -8,6 +8,7 @@ const ProfileCard: React.FC<{
     name: string,
     email: string,
     phone: string,
+    profilePic: string,
     updateAccount: (data: any) => void,
     setAge: Dispatch<SetStateAction<number>>
     setName: Dispatch<SetStateAction<string>>
@@ -17,9 +18,7 @@ const ProfileCard: React.FC<{
 
     const [isEdit, setIsEdit] = useState(false);
 
-    const [profilePic, setProfilePic] = useState('https://i.pravatar.cc/300'); // TODO: change this to actual image
-
-    const { name, email, phone, age } = props;
+    const { name, email, phone, age, profilePic } = props;
 
     const toggle = () => {
         setIsEdit(isEdit => !isEdit);
