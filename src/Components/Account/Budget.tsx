@@ -16,6 +16,9 @@ const Budget: React.FC<{
 
     const { monthly, yearly, setBudget } = props;
 
+    const [prevMonthly, setPrevMonthly] = useState<number>();
+    const [prevYearly, setPrevYearly] = useState<number>();
+
     const [isEdit, setIsEdit] = useState(false);
     const monthlybudget = monthly;
     const yearlybudget = yearly;
@@ -37,6 +40,7 @@ const Budget: React.FC<{
     }
 
     const onCancel = () => {
+        setBudget({ monthly: prevMonthly!, yearly: prevYearly! });
         setIsEdit(false);
     }
 
@@ -44,7 +48,11 @@ const Budget: React.FC<{
 
         let val: string | undefined = e.target.value;
         console.log(parseInt(val));
-        if (Number.isNaN(parseInt(val))) setBudget({ monthly: parseInt(val), yearly: yearly });
+
+        if (prevMonthly === undefined) setPrevMonthly(monthly);
+        if (prevYearly === undefined) setPrevYearly(yearly);
+
+        if (Number.isNaN(parseInt(val))) setBudget({ monthly: 0, yearly: yearly });
         else setBudget({ monthly: parseInt(val), yearly: yearly });
 
     }
@@ -54,7 +62,10 @@ const Budget: React.FC<{
         let val: string | undefined = e.target.value;
         console.log(parseInt(val));
 
-        if (Number.isNaN(parseInt(val))) setBudget({ monthly: monthly, yearly: parseInt(val) });
+        if (prevMonthly === undefined) setPrevMonthly(monthly);
+        if (prevYearly === undefined) setPrevYearly(yearly);
+
+        if (Number.isNaN(parseInt(val))) setBudget({ monthly: monthly, yearly: 0 });
         else setBudget({ monthly: monthly, yearly: parseInt(val) });
 
     }
