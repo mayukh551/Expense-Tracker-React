@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../Store/userContext';
 import { User } from '../../Models/Interfaces';
+import Spinner from '../UI/Spinner';
+import Modal from '../UI/Modal'
 
 const theme = createTheme();
 
@@ -22,10 +24,13 @@ export default function SignIn() {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     // const [userState, setUserState] = useState<User>();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        setIsLoading(true);
 
         const userEmail = email;
         const userPassword = password;
@@ -58,6 +63,7 @@ export default function SignIn() {
         }
 
         if (isSuccess) {
+            setIsLoading(false);
             navigate('/expenses');
             localStorage.setItem('token', token);
         }
@@ -81,66 +87,72 @@ export default function SignIn() {
     // }, [userState]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
+        <>
+            <Modal isOpen={isLoading} style={`px-24`}>
+                <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
+                <Spinner />
+            </Modal>
+            <ThemeProvider theme={theme}>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline />
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="#" variant="body2">
+                                        Forgot password?
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/')} variant="body2">
+                                        Don't have an account? Sign Up
+                                    </Link>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/')} variant="body2">
-                                    Don't have an account? Sign Up
-                                </Link>
-                            </Grid>
-                        </Grid>
+                        </Box>
                     </Box>
-                </Box>
-            </Container>
-        </ThemeProvider>
+                </Container>
+            </ThemeProvider>
+        </>
     );
 }
