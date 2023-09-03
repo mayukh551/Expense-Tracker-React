@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal: React.FC<any> = ({ isOpen, onClose, children, style }) => {
+const Modal: React.FC<any> = ({ isOpen, children, style }) => {
 
     if (!isOpen) return null;
 
