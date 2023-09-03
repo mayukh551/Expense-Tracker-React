@@ -4,6 +4,8 @@ import ProfileCard from './ProfileCard';
 import Budget from './Budget';
 import Categories from './Categories';
 import axios from 'axios';
+import Modal from '../UI/Modal';
+import AccountSpinner from '../UI/AccountSpinner';
 
 const Account: React.FC = () => {
     const hasVisitedProfile: boolean = true;
@@ -19,6 +21,8 @@ const Account: React.FC = () => {
     });
     const [salary, setSalary] = useState<number>(0);
     const [category, setCategory] = useState([]);
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const updateAccount = async (data: any) => {
 
@@ -41,6 +45,8 @@ const Account: React.FC = () => {
         //TODO : Fix This, cache the profile photo instead of retreiving it every time from server
         // if (localStorage.getItem('profilePic')) setProfilePic(localStorage.getItem('profilePic')!);
         // else localStorage.setItem('profilePic', profilePic);
+
+        setIsLoading(true);
         async function fetchAccountData() {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/account/63bb013cf17c36d4dcd10ad0`, {
@@ -50,6 +56,7 @@ const Account: React.FC = () => {
                 })
 
                 if (response.status === 200) {
+
                     // console.log(response.data);
                     const { data } = response;
                     console.log(data);
@@ -67,6 +74,7 @@ const Account: React.FC = () => {
                         yearly: budget.yearly
                     });
                     setProfilePic(profile_img);
+                    setIsLoading(false);
                 }
 
             } catch (e) {
@@ -87,6 +95,7 @@ const Account: React.FC = () => {
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
             <Nav hasProfile={hasVisitedProfile} />
+            <Modal isOpen={isLoading} style={'px-12 py-8 pb-14'}><div className='font-semibold text-center mb-6'>Fetching . . .</div> <AccountSpinner /></Modal>
             <div className='pb-20'>
                 <ProfileCard
                     name={name}

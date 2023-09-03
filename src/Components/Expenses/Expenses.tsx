@@ -10,6 +10,7 @@ import fetchFromDB from "../../API/fetchExpenses";
 import { UserContext } from "../Store/userContext";
 import filterExpensesByName from "../Services/searchFilter";
 import SearchExpense from "../Expense Filter/SearchExpense";
+import ExpenseSpinner from "../UI/ExpenseSpinner";
 
 
 const Expenses = () => {
@@ -120,7 +121,8 @@ const Expenses = () => {
                     updateSearchTerm={updateSearchTerm} />
             </div>
             {!isDataFetched && (
-                <div className="loader"></div>
+                // <div className="loader"></div>
+                <ExpenseSpinner />
             )}
             {isDataFetched && newExpense.length === 0 ? (
                 <p>No Expenses Found</p>
