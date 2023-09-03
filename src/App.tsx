@@ -8,6 +8,7 @@ import LogIn from "./Components/Auth/LogIn";
 import Home from "./Components/Expenses/Home";
 import Profile from "./Components/Profile/Profile";
 import Account from "./Components/Account/Account";
+import UserDetails from "./Components/Auth/UserDetails";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                 <Route path="expenses" element={<Home />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="account" element={<Account />} />
+                <Route path="user_details" element={<UserDetails/>} />
             </Routes >
         </BrowserRouter >
 

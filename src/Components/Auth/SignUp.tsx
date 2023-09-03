@@ -48,7 +48,7 @@ export default function SignUp() {
         if (isSuccess) {
             setIsLoading(false);
             localStorage.setItem('token', token);
-            navigate('/expenses');
+            navigate('/user_details');
         } else {
             console.log(message);
         }
