@@ -11,6 +11,7 @@ import { UserContext } from "../Store/userContext";
 import filterExpensesByName from "../Services/searchFilter";
 import SearchExpense from "../Expense Filter/SearchExpense";
 import ExpenseSpinner from "../UI/ExpenseSpinner";
+import ErrorModal from "../UI/ErrorModal";
 
 
 const Expenses = () => {
@@ -36,6 +37,8 @@ const Expenses = () => {
     const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
+
+    const [error, setError] = useState<string>('');
 
 
     // var filteredExpense: itemDS[];
@@ -79,26 +82,37 @@ const Expenses = () => {
         setSearchTerm(term);
     }
 
+    const isError = error.length > 0;
+
 
     useEffect(() => {
         async function fetchData() {
-            setIsDataFetched(false);
-            var chosenMonth: string;
-            if (expenseList.month.indexOf(userSelectedMonth) + 1 <= 9)
-                chosenMonth = `0${expenseList.month.indexOf(userSelectedMonth) + 1}`
-            else
-                chosenMonth = `${expenseList.month.indexOf(userSelectedMonth) + 1}`
 
-            const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, '');
-            var ls: itemDS[] = [];
-            for (let i = 0; i < response.length; i++)
-                ls.push(response[i]);
+            try {
 
-            expenseList.fillList(ls);
+                setIsDataFetched(false);
+                var chosenMonth: string;
+                if (expenseList.month.indexOf(userSelectedMonth) + 1 <= 9)
+                    chosenMonth = `0${expenseList.month.indexOf(userSelectedMonth) + 1}`
+                else
+                    chosenMonth = `${expenseList.month.indexOf(userSelectedMonth) + 1}`
 
-            console.log(userData);
+                const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, '');
+                var ls: itemDS[] = [];
+                for (let i = 0; i < response.length; i++)
+                    ls.push(response[i]);
 
-            setIsDataFetched(true);
+                expenseList.fillList(ls);
+
+                console.log(userData);
+
+                setIsDataFetched(true);
+
+                setError('');
+            }
+            catch (error) {
+                setError("Failed to load your expenses. Try again later.");
+            }
         }
 
         fetchData();
@@ -115,6 +129,7 @@ const Expenses = () => {
                 sortOrder={sortOrder}
                 updateSortOrder={updateSortOrder}
             />
+            <ErrorModal isOpen={isError} onClose={() => setError('')} message={error} />
             <div className="mt-8 mb-10">
                 <SearchExpense
                     searchTerm={searchTerm}
