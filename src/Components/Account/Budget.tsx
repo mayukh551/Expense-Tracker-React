@@ -5,12 +5,23 @@ import { TextField } from '@mui/material';
 import editDiv from '../UI/editDiv';
 
 const Budget: React.FC<{
+    monthly: number,
+    yearly: number,
+    updateAccount: (data: any) => void
+    setBudget: React.Dispatch<React.SetStateAction<{
+        monthly: number;
+        yearly: number;
+    }>>,
+}> = (props) => {
 
-}> = () => {
+    const { monthly, yearly, setBudget } = props;
+
+    const [prevMonthly, setPrevMonthly] = useState<number>();
+    const [prevYearly, setPrevYearly] = useState<number>();
 
     const [isEdit, setIsEdit] = useState(false);
-    const [monthlybudget, setMonthlyBudget] = useState(5684);
-    const [yearlybudget, setYearlyBudget] = useState(35000);
+    const monthlybudget = monthly;
+    const yearlybudget = yearly;
 
     const toggle = () => {
         setIsEdit(isEdit => !isEdit);
@@ -20,9 +31,16 @@ const Budget: React.FC<{
         // set new data
         console.log(monthlybudget, yearlybudget);
         setIsEdit(false);
+        props.updateAccount({
+            budget: {
+                monthly: monthlybudget,
+                yearly: yearlybudget
+            }
+        });
     }
 
     const onCancel = () => {
+        setBudget({ monthly: prevMonthly!, yearly: prevYearly! });
         setIsEdit(false);
     }
 
@@ -30,8 +48,12 @@ const Budget: React.FC<{
 
         let val: string | undefined = e.target.value;
         console.log(parseInt(val));
-        if (Number.isNaN(parseInt(val))) setMonthlyBudget(0);
-        else setMonthlyBudget(parseInt(val));
+
+        if (prevMonthly === undefined) setPrevMonthly(monthly);
+        if (prevYearly === undefined) setPrevYearly(yearly);
+
+        if (Number.isNaN(parseInt(val))) setBudget({ monthly: 0, yearly: yearly });
+        else setBudget({ monthly: parseInt(val), yearly: yearly });
 
     }
 
@@ -39,8 +61,12 @@ const Budget: React.FC<{
 
         let val: string | undefined = e.target.value;
         console.log(parseInt(val));
-        if (Number.isNaN(parseInt(val))) setYearlyBudget(0);
-        else setYearlyBudget(parseInt(val));
+
+        if (prevMonthly === undefined) setPrevMonthly(monthly);
+        if (prevYearly === undefined) setPrevYearly(yearly);
+
+        if (Number.isNaN(parseInt(val))) setBudget({ monthly: monthly, yearly: 0 });
+        else setBudget({ monthly: monthly, yearly: parseInt(val) });
 
     }
 

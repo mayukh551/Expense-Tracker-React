@@ -13,7 +13,7 @@ async function fetchFromDB(month: string, year: string, sortBy: string) {
         console.log("List from DB", response.data);
         return response.data;
     } catch (e) {
-        console.log("Error while fetching data from DB", e);
+        throw new Error("Failed to load your expenses. Try again later.");
     }
 }
 

@@ -108,7 +108,7 @@ const ConditionalForm: React.FC<{
                             setEnteredQuantity(val);
                     }} />
                 {/* Put options for Category */}
-                <SelectBtn options={categoryList} val={'Home'} style={{ backgroundColor: 'white' }} />
+                {/* <SelectBtn options={categoryList} val={'Home'} style={{ backgroundColor: 'white' }} /> */}
             </div>
             <div className="new-expense__actions">
                 <Button

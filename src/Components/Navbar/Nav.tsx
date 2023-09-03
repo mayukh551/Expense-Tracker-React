@@ -23,7 +23,7 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
     }
 
     return (
-        <div>
+        <div className='sticky z-50 w-full'>
             <Container maxWidth='xl'
                 sx={{ textAlign: 'right' }}
                 className={`${classes.nav}`}
