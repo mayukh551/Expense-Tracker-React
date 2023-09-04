@@ -19,7 +19,11 @@ const theme = createTheme();
 
 export default function UserDetails() {
     const navigate = useNavigate();
-
+    const [salary, setSalary] = useState<string>('');
+    const [monthlyBudget, setMonthlyBudget] = useState<string>('');
+    const [yearlyBudget, setYearlyBudget] = useState<string>('');
+    const [age, setAge] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
    
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -28,49 +32,28 @@ export default function UserDetails() {
 
         setIsLoading(true);
 
+        const data={"salary":salary,"budget":{"monthly":monthlyBudget,"yearly":yearlyBudget},"age":age,"phone":phone}
+        const userId=localStorage.getItem('userId');
+
+        const repsonse = await axios.put(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, data, {
+            headers: {
+                'x-access-token': `${localStorage.getItem('token')}`
+            }
+        })
+        if (repsonse.status === 200) {
+            console.log("Account Updated");
+
+        }
+        else {
+            console.log("Error while updating account");
+        }
+
+        setIsLoading(false);
+        navigate('/expenses');
         
-        // const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
-        //     email: userEmail,
-        //     password: userPassword
-        // }, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
-
-        // const { isSuccess, token = '', message = '', user } = await response.data;
-
-        // console.log({
-        //     isSuccess,
-        //     token,
-        //     user
-        // });
-
-        // if (user) {
-        //     // userData.updateAge(user.age);
-        //     userData.updateEmail(user.email);
-        //     userData.updateName(user.name);
-        //     // userData.updateSalary(user.salary);
-        //     // userData.updateBudget({
-        //     //     monthly: user.budget.monthly,
-        //     //     yearly: user.budget.yearly
-        //     // });
-        // }
-
-        // if (isSuccess) {
-        //     setIsLoading(false);
-        //     navigate('/expenses');
-        //     localStorage.setItem('token', token);
-        // }
-
-        // else console.log(message)
     };
 
-    const [salary, setSalary] = useState<string>('');
-    const [monthlyBudget, setMonthlyBudget] = useState<string>('');
-    const [yearlyBudget, setYearlyBudget] = useState<string>('');
-    const [age, setAge] = useState<string>('');
-    const [phone, setPhone] = useState<string>('');
+    
     return (
         <>
             <Modal isOpen={isLoading} style={`px-24`}>

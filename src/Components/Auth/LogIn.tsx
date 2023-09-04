@@ -66,6 +66,8 @@ export default function SignIn() {
             setIsLoading(false);
             navigate('/expenses');
             localStorage.setItem('token', token);
+            localStorage.setItem('userId',user.userId);
+            
         }
 
         else console.log(message)

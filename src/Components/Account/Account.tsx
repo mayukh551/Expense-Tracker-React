@@ -49,7 +49,7 @@ const Account: React.FC = () => {
         setIsLoading(true);
         async function fetchAccountData() {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/account/63bb013cf17c36d4dcd10ad0`, {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/account/${localStorage.getItem('userId')}`, {
                     headers: {
                         'x-access-token': `${localStorage.getItem('token')}`
                     }
