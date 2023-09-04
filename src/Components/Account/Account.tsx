@@ -6,6 +6,7 @@ import Categories from './Categories';
 import axios from 'axios';
 import Modal from '../UI/Modal';
 import AccountSpinner from '../UI/Spinners/AccountSpinner';
+import ErrorModal from '../UI/ErrorModal';
 
 const Account: React.FC = () => {
     const hasVisitedProfile: boolean = true;
@@ -24,6 +25,10 @@ const Account: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState<{ cond: boolean, message: string }>({ cond: true, message: 'Fetching . . .' });
 
+    const [error, setError] = useState<string>('');
+
+    const isError = error.length > 0;
+
     const updateAccount = async (data: any) => {
 
         setIsLoading({ cond: true, message: 'Updating . . .' });
@@ -39,7 +44,7 @@ const Account: React.FC = () => {
             //TODO if Updated successfully, update the userContext
         }
         else {
-            console.log("Error while updating account");
+            setError("Really sorry, but currenly due to some technical issues we failed to update your account. Please try again later.");
         }
 
         setIsLoading({ cond: false, message: 'Updating . . .' });
@@ -81,7 +86,7 @@ const Account: React.FC = () => {
                 }
 
             } catch (e) {
-                console.log("Error while fetching data from DB", e);
+                setError("Really sorry, but currenly due to some technical issues we failed to get you account details. Please try again later.");
             }
 
             setIsLoading({ cond: false, message: isLoading.message });
@@ -100,6 +105,7 @@ const Account: React.FC = () => {
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
             <Nav hasProfile={hasVisitedProfile} />
+            <ErrorModal isOpen={isError} onClose={() => setError('')} message={error} />
             <Modal isOpen={isLoading.cond} style={'px-12 py-8 pb-14'}><div className='font-semibold text-center mb-6'>{isLoading.message}</div> <AccountSpinner /></Modal>
             <div className='pb-20'>
                 <ProfileCard
