@@ -104,7 +104,7 @@ const MonthExpenseChart = () => {
           style={{ backgroundColor: 'white', width: '100px', marginLeft: '40px' }}
         />
         {isLoading && <ChartSpinner />}
-        {!isLoading && expenseData!.length === 0 && <h4>No expenses found</h4>}
+        {!isLoading && expenseData!.length === 0 && <h4 className='mt-8 mb-4 font-medium text-lg'>You have no expenses for {chartMonth}</h4>}
         {!isLoading && expenseData!.length > 0 && <Line options={options} data={data} />}
 
       </div>

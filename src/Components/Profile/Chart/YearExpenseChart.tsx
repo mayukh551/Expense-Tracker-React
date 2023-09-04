@@ -94,7 +94,7 @@ const YearExpenseChart: React.FC = () => {
                     style={{ backgroundColor: 'white', width: '100px' }}
                 />
                 {isLoading && <ChartSpinner />}
-                {!isLoading && expenseData!.length === 0 && <h4>No expenses found</h4>}
+                {!isLoading && expenseData!.length === 0 && <h4 className='mt-8 mb-4 font-medium text-lg'>You have no expenses for {chartYear}</h4>}
                 {!isLoading && expenseData!.length > 0 && <Line options={options} data={data} />}
             </div>
             <h4 className='mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>{chartYear}</h4>
