@@ -22,9 +22,11 @@ const Account: React.FC = () => {
     const [salary, setSalary] = useState<number>(0);
     const [category, setCategory] = useState([]);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<{ cond: boolean, message: string }>({ cond: true, message: 'Fetching . . .' });
 
     const updateAccount = async (data: any) => {
+
+        setIsLoading({ cond: true, message: 'Updating . . .' });
 
         const repsonse = await axios.put(`${process.env.REACT_APP_SERVER_URL}/account/63bb013cf17c36d4dcd10ad0`, data, {
             headers: {
@@ -39,6 +41,8 @@ const Account: React.FC = () => {
         else {
             console.log("Error while updating account");
         }
+
+        setIsLoading({ cond: false, message: 'Updating . . .' });
     }
 
     useEffect(() => {
@@ -46,7 +50,7 @@ const Account: React.FC = () => {
         // if (localStorage.getItem('profilePic')) setProfilePic(localStorage.getItem('profilePic')!);
         // else localStorage.setItem('profilePic', profilePic);
 
-        setIsLoading(true);
+        setIsLoading({ cond: true, message: isLoading.message });
         async function fetchAccountData() {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/account/63bb013cf17c36d4dcd10ad0`, {
@@ -74,12 +78,13 @@ const Account: React.FC = () => {
                         yearly: budget.yearly
                     });
                     setProfilePic(profile_img);
-                    setIsLoading(false);
                 }
 
             } catch (e) {
                 console.log("Error while fetching data from DB", e);
             }
+
+            setIsLoading({ cond: false, message: isLoading.message });
         }
 
         fetchAccountData();
@@ -95,7 +100,7 @@ const Account: React.FC = () => {
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
             <Nav hasProfile={hasVisitedProfile} />
-            <Modal isOpen={isLoading} style={'px-12 py-8 pb-14'}><div className='font-semibold text-center mb-6'>Fetching . . .</div> <AccountSpinner /></Modal>
+            <Modal isOpen={isLoading.cond} style={'px-12 py-8 pb-14'}><div className='font-semibold text-center mb-6'>{isLoading.message}</div> <AccountSpinner /></Modal>
             <div className='pb-20'>
                 <ProfileCard
                     name={name}
