@@ -4,7 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from 'react-chartjs-2';
 import SelectBtn from '../../UI/SelectBtn';
 import '../Profile.css'
-import ChartSpinner from '../../UI/ChartSpinner';
+import ChartSpinner from '../../UI/Spinners/ChartSpinner';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 

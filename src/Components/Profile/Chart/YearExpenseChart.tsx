@@ -6,7 +6,7 @@ import { Line } from "react-chartjs-2";
 import SelectBtn from '../../UI/SelectBtn';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Modal from '../../UI/Modal';
-import ChartSpinner from '../../UI/ChartSpinner';
+import ChartSpinner from '../../UI/Spinners/ChartSpinner';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 

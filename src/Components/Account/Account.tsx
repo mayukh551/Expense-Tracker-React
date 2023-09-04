@@ -5,7 +5,7 @@ import Budget from './Budget';
 import Categories from './Categories';
 import axios from 'axios';
 import Modal from '../UI/Modal';
-import AccountSpinner from '../UI/AccountSpinner';
+import AccountSpinner from '../UI/Spinners/AccountSpinner';
 
 const Account: React.FC = () => {
     const hasVisitedProfile: boolean = true;

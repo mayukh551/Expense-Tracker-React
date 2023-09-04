@@ -11,7 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Modal from '../UI/Modal';
-import Spinner from '../UI/Spinner';
+import Spinner from '../UI/Spinners/AuthSpinner';
 
 const theme = createTheme();
 

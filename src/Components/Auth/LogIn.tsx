@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../Store/userContext';
 import { User } from '../../Models/Interfaces';
-import Spinner from '../UI/Spinner';
+import Spinner from '../UI/Spinners/AuthSpinner';
 import Modal from '../UI/Modal'
 
 const theme = createTheme();

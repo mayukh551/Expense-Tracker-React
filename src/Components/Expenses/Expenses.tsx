@@ -10,7 +10,7 @@ import fetchFromDB from "../../API/fetchExpenses";
 import { UserContext } from "../Store/userContext";
 import filterExpensesByName from "../Services/searchFilter";
 import SearchExpense from "../Expense Filter/SearchExpense";
-import ExpenseSpinner from "../UI/ExpenseSpinner";
+import ExpenseSpinner from "../UI/Spinners/ExpenseSpinner";
 import ErrorModal from "../UI/ErrorModal";
 
 
