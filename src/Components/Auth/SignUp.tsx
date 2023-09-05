@@ -44,11 +44,16 @@ export default function SignUp() {
             headers: { 'Content-Type': 'application/json' },
         })
 
-        const { isSuccess, token = '', message = '' } = await response.data;
+        const { isSuccess, token = '', message = '', user } = await response.data;
+
+        if(user){
+            localStorage.setItem('userId', user.userId);
+        }
+
         if (isSuccess) {
             setIsLoading(false);
             localStorage.setItem('token', token);
-            navigate('/expenses');
+            navigate('/user_details');
         } else {
             console.log(message);
         }

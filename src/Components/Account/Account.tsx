@@ -33,7 +33,7 @@ const Account: React.FC = () => {
 
         setIsLoading({ cond: true, message: 'Updating . . .' });
 
-        const repsonse = await axios.put(`${process.env.REACT_APP_SERVER_URL}/account/63bb013cf17c36d4dcd10ad0`, data, {
+        const repsonse = await axios.put(`${process.env.REACT_APP_SERVER_URL}/account/${localStorage.getItem('userId')}`, data, {
             headers: {
                 'x-access-token': `${localStorage.getItem('token')}`
             }
@@ -58,7 +58,7 @@ const Account: React.FC = () => {
         setIsLoading({ cond: true, message: isLoading.message });
         async function fetchAccountData() {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/account/63bb013cf17c36d4dcd10ad0`, {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/account/${localStorage.getItem('userId')}`, {
                     headers: {
                         'x-access-token': `${localStorage.getItem('token')}`
                     }
