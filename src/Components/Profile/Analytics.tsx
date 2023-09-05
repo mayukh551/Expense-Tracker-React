@@ -99,7 +99,7 @@ const Analytics: React.FC = () => {
             </Card>
 
 
-            <Card sx={{ minWidth: 275, maxWidth: 400, backgroundColor: '#ffb703', boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
+            {/* <Card sx={{ minWidth: 275, maxWidth: 400, backgroundColor: '#ffb703', boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
                 <CardContent>
                     <Typography sx={{ fontSize: 25 }} color="text.primary" fontWeight={600} gutterBottom>
                         Month Stats
@@ -117,7 +117,7 @@ const Analytics: React.FC = () => {
                         {hasExpenseData ? `$${expenseData.month_stats.lowExpenseMonthDetails.amount} in ${expenseData.month_stats.lowExpenseMonthDetails.month}` : 'Calculating . . .'}
                     </Typography>
                 </CardContent>
-            </Card>
+            </Card> */}
         </div >
     )
 }
