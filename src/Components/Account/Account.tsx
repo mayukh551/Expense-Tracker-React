@@ -21,7 +21,7 @@ const Account: React.FC = () => {
         yearly: 0
     });
     const [salary, setSalary] = useState<number>(0);
-    const [category, setCategory] = useState([]);
+    const [category, setCategory] = useState<string[]>([]);
 
     const [isLoading, setIsLoading] = useState<{ cond: boolean, message: string }>({ cond: true, message: 'Fetching . . .' });
 
@@ -77,7 +77,8 @@ const Account: React.FC = () => {
                     setPhone(phone);
                     setAge(age);
                     setSalary(salary);
-                    setCategory(category);
+                    // if (category.length === 0) setCategory([]);
+                    setCategory([...category]);
                     setBudget({
                         monthly: budget.monthly,
                         yearly: budget.yearly
@@ -121,7 +122,7 @@ const Account: React.FC = () => {
                     setAge={setAge}
                 />
                 <Budget setBudget={setBudget} monthly={budget.monthly} yearly={budget.yearly} updateAccount={updateAccount} />
-                <Categories />
+                <Categories updateAccount={updateAccount} categories={category} setCategory={setCategory} />
             </div>
         </div>
     )
