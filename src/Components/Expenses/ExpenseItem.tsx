@@ -85,7 +85,7 @@ const ExpenseItem: React.FC<{
                             setUpdatedCard={setUpdatedCard}
                         />
                     ) : (
-                        <div className="expense-item__price">${amount}</div>
+                        <div className="expense-item__price">₹ {amount}</div>
                     )}
                 </div>
             </Card>

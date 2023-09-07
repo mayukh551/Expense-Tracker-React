@@ -20,7 +20,7 @@ export const SavedAmount: React.FC<any> = (props) => {
         // create a card to display the saved amount with light green background using tailwindcss
         <div className="bg-green-600 rounded-lg py-2 px-8 w-fit flex flex-col justify-center">
             <div className="text-black text-xs md:text-sm font-bold">Saved Amount</div>
-            <div className="text-black text-base md:text-2xl font-bold">{saved}</div>
+            <div className="text-black text-base md:text-2xl font-bold"><span className='text-lg'>₹</span> {saved}</div>
         </div>
     )
 }
@@ -40,7 +40,7 @@ export const PurchasedAmount: React.FC<any> = (props) => {
         // create a card to display the saved amount with light green background using tailwindcss
         <div className="bg-purple-600 rounded-lg px-8 w-fit flex flex-col justify-center">
             <div className="text-black text-xs md:text-sm font-bold">Total Purchased</div>
-            <div className="text-black text-base md:text-2xl font-bold">{totalAmount}</div>
+            <div className="text-black text-base md:text-2xl font-bold"><span className='text-lg'>₹</span> {totalAmount}</div>
         </div>
     )
 }
