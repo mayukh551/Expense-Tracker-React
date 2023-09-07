@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,8 +10,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { UserContext } from '../Store/userContext';
-import { User } from '../../Models/Interfaces';
 import Spinner from '../UI/Spinners/AuthSpinner';
 import Modal from '../UI/Modal'
 import ErrorModal from '../UI/ErrorModal';
@@ -21,7 +19,7 @@ const theme = createTheme();
 export default function SignIn() {
     const navigate = useNavigate();
 
-    const userData = useContext(UserContext);
+    // const userData = useContext(UserContext);
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
