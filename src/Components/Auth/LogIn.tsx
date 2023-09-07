@@ -14,6 +14,7 @@ import { UserContext } from '../Store/userContext';
 import { User } from '../../Models/Interfaces';
 import Spinner from '../UI/Spinners/AuthSpinner';
 import Modal from '../UI/Modal'
+import ErrorModal from '../UI/ErrorModal';
 
 const theme = createTheme();
 
@@ -25,6 +26,7 @@ export default function SignIn() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
     // const [userState, setUserState] = useState<User>();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -32,36 +34,42 @@ export default function SignIn() {
 
         setIsLoading(true);
 
-        const userEmail = email;
-        const userPassword = password;
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
-            email: userEmail,
-            password: userPassword
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
+        try {
+            const userEmail = email;
+            const userPassword = password;
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
+                email: userEmail,
+                password: userPassword
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const { isSuccess, token = '', message = '', user } = await response.data;
+
+            console.log({
+                isSuccess,
+                token,
+                user
+            });
+
+            if (user) {
+                localStorage.setItem('userId', user.userId);
             }
-        })
 
-        const { isSuccess, token = '', message = '', user } = await response.data;
+            if (isSuccess) {
+                setIsLoading(false);
+                navigate('/expenses');
+                localStorage.setItem('token', token);
+            }
 
-        console.log({
-            isSuccess,
-            token,
-            user
-        });
-
-        if (user) {
-            localStorage.setItem('userId', user.userId);
+            else throw new Error(message);
         }
-
-        if (isSuccess) {
+        catch (err: any) {
             setIsLoading(false);
-            navigate('/expenses');
-            localStorage.setItem('token', token);
+            setError("Failed to verify Login Credentials due to Server Error, our team is working on it. Please try again later.");
         }
-
-        else console.log(message)
     };
 
     // useEffect(() => {
@@ -85,6 +93,7 @@ export default function SignIn() {
                 <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
                 <Spinner />
             </Modal>
+            <ErrorModal onClose={() => setError('')} message={error} />
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />

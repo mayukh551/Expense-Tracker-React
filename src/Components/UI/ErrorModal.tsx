@@ -1,9 +1,9 @@
 import React from 'react'
 
 
-const ErrorModal: React.FC<any> = ({ isOpen, onClose, message }) => {
+const ErrorModal: React.FC<any> = ({ onClose, message }) => {
 
-    if (!isOpen) return null;
+    if (message.length < 1) return null;
 
     return (
         <>

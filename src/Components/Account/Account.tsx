@@ -27,8 +27,6 @@ const Account: React.FC = () => {
 
     const [error, setError] = useState<string>('');
 
-    const isError = error.length > 0;
-
     const updateAccount = async (data: any) => {
 
         setIsLoading({ cond: true, message: 'Updating . . .' });
@@ -106,7 +104,7 @@ const Account: React.FC = () => {
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
             <Nav hasProfile={hasVisitedProfile} />
-            <ErrorModal isOpen={isError} onClose={() => setError('')} message={error} />
+            <ErrorModal onClose={() => setError('')} message={error} />
             <Modal isOpen={isLoading.cond} style={'px-12 py-8 pb-14'}><div className='font-semibold text-center mb-6'>{isLoading.message}</div> <AccountSpinner /></Modal>
             <div className='pb-20'>
                 <ProfileCard

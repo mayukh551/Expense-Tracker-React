@@ -35,7 +35,7 @@ const Expenses = () => {
     const [userSelectedMonth, setUserSelectedMonth] = useState<string>(defaultMonth!);
     const [userSelectedYear, setUserSelectedYear] = useState<string>(defaultYear!);
     const [sortOrder, setSortOrder] = useState<string>("Recent");
-    const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const [error, setError] = useState<string>('');
@@ -82,15 +82,13 @@ const Expenses = () => {
         setSearchTerm(term);
     }
 
-    const isError = error.length > 0;
-
 
     useEffect(() => {
         async function fetchData() {
 
             try {
 
-                setIsDataFetched(false);
+                setIsLoading(true);
                 var chosenMonth: string;
                 if (expenseList.month.indexOf(userSelectedMonth) + 1 <= 9)
                     chosenMonth = `0${expenseList.month.indexOf(userSelectedMonth) + 1}`
@@ -106,12 +104,13 @@ const Expenses = () => {
 
                 console.log(userData);
 
-                setIsDataFetched(true);
+                setIsLoading(false);
 
                 setError('');
             }
             catch (error) {
-                setError("Failed to load your expenses. Try again later.");
+                setIsLoading(false);
+                setError("Due to some Server Error, we failed to load your expenses. Our team is working on it. Please Try again later.");
             }
         }
 
@@ -129,17 +128,17 @@ const Expenses = () => {
                 sortOrder={sortOrder}
                 updateSortOrder={updateSortOrder}
             />
-            <ErrorModal isOpen={isError} onClose={() => setError('')} message={error} />
+            <ErrorModal onClose={() => setError('')} message={error} />
             <div className="mt-8 mb-10">
                 <SearchExpense
                     searchTerm={searchTerm}
                     updateSearchTerm={updateSearchTerm} />
             </div>
-            {!isDataFetched && (
+            {isLoading && (
                 // <div className="loader"></div>
                 <ExpenseSpinner />
             )}
-            {isDataFetched && newExpense.length === 0 ? (
+            {!isLoading && newExpense.length === 0 ? (
                 <p>No Expenses Found</p>
             ) : (
                 newExpense.map((item) => {
