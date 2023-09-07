@@ -32,6 +32,7 @@ export default function SignIn() {
         event.preventDefault();
         setSubmitted(true);
 
+        var status: number = 500;
 
         const userEmail = email;
         const userPassword = password;
@@ -53,6 +54,8 @@ export default function SignIn() {
 
             const { isSuccess, token = '', message = '', user } = await response.data;
 
+            status = response.status;
+
             console.log({
                 isSuccess,
                 token,
@@ -73,7 +76,12 @@ export default function SignIn() {
         }
         catch (err: any) {
             setIsLoading(false);
-            setError("Failed to verify Login Credentials due to Server Error, our team is working on it. Please try again later.");
+
+            if (status >= 400)
+                setError("Invalid Username or Password");
+
+            else
+                setError("Failed to verify Login Credentials due to Server Error, our team is working on it. Please try again later.");
         }
     };
 

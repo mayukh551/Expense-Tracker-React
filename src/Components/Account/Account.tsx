@@ -7,6 +7,8 @@ import axios from 'axios';
 import Modal from '../UI/Modal';
 import AccountSpinner from '../UI/Spinners/AccountSpinner';
 import ErrorModal from '../UI/ErrorModal';
+import AccountUICard from '../UI/AccountUICard';
+import { useNavigate } from 'react-router-dom';
 
 const Account: React.FC = () => {
     const hasVisitedProfile: boolean = true;
@@ -27,6 +29,12 @@ const Account: React.FC = () => {
 
     const [error, setError] = useState<string>('');
 
+    const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
+
+    const [isDeleted, setIsDeleted] = useState<boolean>(false);
+
+    const navigate = useNavigate();
+
     const updateAccount = async (data: any) => {
 
         setIsLoading({ cond: true, message: 'Updating . . .' });
@@ -46,6 +54,29 @@ const Account: React.FC = () => {
         }
 
         setIsLoading({ cond: false, message: 'Updating . . .' });
+    }
+
+    const deleteAccount = async () => {
+
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+
+        setIsConfirmed(false);
+
+        try {
+
+            await axios.delete(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, {
+                headers: {
+                    'x-access-token': `${token}`
+                }
+            })
+
+            setIsDeleted(true);
+
+        } catch (e) {
+            setError("Really sorry, but currenly due to some technical issues we failed to delete your account. Please try again later.");
+        }
+
     }
 
     useEffect(() => {
@@ -100,6 +131,13 @@ const Account: React.FC = () => {
         console.log(name, email, phone, age, budget, salary, category);
     }, [name, email, phone, age, budget, salary, category]);
 
+    useEffect(() => {
+        if (isDeleted) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            navigate('/login');
+        }
+    }, [isDeleted, navigate]);
 
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
@@ -121,6 +159,29 @@ const Account: React.FC = () => {
                 />
                 <Budget setBudget={setBudget} monthly={budget.monthly} yearly={budget.yearly} updateAccount={updateAccount} />
                 <Categories updateAccount={updateAccount} categories={category} setCategory={setCategory} />
+                <AccountUICard>
+                    {/* create a delete account section */}
+                    <div className='flex flex-col justify-center'>
+                        <h2 className='font-semibold text-lg mb-6'>Permanently delete you Account</h2>
+                        <button
+                            onClick={() => setIsConfirmed(true)}
+                            className='w-full lg:w-1/3  bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Delete Account</button>
+                    </div>
+                    {isConfirmed && <Modal isOpen={isConfirmed} >
+                        {/* create a yes or no div option */}
+                        <div className='flex flex-col justify-center'>
+                            <h2 className='font-semibold text-lg mb-6'>Are you sure you want to delete your account?</h2>
+                            <div className='flex justify-around'>
+                                <button
+                                    onClick={() => setIsConfirmed(false)}
+                                    className='w-1/3 bg-green-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>No</button>
+                                <button
+                                    onClick={deleteAccount}
+                                    className='w-1/3 bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Yes</button>
+                            </div>
+                        </div>
+                    </Modal>}
+                </AccountUICard>
             </div>
         </div>
     )
