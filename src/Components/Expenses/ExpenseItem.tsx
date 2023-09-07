@@ -24,6 +24,9 @@ const ExpenseItem: React.FC<{
     const [prevDate, setPrevDate] = useState<string>(props.item.date);
     const [updatedCard, setUpdatedCard] = useState<boolean>(false);
 
+    // quantity
+    const [quantity, setQuantity] = useState<number>(props.item.quantity!);
+
     const cardUpdateHandler = () => {
         setUpdatedCard(true);
     };
@@ -69,6 +72,8 @@ const ExpenseItem: React.FC<{
                     ) : (
                         <h2>{title}</h2>
                     )}
+
+                    <div className="py-1 px-2 rounded-md bg-gray-700 text-white">x{quantity}</div>
 
                     {/* Update Amount */}
 

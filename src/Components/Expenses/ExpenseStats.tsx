@@ -49,7 +49,11 @@ export const TotalItems: React.FC<any> = (props) => {
 
     const expenses: itemDS[] = props.expenses;
 
-    let totalItems: number = expenses.length;
+    let totalItems: number = 0;
+
+    expenses.forEach(expense => {
+        totalItems += expense.quantity!;
+    })
 
     return (
         // create a card to display the saved amount with light green background using tailwindcss
