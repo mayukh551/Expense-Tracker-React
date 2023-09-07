@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import editIcon from '../../assets/editing.png';
 import AccountUICard from '../UI/AccountUICard'
 import { TextField } from '@mui/material';
-import editDiv from '../UI/editDiv';
 
 const Budget: React.FC<{
     monthly: number,
@@ -31,6 +30,9 @@ const Budget: React.FC<{
         // set new data
         console.log(monthlybudget, yearlybudget);
         setIsEdit(false);
+
+        localStorage.setItem('budget', JSON.stringify({ monthly: monthlybudget, yearly: yearlybudget }));
+
         props.updateAccount({
             budget: {
                 monthly: monthlybudget,

@@ -12,7 +12,7 @@ import filterExpensesByName from "../Services/searchFilter";
 import SearchExpense from "../Expense Filter/SearchExpense";
 import ExpenseSpinner from "../UI/Spinners/ExpenseSpinner";
 import ErrorModal from "../UI/ErrorModal";
-
+import { PurchasedAmount, SavedAmount, TotalItems } from './ExpenseStats';
 
 const Expenses = () => {
 
@@ -128,6 +128,11 @@ const Expenses = () => {
                 sortOrder={sortOrder}
                 updateSortOrder={updateSortOrder}
             />
+            <div className="flex flex-row justify-start space-x-2">
+                <SavedAmount expenses={newExpense} />
+                <PurchasedAmount expenses={newExpense} />
+                <TotalItems expenses={newExpense} />
+            </div>
             <ErrorModal onClose={() => setError('')} message={error} />
             <div className="mt-8 mb-10">
                 <SearchExpense

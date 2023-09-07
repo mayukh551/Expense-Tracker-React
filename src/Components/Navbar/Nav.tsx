@@ -19,6 +19,8 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
         localStorage.removeItem('token');
         localStorage.removeItem('month');
         localStorage.removeItem('year');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('budget');
         navigate('/');
     }
 

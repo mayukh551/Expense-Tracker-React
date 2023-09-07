@@ -34,6 +34,10 @@ export default function UserDetails() {
         setIsLoading(true);
 
         const data = { "salary": salary, "budget": { "monthly": monthlyBudget, "yearly": yearlyBudget }, "age": age, "phone": phone }
+
+        // set data to local storage
+        localStorage.setItem('budget', JSON.stringify(data.budget));
+
         const userId = localStorage.getItem('userId');
 
         const repsonse = await axios.put(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, data, {
