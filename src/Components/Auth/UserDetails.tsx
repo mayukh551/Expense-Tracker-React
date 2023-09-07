@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -21,10 +21,15 @@ export default function UserDetails() {
     const [age, setAge] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
 
+    const [submitted, setSubmitted] = useState(false);
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setSubmitted(true);
+
+        if (!salary || !monthlyBudget || !yearlyBudget || !age || !phone) return;
 
         setIsLoading(true);
 
@@ -49,97 +54,122 @@ export default function UserDetails() {
 
     };
 
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    useEffect(() => {
+        if (localStorage.getItem('token'))
+            setIsLoggedIn(true);
+        else {
+            setIsLoggedIn(false);
+            navigate('/login');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
 
     return (
         <>
-            <Modal isOpen={isLoading} style={`px-24`}>
-                <div className='text-center mb-4 font-bold text-lg'>Saving . . .</div>
-                <Spinner />
-            </Modal>
-            <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <Box
-                        sx={{
-                            marginTop: 8,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography component="h1" variant="h5">
-                            User Details
-                        </Typography>
-                        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="salary"
-                                label="Salary"
-                                name="salary"
-                                type='number'
-                                autoComplete="salary"
-                                autoFocus
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSalary(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="monthly_budget"
-                                label="Monthly Budget"
-                                type="number"
-                                id="monthly_budget"
-                                autoComplete="monthly_budget"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMonthlyBudget(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="yearly_budget"
-                                label="Yearly Budget"
-                                type="number"
-                                id="yearly_budget"
-                                autoComplete="yearly_budget"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setYearlyBudget(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="age"
-                                label="Age"
-                                type="number"
-                                id="age"
-                                autoComplete="age"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="phone"
-                                label="Phone Number"
-                                type="number"
-                                id="phone"
-                                autoComplete="phone"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
-                            >
-                                Save
-                            </Button>
+            {isLoggedIn && <>
+                <Modal isOpen={isLoading} style={`px-24`}>
+                    <div className='text-center mb-4 font-bold text-lg'>Saving . . .</div>
+                    <Spinner />
+                </Modal>
+                <ThemeProvider theme={theme}>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                marginTop: 8,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography component="h1" variant="h5">
+                                User Details
+                            </Typography>
+                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                                <TextField
+                                    error={submitted && !salary}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="salary"
+                                    label="Salary"
+                                    name="salary"
+                                    type='number'
+                                    autoComplete="salary"
+                                    autoFocus
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSalary(e.target.value)}
+                                    helperText={submitted && !salary ? `Please enter your salary` : ''}
+                                />
+                                <TextField
+                                    error={submitted && !monthlyBudget}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="monthly_budget"
+                                    label="Monthly Budget"
+                                    type="number"
+                                    id="monthly_budget"
+                                    autoComplete="monthly_budget"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMonthlyBudget(e.target.value)}
+                                    helperText={submitted && !monthlyBudget ? `Please enter your monthly budget` : ''}
+                                />
+                                <TextField
+                                    error={submitted && !yearlyBudget}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="yearly_budget"
+                                    label="Yearly Budget"
+                                    type="number"
+                                    id="yearly_budget"
+                                    autoComplete="yearly_budget"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setYearlyBudget(e.target.value)}
+                                    helperText={submitted && !yearlyBudget ? `Please enter your yearly budget` : ''}
+                                />
+                                <TextField
+                                    error={submitted && !age}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="age"
+                                    label="Age"
+                                    type="number"
+                                    id="age"
+                                    autoComplete="age"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
+                                    helperText={submitted && !age ? `Please enter your age` : ''}
+                                />
+                                <TextField
+                                    error={submitted && !phone}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="phone"
+                                    label="Phone Number"
+                                    type="number"
+                                    id="phone"
+                                    autoComplete="phone"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
+                                    helperText={submitted && !phone ? `Please enter your phone number` : ''}
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Save
+                                </Button>
 
+                            </Box>
                         </Box>
-                    </Box>
-                </Container>
-            </ThemeProvider>
+                    </Container>
+                </ThemeProvider>
+            </>
+            }
         </>
+
     );
 }

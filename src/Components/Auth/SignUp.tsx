@@ -23,18 +23,23 @@ export default function SignUp() {
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [submitted, setSubmitted] = useState(false);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        setIsLoading(true);
+        setSubmitted(true);
 
         const userFirstName: string = firstName;
         const userLastName: string = lastName;
         const userEmail: string = email;
         const userPassword: string = password;
+
+        if (!userFirstName || !userLastName || !userEmail || !userPassword) return;
+
+        setIsLoading(true);
 
         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
             name: userFirstName + ' ' + userLastName,
@@ -46,7 +51,7 @@ export default function SignUp() {
 
         const { isSuccess, token = '', message = '', user } = await response.data;
 
-        if(user){
+        if (user) {
             localStorage.setItem('userId', user.userId);
         }
 
@@ -84,6 +89,7 @@ export default function SignUp() {
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
+                                        error={submitted && !firstName}
                                         autoComplete="given-name"
                                         name="firstName"
                                         required
@@ -92,10 +98,12 @@ export default function SignUp() {
                                         label="First Name"
                                         autoFocus
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
+                                        helperText={submitted && !firstName ? `Please enter your first name` : ''}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
+                                        error={submitted && !lastName}
                                         required
                                         fullWidth
                                         id="lastName"
@@ -103,10 +111,12 @@ export default function SignUp() {
                                         name="lastName"
                                         autoComplete="family-name"
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
+                                        helperText={submitted && !lastName ? `Please enter your last name` : ''}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
+                                        error={submitted && !email}
                                         required
                                         fullWidth
                                         id="email"
@@ -114,10 +124,12 @@ export default function SignUp() {
                                         name="email"
                                         autoComplete="email"
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                        helperText={submitted && !email ? `Please enter your email address` : ''}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
+                                        error={submitted && !password}
                                         required
                                         fullWidth
                                         name="password"
@@ -126,6 +138,7 @@ export default function SignUp() {
                                         id="password"
                                         autoComplete="new-password"
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                        helperText={submitted && !password ? `Please enter your password` : ''}
                                     />
                                 </Grid>
                             </Grid>

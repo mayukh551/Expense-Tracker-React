@@ -27,16 +27,23 @@ export default function SignIn() {
     const [password, setPassword] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
+    const [submitted, setSubmitted] = useState(false);
     // const [userState, setUserState] = useState<User>();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setSubmitted(true);
+
+
+        const userEmail = email;
+        const userPassword = password;
+
+        if (!userEmail || !userPassword) return;
 
         setIsLoading(true);
 
         try {
-            const userEmail = email;
-            const userPassword = password;
+
             const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
                 email: userEmail,
                 password: userPassword
@@ -110,6 +117,7 @@ export default function SignIn() {
                         </Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                             <TextField
+                                error={submitted && !email}
                                 margin="normal"
                                 required
                                 fullWidth
@@ -119,8 +127,10 @@ export default function SignIn() {
                                 autoComplete="email"
                                 autoFocus
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                helperText={submitted && !email ? `Please enter your email address` : ''}
                             />
                             <TextField
+                                error={submitted && !password}
                                 margin="normal"
                                 required
                                 fullWidth
@@ -130,6 +140,7 @@ export default function SignIn() {
                                 id="password"
                                 autoComplete="current-password"
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                helperText={submitted && !password ? `Please enter your password` : ''}
                             />
                             <Button
                                 type="submit"
