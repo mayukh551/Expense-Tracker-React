@@ -41,8 +41,8 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
                             <div>Back</div>
                         </div>
                     ) : (
-                        <div style={{ color: 'white' }}>
-                            Expense Tracker
+                        <div style={{ color: 'white' }} className='font-extrabold text-2xl'>
+                            CoinWise
                         </div>
                     )}
                     <div className={`${classes.profile_control}`}>
