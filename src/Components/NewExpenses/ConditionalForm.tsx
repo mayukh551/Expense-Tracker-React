@@ -9,19 +9,24 @@ import SelectBtn from "../UI/SelectBtn";
 
 
 const ConditionalForm: React.FC<{
-    cancelHandler: () => void;
-    sendNewExpenseToServer: (item: itemDS) => void
+    cancelHandler?: () => void;
+    sendNewExpenseToServer?: (item: itemDS) => void;
+    updateExpenseToServer?: (item: itemDS, data: any) => void;
+    item?: itemDS
+    op: string;
 }> = (props) => {
     const expenseList = useContext(ListContext);
 
     // const categoryList: string[] = expenseList.category;
     const categoryList: string[] = ["Home", "Food", "Travel", "Shopping", "Others"];
-    const [enteredTitle, setEnteredTitle] = useState<string>("");
-    const [enteredAmount, setEnteredAmount] = useState<string>("");
-    const [enteredDate, setEnteredDate] = useState<string>("");
-    const [enteredQuantity, setEnteredQuantity] = useState<number>(1);
+    const [enteredTitle, setEnteredTitle] = useState<string>(props.item?.title || "");
+    const [enteredAmount, setEnteredAmount] = useState<string>(props.item?.amount || "");
+    const [enteredDate, setEnteredDate] = useState<string>(props.item?.date || "");
+    const [enteredQuantity, setEnteredQuantity] = useState<number>(props.item?.quantity || 1);
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     // const errorInputProp = isEmpty ? true : null;
+
+    const op = props.op;
 
     const submitHandler = (e: React.FormEvent) => {
         console.log("in Submit Handler of new data");
@@ -56,8 +61,15 @@ const ConditionalForm: React.FC<{
         setEnteredDate("");
         setEnteredQuantity(1);
 
-        expenseList.addItem(expenseData);
-        props.sendNewExpenseToServer(expenseData);
+        if (op === "add") {
+            expenseList.addItem(expenseData);
+            props.sendNewExpenseToServer!(expenseData);
+        }
+
+        else if (op === "update") {
+            expenseList.updateItem(expenseData);
+            props.updateExpenseToServer!(props.item!, expenseData);
+        }
     };
 
     const isQuantityDisabled: boolean = enteredAmount !== "" && enteredAmount !== "0" ? false : true;
@@ -120,7 +132,7 @@ const ConditionalForm: React.FC<{
                     variant="contained"
                     size='medium'
                     onClick={submitHandler}
-                >Add Expense</Button>
+                >{op === 'update' ? 'Save' : 'Add'}</Button>
             </div>
             <div className="new-expense__empty-msg">
                 {isEmpty && <p>Please fill in all the details</p>}
