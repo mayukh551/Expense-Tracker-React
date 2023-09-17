@@ -135,7 +135,7 @@ const Account: React.FC = () => {
         if (isDeleted) {
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
-            navigate('/login');
+            navigate('/');
         }
     }, [isDeleted, navigate]);
 
