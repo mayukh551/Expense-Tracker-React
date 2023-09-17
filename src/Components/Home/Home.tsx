@@ -27,8 +27,8 @@ const ProductPage = () => {
                     </label>
                     <div id="menu" className={`${isNavOpen ? "visible" : "hidden"} absolute top-[60px] right-10 bg-white p-4 border border-gray-300 rounded-lg mt-2`}>
                         <ul className="flex flex-col space-y-2">
-                            <li className='bg-black text-white px-6 py-2 rounded-md hover:bg-purple-600 transition-colors duration-150'><Link to='/login'>Login</Link></li>
-                            <li className='bg-black text-white px-6 py-2 rounded-md hover:bg-purple-600 transition-colors duration-150'><Link to='/signup'>SignUp</Link></li>
+                            <Link to='/login'><li className='bg-black text-white px-6 py-2 rounded-md hover:bg-purple-600 transition-colors duration-150'>Login</li></Link>
+                            <Link to='/signup'><li className='bg-black text-white px-6 py-2 rounded-md hover:bg-purple-600 transition-colors duration-150'>SignUp</li></Link>
                         </ul>
                     </div>
                 </div>
