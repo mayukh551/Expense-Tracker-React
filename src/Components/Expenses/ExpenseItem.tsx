@@ -2,7 +2,6 @@ import "./ExpenseItem.css";
 import ExpenseDate from "./ExpenseDate";
 import Card from "../UI/Card";
 import { useState } from "react";
-import NewInfoInput from "./NewInfoInput";
 import { itemDS } from "../../Models/Interfaces";
 import Button from '@mui/material/Button';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -15,7 +14,6 @@ import Modal from "../UI/Modal";
 const ExpenseItem: React.FC<{
     item: itemDS;
     reNewList: (item: itemDS) => void;
-    updateDataHandler: (item: itemDS) => void;
 }> = (props) => {
     // console.log(props.item);
     const [title, setTitle] = useState<string>(props.item.title);
@@ -39,15 +37,10 @@ const ExpenseItem: React.FC<{
         props.reNewList(props.item);
     };
 
-    const updateDataHandler = () => {
+    const updateDataHandler = (item: itemDS, newData: any) => {
 
         setUpdatedCard(false);
-        props.updateDataHandler(props.item);
-        updateDataOnDB(props.item, {
-            date: date,
-            title: title,
-            amount: amount,
-        });
+        updateDataOnDB(props.item, newData);
     }
 
     const cancelHandler = () => {
@@ -97,47 +90,20 @@ const ExpenseItem: React.FC<{
                 </div>
 
                 {/* Open Update Modal */}
-                {updatedCard &&
-                    <Modal isOpen={updatedCard} style="w-1/2">
-                        <ConditionalForm
-                            cancelHandler={cancelHandler}
-                            updateExpenseToServer={updateDataHandler}
-                            item={props.item}
-                            op="update" />
-                    </Modal>
-                }
 
-                {/* {updatedCard && (
-                    <div className="action-buttons">
-                        <Button
-                            variant="contained"
-                            size="small"
-                            onClick={() => {
-                                setTitle(prevTitle);
-                                setAmount(prevAmount);
-                                setDate(prevDate);
-                                setUpdatedCard(false);
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="contained"
-                            size="small"
-                            onClick={() => {
-                                setUpdatedCard(false);
-                                props.updateDataHandler(props.item);
-                                updateDataOnDB(props.item, {
-                                    date: date,
-                                    title: title,
-                                    amount: amount,
-                                });
-                            }}
-                        >
-                            Save
-                        </Button>
-                    </div>
-                )} */}
+                <Modal isOpen={updatedCard} style="w-1/2">
+                    <ConditionalForm
+                        cancelHandler={cancelHandler}
+                        updateExpenseToServer={updateDataHandler}
+                        item={props.item}
+                        openModalHandler={setUpdatedCard}
+                        op="update"
+                        setTitle={setTitle}
+                        setAmount={setAmount}
+                        setDate={setDate}
+                        setQuantity={setQuantity}
+                    />
+                </Modal>
             </div>
         </div >
     );

@@ -1,20 +1,25 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, SetStateAction, Dispatch } from "react";
 import { itemDS } from "../../Models/Interfaces";
 import ListContext from "../Store/context";
 import "./ExpenseForm.css";
 import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import { TextField } from "@mui/material";
-import SelectBtn from "../UI/SelectBtn";
 
 
 const ConditionalForm: React.FC<{
     cancelHandler?: () => void;
     sendNewExpenseToServer?: (item: itemDS) => void;
     updateExpenseToServer?: (item: itemDS, data: any) => void;
+    openModalHandler: Dispatch<SetStateAction<boolean>>
+    setTitle?: Dispatch<SetStateAction<string>>;
+    setAmount?: Dispatch<SetStateAction<string>>;
+    setDate?: Dispatch<SetStateAction<string>>;
+    setQuantity?: Dispatch<SetStateAction<number>>;
     item?: itemDS
     op: string;
 }> = (props) => {
+
     const expenseList = useContext(ListContext);
 
     // const categoryList: string[] = expenseList.category;
@@ -43,8 +48,6 @@ const ConditionalForm: React.FC<{
         setIsEmpty(false);
 
         const newId: string = uuidv4();
-        console.log(enteredQuantity);
-
 
         const expenseData: itemDS = {
             id: newId,
@@ -53,7 +56,6 @@ const ConditionalForm: React.FC<{
             date: enteredDate,
             quantity: enteredQuantity
         };
-        console.log(expenseData);
 
         // Reseting user inputs to null
         setEnteredTitle("");
@@ -67,9 +69,21 @@ const ConditionalForm: React.FC<{
         }
 
         else if (op === "update") {
+            console.log("Updating Expense Item", expenseData)
             expenseList.updateItem(expenseData);
+
+            // update react expense state variables
+            props.setTitle!(expenseData.title);
+            props.setAmount!(expenseData.amount);
+            props.setDate!(expenseData.date);
+            props.setQuantity!(expenseData.quantity!);
+
+            // update server
             props.updateExpenseToServer!(props.item!, expenseData);
         }
+
+        // close Modal
+        props.openModalHandler(false);
     };
 
     const isQuantityDisabled: boolean = enteredAmount !== "" && enteredAmount !== "0" ? false : true;
@@ -122,7 +136,7 @@ const ConditionalForm: React.FC<{
                 {/* Put options for Category */}
                 {/* <SelectBtn options={categoryList} val={'Home'} style={{ backgroundColor: 'white' }} /> */}
             </div>
-            <div className="new-expense__actions">
+            <div className="new-expense__actions flex flex-row justify-end space-x-3">
                 <Button
                     variant="contained"
                     size='medium'
