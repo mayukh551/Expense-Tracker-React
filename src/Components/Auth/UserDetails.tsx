@@ -72,6 +72,7 @@ export default function UserDetails() {
 
     return (
         <>
+        <div className="bg-[#b887f5] h-screen top-0 my-0 flex items-center bg-gradient-to-tr from-[#b887f5] to-[#ffffff]"  >
             {isLoggedIn && <>
                 <Modal isOpen={isLoading} style={`px-24`}>
                     <div className='text-center mb-4 font-bold text-lg'>Saving . . .</div>
@@ -82,16 +83,25 @@ export default function UserDetails() {
                         <CssBaseline />
                         <Box
                             sx={{
-                                marginTop: 8,
+                            
                                 display: 'flex',
+                                backgroundColor:'white',
                                 flexDirection: 'column',
                                 alignItems: 'center',
+                                // justifyContent:'center',
+                                // justifySelf:'center',
+                                // border:'2px solid red',
+                                py:4,
+                                px:5,
+                                boxShadow:10,
+                                borderRadius:'20px'
+    
                             }}
                         >
-                            <Typography component="h1" variant="h5">
+                            <Typography component="h1" variant="h5" sx={{fontFamily:'Montserrat, sans-serif',fontWeight:'500'}}>
                                 User Details
                             </Typography>
-                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1,px:5}}>
                                 <TextField
                                     error={submitted && !salary}
                                     margin="normal"
@@ -162,7 +172,7 @@ export default function UserDetails() {
                                     type="submit"
                                     fullWidth
                                     variant="contained"
-                                    sx={{ mt: 3, mb: 2 }}
+                                    sx={{ mt: 3, mb: 2 , backgroundColor:'#b887f5', "&:hover":{backgroundColor:"#894cd4"}}}
                                 >
                                     Save
                                 </Button>
@@ -171,8 +181,10 @@ export default function UserDetails() {
                         </Box>
                     </Container>
                 </ThemeProvider>
+                
             </>
             }
+            </div>
         </>
 
     );
