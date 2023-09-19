@@ -28,6 +28,9 @@ const expenseReducer = (state: itemDS[], action: actionType) => {
         console.log("in Reduce Remove Condition", updatedList);
         return updatedList;
     } else if (action.type === "UPDATE") {
+
+        console.log(action.item!.title);
+
         const updatedItemIndex = expenseList.findIndex(
             (item: itemDS) => item.id === action.item!.id
         );
