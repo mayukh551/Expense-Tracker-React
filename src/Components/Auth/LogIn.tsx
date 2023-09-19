@@ -164,7 +164,7 @@ export default function SignIn() {
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/')} variant="body2">
+                                    <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/signup')} variant="body2">
                                         Don't have an account? Sign Up
                                     </Link>
                                 </Grid>

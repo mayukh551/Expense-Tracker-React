@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Modal from '../UI/Modal';
 import Spinner from '../UI/Spinners/AuthSpinner';
+import ErrorModal from '../UI/ErrorModal';
 
 const theme = createTheme();
 
@@ -27,6 +28,8 @@ export default function SignUp() {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const [error, setError] = useState<string>('');
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -41,26 +44,43 @@ export default function SignUp() {
 
         setIsLoading(true);
 
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
-            name: userFirstName + ' ' + userLastName,
-            email: userEmail,
-            password: userPassword
-        }, {
-            headers: { 'Content-Type': 'application/json' },
-        })
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/register`, {
+                name: userFirstName + ' ' + userLastName,
+                email: userEmail,
+                password: userPassword
+            }, {
+                headers: { 'Content-Type': 'application/json' },
+            })
 
-        const { isSuccess, token = '', message = '', user } = await response.data;
+            const { isSuccess, token = '', message = '', user, error } = await response.data;
 
-        if (user) {
-            localStorage.setItem('userId', user.userId);
+            console.log(isSuccess, error);
+
+            if (user) {
+                localStorage.setItem('userId', user.userId);
+            }
+
+            if (isSuccess) {
+                setIsLoading(false);
+                localStorage.setItem('token', token);
+                navigate('/user_details');
+            } else {
+                console.log(message);
+            }
         }
-
-        if (isSuccess) {
+        catch (error: any) {
+            console.log(error.response);
             setIsLoading(false);
-            localStorage.setItem('token', token);
-            navigate('/user_details');
-        } else {
-            console.log(message);
+
+            const status = error.response.status;
+            const message = error.response.data.message;
+
+            if (status >= 400)
+                setError(message);
+
+            else
+                setError("Failed to verify Login Credentials due to Server Error, our team is working on it. Please try again later.");
         }
     };
 
@@ -70,6 +90,8 @@ export default function SignUp() {
                 <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
                 <Spinner />
             </Modal>
+
+            <ErrorModal onClose={() => setError('')} message={error} />
 
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="xs">
