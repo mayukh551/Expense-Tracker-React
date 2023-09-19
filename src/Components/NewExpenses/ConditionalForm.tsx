@@ -97,14 +97,14 @@ const ConditionalForm: React.FC<{
                     onChange={(e) => setEnteredTitle(e.target.value)} />
                 <TextField id="filled-basic" label="Amount" variant="filled"
                     className="input_title"
-                    value={parseInt(enteredAmount) * enteredQuantity}
+                    value={parseInt(enteredAmount)}
                     type="number"
                     inputProps={{
                         min: 1
                     }}
                     onChange={(e) => {
                         setEnteredAmount(e.target.value);
-                        setEnteredQuantity(1);
+                        // setEnteredQuantity(1);
                     }} />
                 <TextField id="filled-basic" label="" variant="filled"
                     className="input_title"
