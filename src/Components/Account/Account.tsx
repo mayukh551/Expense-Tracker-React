@@ -36,6 +36,10 @@ const Account: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const confirmCancel = () => {
+        setIsConfirmed(false);
+    }
+
     const updateAccount = async (data: any) => {
 
         setIsLoading({ cond: true, message: 'Updating . . .' });
@@ -73,6 +77,10 @@ const Account: React.FC = () => {
             })
                 .then(() => {
                     setIsDeleted(true);
+                    console.log('Account Deleted');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userId');
+                    navigate('/');
                 })
                 .catch((e) => { throw e });
 
@@ -132,14 +140,11 @@ const Account: React.FC = () => {
 
     }, []);
 
-    useEffect(() => {
-        if (isDeleted) {
-            console.log('Account Deleted');
-            localStorage.removeItem('token');
-            localStorage.removeItem('userId');
-            navigate('/');
-        }
-    }, [isDeleted]);
+    // useEffect(() => {
+    //     if (isDeleted) {
+
+    //     }
+    // }, [isDeleted]);
 
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
@@ -169,8 +174,8 @@ const Account: React.FC = () => {
                             onClick={() => setIsConfirmed(true)}
                             className='w-full lg:w-1/3  bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Delete Account</button>
                     </div>
-                    {isConfirmed && <Modal isOpen={isConfirmed} >
-                        {/* create a yes or no div option */}
+
+                    {/* {isConfirmed && <Modal isOpen={isConfirmed} >
                         <div className='flex flex-col justify-center'>
                             <h2 className='font-semibold text-lg mb-6'>Are you sure you want to delete your account?</h2>
                             <div className='flex justify-around'>
@@ -182,14 +187,16 @@ const Account: React.FC = () => {
                                     className='w-1/3 bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Yes</button>
                             </div>
                         </div>
-                    </Modal>}
-                    {/* <WarningModal
+                    </Modal>} */}
+
+                    <WarningModal
                         isOpen={isConfirmed}
                         message={'Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.'}
                         actionMessage={'Deactivate'}
-                        onCancel={() => setIsConfirmed(false)}
+                        onCancel={confirmCancel}
                         onAction={deleteAccount}
-                    /> */}
+                    />
+
                 </AccountUICard>
             </div>
         </div>
