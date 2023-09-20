@@ -1,7 +1,7 @@
 # CoinWise
 
-Welcome to the CoinWise repository!
-This is an expense tracker web application that allows you to track your expenses, manage your budgets, and gain insights into your spending behavior. 
+Welcome to the CoinWise repository!  
+This is an expense tracker web application that allows you to track your expenses, manage your budgets, and gain insights into your spending behavior.  
 
 Access the live website here: [CoinWise](https://expense-tracker-react-nine.vercel.app/)
 
