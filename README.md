@@ -6,7 +6,7 @@ Welcome to the CoinWise repository! This is an expense tracker web application t
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Tools Used](#tools-used)
+- [Tech Stack](#tech-stack)
 
 ---
 
