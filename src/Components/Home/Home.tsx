@@ -89,7 +89,7 @@ const ProductPage = () => {
                         {/* Product Tagline */}
                         <div className='flex flex-col items-center lg:items-end pt-5 pr-0 lg:pr-24 lg:pt-0 order-2'>
                             <h1 className='rounded-md bg-purple-600 px-4 py-2 text-white text-xl md:text-2xl lg:text-3xl font-extrabold'>Budgeting</h1>
-                            <p className='font-light pt-4 w-[60%] text-center lg:text-right'>Set your monthly and yearly budgets to track your expenses are under the limit.</p>
+                            <p className='font-light pt-4 w-[60%] text-center lg:text-right'>Set your monthly and yearly budgets to ensure that your expenses are within the limit.</p>
                         </div>
                     </div>
 
@@ -101,7 +101,7 @@ const ProductPage = () => {
                         {/* Product Tagline */}
                         <div className='flex flex-col items-center lg:items-start pt-5 lg:pt-0 order-2 lg:order-1'>
                             <h1 className='rounded-md bg-purple-600 px-4 py-2 text-white text-xl md:text-2xl lg:text-3xl font-extrabold'>Statistics</h1>
-                            <p className='font-light pt-4 w-[60%] text-center lg:text-start'>Track your expenditure and spending behaviour using line and pie charts</p>
+                            <p className='font-light pt-4 w-[60%] text-center lg:text-start'>Track your expenditures and spending behaviour using line and pie charts.</p>
                         </div>
                         {/* Image */}
                         <div className='flex flex-row justify-center order-1 lg:order-2'>
