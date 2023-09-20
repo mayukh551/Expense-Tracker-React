@@ -86,6 +86,7 @@ export default function SignUp() {
 
     return (
         <>
+        <div className="bg-[#b887f5] h-screen top-0 my-0 flex items-center bg-gradient-to-tr from-[#b887f5] to-[#ffffff]"  >
             <Modal isOpen={isLoading} style={`px-24`}>
                 <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
                 <Spinner />
@@ -98,16 +99,25 @@ export default function SignUp() {
                     <CssBaseline />
                     <Box
                         sx={{
-                            marginTop: 8,
+                            
                             display: 'flex',
+                            backgroundColor:'white',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            // justifyContent:'center',
+                            // justifySelf:'center',
+                            // border:'2px solid red',
+                            py:4,
+                            px:5,
+                            boxShadow:10,
+                            borderRadius:'20px'
+
                         }}
                     >
-                        <Typography component="h1" variant="h5">
+                        <Typography component="h1" variant="h5" sx={{fontFamily:'Montserrat, sans-serif',fontWeight:'500'}}>
                             Sign up
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1,px:5}}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
@@ -168,7 +178,7 @@ export default function SignUp() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 3, mb: 2, backgroundColor:'#b887f5', "&:hover":{backgroundColor:"#894cd4"} }}
                             >
                                 Sign Up
                             </Button>
@@ -183,6 +193,7 @@ export default function SignUp() {
                     </Box>
                 </Container>
             </ThemeProvider>
+            </div>
         </>
     );
 }
