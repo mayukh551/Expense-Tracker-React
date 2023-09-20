@@ -67,11 +67,6 @@ const Expenses = () => {
         expenseList.removeItem(delItem.id);
     };
 
-    const updateDataHandler = (item: itemDS) => {
-        console.log("In updateHandler", item);
-        expenseList.updateItem(item);
-    };
-
     const updateSortOrder = (order: string): void => {
         console.log("sort function", order);
         setSortOrder(order);
@@ -81,6 +76,8 @@ const Expenses = () => {
         console.log("search term", term);
         setSearchTerm(term);
     }
+
+    console.log(newExpense);
 
 
     useEffect(() => {
@@ -152,7 +149,6 @@ const Expenses = () => {
                             key={item.id}
                             item={item}
                             reNewList={reNewList}
-                            updateDataHandler={updateDataHandler}
                         />
                     );
                 })
