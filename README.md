@@ -1,6 +1,6 @@
 # CoinWise
 
-Access the live website here: [CoinWise](https://expense-tracker-react-nine.vercel.app/)
+Access the live website here: [CoinWise](https://expense-tracker-react-nine.vercel.app/){:target="_blank"}
 
 ## Table of Contents
 
