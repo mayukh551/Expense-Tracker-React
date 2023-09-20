@@ -176,6 +176,7 @@ const Account: React.FC = () => {
                         actionMessage={'Deactivate'}
                         onCancel={confirmCancel}
                         onAction={deleteAccount}
+                        heading={'Deactivate Account'}
                     />
 
                 </AccountUICard>

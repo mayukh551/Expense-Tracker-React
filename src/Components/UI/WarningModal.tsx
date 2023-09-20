@@ -1,6 +1,6 @@
 import React from 'react'
 
-const WarningModal: React.FC<any> = ({ isOpen, onCancel, message, actionMessage, onAction }) => {
+const WarningModal: React.FC<any> = ({ isOpen, onCancel, message, actionMessage, onAction, heading }) => {
 
     if (!isOpen) return null;
 
@@ -21,9 +21,9 @@ const WarningModal: React.FC<any> = ({ isOpen, onCancel, message, actionMessage,
                                     </svg>
                                 </div>
                                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Deactivate account</h3>
+                                    <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">{heading}</h3>
                                     <div className="mt-2">
-                                        <p className="text-sm text-gray-500">{message}</p>
+                                        <div className="text-sm font-semibold text-gray-500">{message}</div>
                                     </div>
                                 </div>
                             </div>
