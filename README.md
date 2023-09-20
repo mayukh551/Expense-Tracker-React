@@ -14,4 +14,4 @@
 
 ## Hosting Platform
 
-![](https://skillicons.dev/icons?i=netlify&theme=dark)
+![](https://skillicons.dev/icons?i=vercel&theme=dark)
