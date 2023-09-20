@@ -45,7 +45,7 @@ React Expense Tracker is built using the following technologies and tools:
 - **Jest**: A Testing Framework used for unit and integration testing
 - **Vercel**: A hosting platform for deploying web applications.
 
-### ![Backend Repo](https://github.com/mayukh551/Expense-tracker-backend)
+### [Backend Repo](https://github.com/mayukh551/Expense-tracker-backend)
 
 ---
 
