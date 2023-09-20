@@ -42,7 +42,10 @@ React Expense Tracker is built using the following technologies and tools:
 - **Node.js**: A JavaScript runtime for server-side development.
 - **MongoDB**: A NoSQL database for storing data.
 - **Redis**: An in-memory data structure store for caching.
+- **Jest**: A Testing Framework used for unit and integration testing
 - **Vercel**: A hosting platform for deploying web applications.
+
+### ![Backend Repo](https://github.com/mayukh551/Expense-tracker-backend)
 
 ---
 
