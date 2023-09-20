@@ -29,6 +29,8 @@ const ConditionalForm: React.FC<{
     const [enteredDate, setEnteredDate] = useState<string>(props.item?.date || "");
     const [enteredQuantity, setEnteredQuantity] = useState<number>(props.item?.quantity || 1);
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
+
+    const [isExpenseChanged, setIsExpenseChanged] = useState<boolean>(false);
     // const errorInputProp = isEmpty ? true : null;
 
     const op = props.op;
@@ -78,6 +80,8 @@ const ConditionalForm: React.FC<{
             props.setDate!(expenseData.date);
             props.setQuantity!(expenseData.quantity!);
 
+            setIsExpenseChanged(false);
+
             // update server
             props.updateExpenseToServer!(props.item!, expenseData);
         }
@@ -94,7 +98,10 @@ const ConditionalForm: React.FC<{
                 <TextField id="filled-basic" label="Title" variant="filled"
                     className="input_title"
                     value={enteredTitle}
-                    onChange={(e) => setEnteredTitle(e.target.value)} />
+                    onChange={(e) => {
+                        setEnteredTitle(e.target.value);
+                        setIsExpenseChanged(true);
+                    }} />
                 <TextField id="filled-basic" label="Amount" variant="filled"
                     className="input_title"
                     value={parseInt(enteredAmount)}
@@ -104,6 +111,7 @@ const ConditionalForm: React.FC<{
                     }}
                     onChange={(e) => {
                         setEnteredAmount(e.target.value);
+                        setIsExpenseChanged(true)
                         // setEnteredQuantity(1);
                     }} />
                 <TextField id="filled-basic" label="" variant="filled"
@@ -114,7 +122,7 @@ const ConditionalForm: React.FC<{
                         min: "2019-01-01",
                         max: `${new Date().getFullYear()}-12-31`
                     }}
-                    onChange={(e) => setEnteredDate(e.target.value)} />
+                    onChange={(e) => { setEnteredDate(e.target.value); setIsExpenseChanged(true) }} />
                 <TextField id="filled-basic" label="Quantity" variant="filled"
                     disabled={isQuantityDisabled}
                     className="input_title"
@@ -126,6 +134,7 @@ const ConditionalForm: React.FC<{
                     }}
                     onChange={(e) => {
                         const val: number = parseInt(e.target.value);
+                        setIsExpenseChanged(true)
                         if (val < 1)
                             setEnteredQuantity(1);
                         else if (val > 100000)
@@ -143,6 +152,7 @@ const ConditionalForm: React.FC<{
                     onClick={props.cancelHandler}
                 >Cancel</Button>
                 <Button
+                    disabled={op === 'update' && !isExpenseChanged} // disable save button for no changes
                     variant="contained"
                     size='medium'
                     onClick={submitHandler}
