@@ -4,7 +4,7 @@
 
 ## Tools used:
 
-![My Skills](https://skillicons.dev/icons?i=react,nodejs,html,css&theme=dark)
+![My Skills](https://skillicons.dev/icons?i=react,nodejs,mongodb&theme=dark)
 
 ## React-Expense-Tracker can perform the following functions:
 
