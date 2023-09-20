@@ -63,6 +63,7 @@ const ExpenseItem: React.FC<{
                 message={"Are you sure you want to delete this expense?"}
                 actionMessage={"Delete"}
                 onAction={cardDeleteHandler}
+                heading={"Delete Expense"}
             />
             <Card className="expense-item">
 
