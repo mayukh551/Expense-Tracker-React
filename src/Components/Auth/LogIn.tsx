@@ -110,20 +110,17 @@ export default function SignIn() {
             </Modal>
             <ErrorModal onClose={() => setError('')} message={error} />
             <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
+                <Container component="main" maxWidth="sm">
                     <CssBaseline />
                     <Box
                         sx={{
-                            
+                            width: '480px',
                             display: 'flex',
                             backgroundColor:'white',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            // justifyContent:'center',
-                            // justifySelf:'center',
-                            // border:'2px solid red',
                             py:4,
-                            px:5,
+                            // px:5,
                             boxShadow:10,
                             borderRadius:'20px'
 

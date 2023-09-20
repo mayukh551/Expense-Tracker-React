@@ -86,113 +86,110 @@ export default function SignUp() {
 
     return (
         <>
-        <div className="bg-[#b887f5] h-screen top-0 my-0 flex items-center bg-gradient-to-tr from-[#b887f5] to-[#ffffff]"  >
-            <Modal isOpen={isLoading} style={`px-24`}>
-                <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
-                <Spinner />
-            </Modal>
+            <div className="bg-[#b887f5] h-screen top-0 my-0 flex items-center bg-gradient-to-tr from-[#b887f5] to-[#ffffff]"  >
+                <Modal isOpen={isLoading} style={`px-24`}>
+                    <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
+                    <Spinner />
+                </Modal>
 
-            <ErrorModal onClose={() => setError('')} message={error} />
+                <ErrorModal onClose={() => setError('')} message={error} />
 
-            <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <Box
-                        sx={{
-                            
-                            display: 'flex',
-                            backgroundColor:'white',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            // justifyContent:'center',
-                            // justifySelf:'center',
-                            // border:'2px solid red',
-                            py:4,
-                            px:5,
-                            boxShadow:10,
-                            borderRadius:'20px'
+                <ThemeProvider theme={theme}>
+                    <Container component="main" maxWidth="sm">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                width: '480px',
+                                display: 'flex',
+                                backgroundColor: 'white',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                py: 4,
+                                // px: 5,
+                                boxShadow: 10,
+                                borderRadius: '20px'
 
-                        }}
-                    >
-                        <Typography component="h1" variant="h5" sx={{fontFamily:'Montserrat, sans-serif',fontWeight:'500'}}>
-                            Sign up
-                        </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1,px:5}}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={submitted && !firstName}
-                                        autoComplete="given-name"
-                                        name="firstName"
-                                        required
-                                        fullWidth
-                                        id="firstName"
-                                        label="First Name"
-                                        autoFocus
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
-                                        helperText={submitted && !firstName ? `Please enter your first name` : ''}
-                                    />
+                            }}
+                        >
+                            <Typography component="h1" variant="h5" sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight: '500' }}>
+                                Sign up
+                            </Typography>
+                            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, px: 5 }}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            error={submitted && !firstName}
+                                            autoComplete="given-name"
+                                            name="firstName"
+                                            required
+                                            fullWidth
+                                            id="firstName"
+                                            label="First Name"
+                                            autoFocus
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
+                                            helperText={submitted && !firstName ? `Please enter your first name` : ''}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            error={submitted && !lastName}
+                                            required
+                                            fullWidth
+                                            id="lastName"
+                                            label="Last Name"
+                                            name="lastName"
+                                            autoComplete="family-name"
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
+                                            helperText={submitted && !lastName ? `Please enter your last name` : ''}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            error={submitted && !email}
+                                            required
+                                            fullWidth
+                                            id="email"
+                                            label="Email Address"
+                                            name="email"
+                                            autoComplete="email"
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                            helperText={submitted && !email ? `Please enter your email address` : ''}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            error={submitted && !password}
+                                            required
+                                            fullWidth
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                            helperText={submitted && !password ? `Please enter your password` : ''}
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={submitted && !lastName}
-                                        required
-                                        fullWidth
-                                        id="lastName"
-                                        label="Last Name"
-                                        name="lastName"
-                                        autoComplete="family-name"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
-                                        helperText={submitted && !lastName ? `Please enter your last name` : ''}
-                                    />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2, backgroundColor: '#b887f5', "&:hover": { backgroundColor: "#894cd4" } }}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Grid container justifyContent="flex-end">
+                                    <Grid item>
+                                        <Link sx={{ cursor: 'pointer' }} variant="body2" onClick={() => navigate('/login')}>
+                                            Already have an account? Sign in
+                                        </Link>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        error={submitted && !email}
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                                        helperText={submitted && !email ? `Please enter your email address` : ''}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        error={submitted && !password}
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="new-password"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                                        helperText={submitted && !password ? `Please enter your password` : ''}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2, backgroundColor:'#b887f5', "&:hover":{backgroundColor:"#894cd4"} }}
-                            >
-                                Sign Up
-                            </Button>
-                            <Grid container justifyContent="flex-end">
-                                <Grid item>
-                                    <Link sx={{ cursor: 'pointer' }} variant="body2" onClick={() => navigate('/login')}>
-                                        Already have an account? Sign in
-                                    </Link>
-                                </Grid>
-                            </Grid>
+                            </Box>
                         </Box>
-                    </Box>
-                </Container>
-            </ThemeProvider>
+                    </Container>
+                </ThemeProvider>
             </div>
         </>
     );
