@@ -36,7 +36,7 @@ React Expense Tracker is a versatile web app designed to help you manage your fi
 
 React Expense Tracker is built using the following technologies and tools:
 
-![My Skills](https://skillicons.dev/icons?i=react,nodejs,mongodb,redis,jest&theme=dark)
+![My Skills](https://skillicons.dev/icons?i=react,nodejs,mongodb,redis,jest,vercel&theme=dark)
 
 - **React**: A popular JavaScript library for building user interfaces.
 - **Node.js**: A JavaScript runtime for server-side development.
