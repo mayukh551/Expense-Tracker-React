@@ -70,21 +70,12 @@ const Account: React.FC = () => {
 
         try {
 
-            axios.delete(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, {
+            setIsDeleted(true);
+            await axios.delete(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, {
                 headers: {
                     'x-access-token': `${token}`
                 }
-            })
-                .then(() => {
-                    setIsDeleted(true);
-                    console.log('Account Deleted');
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('userId');
-                    navigate('/');
-                })
-                .catch((e) => { throw e });
-
-
+            });
 
         } catch (e) {
             setError("Really sorry, but currenly due to some technical issues we failed to delete your account. Please try again later.");
@@ -140,11 +131,15 @@ const Account: React.FC = () => {
 
     }, []);
 
-    // useEffect(() => {
-    //     if (isDeleted) {
+    useEffect(() => {
+        if (isDeleted) {
+            console.log('Account Deleted');
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
 
-    //     }
-    // }, [isDeleted]);
+            navigate('/');
+        }
+    }, [isDeleted]);
 
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
@@ -174,20 +169,6 @@ const Account: React.FC = () => {
                             onClick={() => setIsConfirmed(true)}
                             className='w-full lg:w-1/3  bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Delete Account</button>
                     </div>
-
-                    {/* {isConfirmed && <Modal isOpen={isConfirmed} >
-                        <div className='flex flex-col justify-center'>
-                            <h2 className='font-semibold text-lg mb-6'>Are you sure you want to delete your account?</h2>
-                            <div className='flex justify-around'>
-                                <button
-                                    onClick={() => setIsConfirmed(false)}
-                                    className='w-1/3 bg-green-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>No</button>
-                                <button
-                                    onClick={deleteAccount}
-                                    className='w-1/3 bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Yes</button>
-                            </div>
-                        </div>
-                    </Modal>} */}
 
                     <WarningModal
                         isOpen={isConfirmed}
