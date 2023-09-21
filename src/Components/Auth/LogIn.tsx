@@ -120,6 +120,7 @@ export default function SignIn() {
                             flexDirection: 'column',
                             alignItems: 'center',
                             py:4,
+                            margin: 'auto',
                             // px:5,
                             boxShadow:10,
                             borderRadius:'20px'

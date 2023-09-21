@@ -100,6 +100,7 @@ export default function SignUp() {
                         <Box
                             sx={{
                                 width: '480px',
+                                margin: 'auto',
                                 display: 'flex',
                                 backgroundColor: 'white',
                                 flexDirection: 'column',
