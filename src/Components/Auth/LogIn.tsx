@@ -166,13 +166,13 @@ export default function SignIn() {
                                     Sign In
                                 </Button>
                                 <Grid container>
-                                    <Grid item xs>
-                                        <Link href="#" variant="body2">
+                                    <Grid item xs={12} md={6}>
+                                        <Link href="#" variant="body2" sx={{ fontSize: ['12px', '14px'] }}>
                                             Forgot password?
                                         </Link>
                                     </Grid>
-                                    <Grid item>
-                                        <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/signup')} variant="body2">
+                                    <Grid item xs={12} md={6}>
+                                        <Link sx={{ fontSize: ['12px', '14px'], cursor: 'pointer', display: 'block', mt: [1, 0] }} onClick={() => navigate('/signup')} variant="body2">
                                             Don't have an account? Sign Up
                                         </Link>
                                     </Grid>
