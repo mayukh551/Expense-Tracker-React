@@ -136,7 +136,11 @@ const Account: React.FC = () => {
             console.log('Account Deleted');
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
-
+            localStorage.removeItem('budget');
+            localStorage.removeItem('month');
+            localStorage.removeItem('year');
+            localStorage.removeItem('profilePic');
+            localStorage.removeItem('expenses');
             navigate('/');
         }
     }, [isDeleted]);
