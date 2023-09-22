@@ -36,7 +36,7 @@ React Expense Tracker is a versatile web app designed to help you manage your fi
 
 React Expense Tracker is built using the following technologies and tools:
 
-### Frontend
+### [Frontend](https://github.com/mayukh551/Expense-Tracker-React)
 
 ![My Skills](https://skillicons.dev/icons?i=react,typescript,mui,tailwindcss&theme=dark)
 
