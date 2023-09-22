@@ -90,7 +90,7 @@ export default function UserDetails() {
                                     alignItems: 'center',
                                     pt: 4,
                                     pb: 4,
-                                    px: 5,
+                                    px: [3, 5],
                                     boxShadow: 10,
                                     borderRadius: '20px'
 
@@ -166,15 +166,26 @@ export default function UserDetails() {
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
                                         helperText={submitted && !phone ? `Please enter your phone number` : ''}
                                     />
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, backgroundColor: '#b887f5', "&:hover": { backgroundColor: "#894cd4" } }}
-                                    >
-                                        Save
-                                    </Button>
-
+                                    {/* <div className="flex flex-col md:flex-row md:space-x-4 md:items-center"> */}
+                                    <div className="flex flex-row space-x-4 items-center">
+                                        <Button
+                                            type="button"
+                                            fullWidth
+                                            variant="contained"
+                                            sx={{ mt: 3, backgroundColor: '#b887f5', "&:hover": { backgroundColor: "#894cd4" } }}
+                                            onClick={() => navigate('/expenses')}
+                                        >
+                                            Skip
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            sx={{ mt: 3, backgroundColor: '#b887f5', "&:hover": { backgroundColor: "#894cd4" } }}
+                                        >
+                                            Save
+                                        </Button>
+                                    </div>
                                 </Box>
                             </Box>
                         </Container>
