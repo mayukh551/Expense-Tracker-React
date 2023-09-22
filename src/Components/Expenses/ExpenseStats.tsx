@@ -8,6 +8,8 @@ export const SavedAmount: React.FC<any> = (props) => {
     var totalAmount: number = 0;
     var budget = JSON.parse(localStorage.getItem('budget') as string);
 
+    if (!budget) return null;
+
     var monthlyBudget = budget.monthly;
 
     expenses.forEach((expense) => {
