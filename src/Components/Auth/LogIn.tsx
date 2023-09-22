@@ -114,7 +114,7 @@ export default function SignIn() {
                         <CssBaseline />
                         <Box
                             sx={{
-                                width: ['280px', '480px'],
+                                width: ['310px', '480px'],
                                 display: 'flex',
                                 backgroundColor: 'white',
                                 flexDirection: 'column',
