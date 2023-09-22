@@ -1,6 +1,7 @@
 # CoinWise
 
-<img width="946" alt="image" src="https://github.com/mayukh551/Expense-Tracker-React/assets/82811112/03912adc-94c6-456b-a0e3-6ba8fadebc4c">
+<img width="946" alt="image" src="https://github.com/mayukh551/Expense-Tracker-React/assets/82811112/03912adc-94c6-456b-a0e3-6ba8fadebc4c">  
+
 
 Access the live website here: [CoinWise](https://expense-tracker-react-nine.vercel.app/)
 
