@@ -103,84 +103,84 @@ export default function SignIn() {
 
     return (
         <>
-        <div className="bg-[#b887f5] h-screen top-0 my-0 flex items-center bg-gradient-to-tr from-[#b887f5] to-[#ffffff]"  >
-            <Modal isOpen={isLoading} style={`px-24`}>
-                <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
-                <Spinner />
-            </Modal>
-            <ErrorModal onClose={() => setError('')} message={error} />
-            <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="sm">
-                    <CssBaseline />
-                    <Box
-                        sx={{
-                            width: '480px',
-                            display: 'flex',
-                            backgroundColor:'white',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            py:4,
-                            margin: 'auto',
-                            // px:5,
-                            boxShadow:10,
-                            borderRadius:'20px'
+            <div className="bg-[#b887f5] h-screen w-screen top-0 my-0 flex items-center bg-gradient-to-tr from-[#b887f5] to-[#ffffff]"  >
+                <Modal isOpen={isLoading} style={`px-24`}>
+                    <div className='text-center mb-4 font-bold text-lg'>Authenticating</div>
+                    <Spinner />
+                </Modal>
+                <ErrorModal onClose={() => setError('')} message={error} />
+                <ThemeProvider theme={theme}>
+                    <Container component="main" maxWidth="sm">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                width: ['280px', '480px'],
+                                display: 'flex',
+                                backgroundColor: 'white',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                py: 4,
+                                margin: 'auto',
+                                // px:5,
+                                boxShadow: 10,
+                                borderRadius: '20px'
 
-                        }}
-                    >
-                        <Typography component="h1" variant="h5" sx={{fontFamily:'Montserrat, sans-serif',fontWeight:'500'}}>
-                            Sign in
-                        </Typography>
-                        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1,px:5}}>
-                            <TextField
-                                error={submitted && !email}
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                                helperText={submitted && !email ? `Please enter your email address` : ''}
-                            />
-                            <TextField
-                                error={submitted && !password}
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                                helperText={submitted && !password ? `Please enter your password` : ''}
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 , backgroundColor:'#b887f5', "&:hover":{backgroundColor:"#894cd4"}}}
-                            >
-                                Sign In
-                            </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
+                            }}
+                        >
+                            <Typography component="h1" variant="h5" sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight: '500' }}>
+                                Sign in
+                            </Typography>
+                            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, px: [2, 5] }}>
+                                <TextField
+                                    error={submitted && !email}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                    helperText={submitted && !email ? `Please enter your email address` : ''}
+                                />
+                                <TextField
+                                    error={submitted && !password}
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                    helperText={submitted && !password ? `Please enter your password` : ''}
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2, backgroundColor: '#b887f5', "&:hover": { backgroundColor: "#894cd4" } }}
+                                >
+                                    Sign In
+                                </Button>
+                                <Grid container>
+                                    <Grid item xs>
+                                        <Link href="#" variant="body2">
+                                            Forgot password?
+                                        </Link>
+                                    </Grid>
+                                    <Grid item>
+                                        <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/signup')} variant="body2">
+                                            Don't have an account? Sign Up
+                                        </Link>
+                                    </Grid>
                                 </Grid>
-                                <Grid item>
-                                    <Link sx={{ cursor: 'pointer' }} onClick={() => navigate('/signup')} variant="body2">
-                                        Don't have an account? Sign Up
-                                    </Link>
-                                </Grid>
-                            </Grid>
+                            </Box>
                         </Box>
-                    </Box>
-                </Container>
-            </ThemeProvider>
+                    </Container>
+                </ThemeProvider>
             </div>
         </>
     );
