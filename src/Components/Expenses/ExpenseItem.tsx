@@ -15,6 +15,8 @@ import WarningModal from "../UI/WarningModal";
 const ExpenseItem: React.FC<{
     item: itemDS;
     reNewList: (item: itemDS) => void;
+    updateDataHandler: (item: itemDS, newData: any) => void;
+    deleteDataHandler: (item: itemDS) => void;
 }> = (props) => {
     // console.log(props.item);
     const [title, setTitle] = useState<string>(props.item.title);
@@ -36,14 +38,16 @@ const ExpenseItem: React.FC<{
 
     const cardDeleteHandler = () => {
         console.log("In DelHandler", props.item);
-        deleteFromDB(props.item);
+        // deleteFromDB(props.item);
+        props.deleteDataHandler(props.item);
         props.reNewList(props.item);
     };
 
     const updateDataHandler = (item: itemDS, newData: any) => {
 
         setUpdatedCard(false);
-        updateDataOnDB(props.item, newData);
+        // updateDataOnDB(props.item, newData);
+        props.updateDataHandler(props.item, newData);
     }
 
     const cancelHandler = () => {

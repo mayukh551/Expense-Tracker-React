@@ -17,6 +17,8 @@ import sendNewExpenseToServer from "../../API/createExpense";
 
 import toast, { Toaster } from "react-hot-toast";
 import NewExpenses from "../NewExpenses/NewExpenses";
+import updateDataOnDB from "../../API/updateExpense";
+import deleteFromDB from "../../API/deleteExpense";
 
 const Expenses = () => {
 
@@ -76,24 +78,27 @@ const Expenses = () => {
         });
     };
 
-    const myPromise = async () => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve("Done");
-            }, 1000);
-        });
-    };
+    const updateData = (item: itemDS, newData: any) => {
 
-    const notify = () => {
-        const response = myPromise();
+        const response = updateDataOnDB(item, newData);
 
         toast.promise(response, {
-            loading: "Loading",
-            success: "Got the data",
-            error: "Error when fetching"
+            loading: "Updating",
+            success: "Updated",
+            error: "Could not update"
         });
-    };
+    }
 
+    const deleteData = (item: itemDS) => {
+
+        const response = deleteFromDB(item);
+
+        toast.promise(response, {
+            loading: "Deleting",
+            success: "Deleted",
+            error: "Could not delete"
+        });
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -132,15 +137,15 @@ const Expenses = () => {
 
     return (
         <>
-            <Toaster position="bottom-left" />
+            {/* Toast Messages */}
+            <Toaster position="bottom-left" reverseOrder={true} />
+
             <Card className="expenses">
 
                 {/* Create New Expense Component */}
                 <NewExpenses
                     createData={createData}
                 />
-
-                <div className="py-4 px-3 bg-black text-white w-fit" onClick={notify}>Test Div</div>
 
                 {/* Expense Options - For Sorting and Filtering */}
 
@@ -185,6 +190,8 @@ const Expenses = () => {
                                 key={item.id}
                                 item={item}
                                 reNewList={reNewList}
+                                updateDataHandler={updateData}
+                                deleteDataHandler={deleteData}
                             />
                         );
                     })
