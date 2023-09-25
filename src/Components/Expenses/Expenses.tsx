@@ -13,14 +13,18 @@ import SearchExpense from "../Expense Filter/SearchExpense";
 import ExpenseSpinner from "../UI/Spinners/ExpenseSpinner";
 import ErrorModal from "../UI/ErrorModal";
 import { PurchasedAmount, SavedAmount, TotalItems } from './ExpenseStats';
+import sendNewExpenseToServer from "../../API/createExpense";
+
+import toast, { Toaster } from "react-hot-toast";
+import NewExpenses from "../NewExpenses/NewExpenses";
+import updateDataOnDB from "../../API/updateExpense";
+import deleteFromDB from "../../API/deleteExpense";
 
 const Expenses = () => {
 
     const expenseList: ExpenseContextObj = useContext(ListContext);
     const userData = useContext(UserContext);
-    // const defaultYear = String(new Date().getFullYear());
     var monthList: string[] = expenseList.month;
-    // const defaultMonth: string = monthList[new Date().getMonth()];
 
     console.log(userData);
 
@@ -40,45 +44,61 @@ const Expenses = () => {
 
     const [error, setError] = useState<string>('');
 
-
-    // var filteredExpense: itemDS[];
     var newExpense: itemDS[];
 
     const expensesHolder: itemDS[] = expenseList.list.slice(); // gets a copy of original list
-    // newExpense = filterExpenses(expensesHolder, userSelectedYear, userSelectedMonth, monthList); // filter by user's choice / default value
     newExpense = sortExpenses(sortOrder, expensesHolder); // sort by user's choice / default value
 
     newExpense = filterExpensesByName(newExpense, searchTerm);
 
     const updateSelectedYear = (year: string): any => {
-        console.log("Year : ", year);
         localStorage.setItem("year", year);
         setUserSelectedYear(year);
     };
 
     const updateSelectedMonth = (month: string): any => {
-        console.log("Year : ", month);
         localStorage.setItem("month", month);
         setUserSelectedMonth(month);
     };
 
-    const reNewList = (delItem: itemDS) => {
-        console.log("In removeHandler", delItem);
-        expenseList.removeItem(delItem.id);
+    const reNewList = (delItem: itemDS) => expenseList.removeItem(delItem.id);
+
+    const updateSortOrder = (order: string): void => setSortOrder(order);
+
+    const updateSearchTerm = (term: string) => setSearchTerm(term);
+
+    const createData = (item: itemDS) => {
+
+        const response = sendNewExpenseToServer(item);
+
+        toast.promise(response, {
+            loading: "Saving",
+            success: "Saved",
+            error: "Could not save"
+        });
     };
 
-    const updateSortOrder = (order: string): void => {
-        console.log("sort function", order);
-        setSortOrder(order);
+    const updateData = (item: itemDS, newData: any) => {
+
+        const response = updateDataOnDB(item, newData);
+
+        toast.promise(response, {
+            loading: "Updating",
+            success: "Updated",
+            error: "Could not update"
+        });
     }
 
-    const updateSearchTerm = (term: string) => {
-        console.log("search term", term);
-        setSearchTerm(term);
+    const deleteData = (item: itemDS) => {
+
+        const response = deleteFromDB(item);
+
+        toast.promise(response, {
+            loading: "Deleting",
+            success: "Deleted",
+            error: "Could not delete"
+        });
     }
-
-    console.log(newExpense);
-
 
     useEffect(() => {
         async function fetchData() {
@@ -116,44 +136,68 @@ const Expenses = () => {
     }, [userSelectedYear, userSelectedMonth]);
 
     return (
-        <Card className="expenses">
-            <ExpenseFilter
-                updateSelectedYear={updateSelectedYear}
-                userSelectedYear={userSelectedYear}
-                userSelectedMonth={userSelectedMonth}
-                updateSelectedMonth={updateSelectedMonth}
-                sortOrder={sortOrder}
-                updateSortOrder={updateSortOrder}
-            />
-            <div className="flex flex-row justify-start space-x-2">
-                <SavedAmount expenses={newExpense} />
-                <PurchasedAmount expenses={newExpense} />
-                <TotalItems expenses={newExpense} />
-            </div>
-            <ErrorModal onClose={() => setError('')} message={error} />
-            <div className="mt-8 mb-10">
-                <SearchExpense
-                    searchTerm={searchTerm}
-                    updateSearchTerm={updateSearchTerm} />
-            </div>
-            {isLoading && (
-                // <div className="loader"></div>
-                <ExpenseSpinner />
-            )}
-            {!isLoading && newExpense.length === 0 ? (
-                <p>No Expenses Found</p>
-            ) : (
-                newExpense.map((item) => {
-                    return (
-                        <ExpenseItem
-                            key={item.id}
-                            item={item}
-                            reNewList={reNewList}
-                        />
-                    );
-                })
-            )}
-        </Card>
+        <>
+            {/* Toast Messages */}
+            <Toaster position="bottom-left" reverseOrder={true} />
+
+            <Card className="expenses">
+
+                {/* Create New Expense Component */}
+                <NewExpenses
+                    createData={createData}
+                />
+
+                {/* Expense Options - For Sorting and Filtering */}
+
+                <ExpenseFilter
+                    updateSelectedYear={updateSelectedYear}
+                    userSelectedYear={userSelectedYear}
+                    userSelectedMonth={userSelectedMonth}
+                    updateSelectedMonth={updateSelectedMonth}
+                    sortOrder={sortOrder}
+                    updateSortOrder={updateSortOrder}
+                />
+
+                {/* Expense Statistics */}
+
+                <div className="flex flex-row justify-start space-x-2">
+                    <SavedAmount expenses={newExpense} />
+                    <PurchasedAmount expenses={newExpense} />
+                    <TotalItems expenses={newExpense} />
+                </div>
+
+                {/* Error Modal */}
+                <ErrorModal onClose={() => setError('')} message={error} />
+
+                {/* Expense Search Bar */}
+                <div className="mt-8 mb-10">
+                    <SearchExpense
+                        searchTerm={searchTerm}
+                        updateSearchTerm={updateSearchTerm} />
+                </div>
+
+                {/* Expense List */}
+
+                {isLoading && (
+                    <ExpenseSpinner />
+                )}
+                {!isLoading && newExpense.length === 0 ? (
+                    <p>No Expenses Found</p>
+                ) : (
+                    newExpense.map((item) => {
+                        return (
+                            <ExpenseItem
+                                key={item.id}
+                                item={item}
+                                reNewList={reNewList}
+                                updateDataHandler={updateData}
+                                deleteDataHandler={deleteData}
+                            />
+                        );
+                    })
+                )}
+            </Card>
+        </>
     );
 };
 
