@@ -9,11 +9,14 @@ import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
 import ConditionalForm from "../NewExpenses/ConditionalForm";
 import Modal from "../UI/Modal";
+import WarningModal from "../UI/WarningModal";
 
 
 const ExpenseItem: React.FC<{
     item: itemDS;
     reNewList: (item: itemDS) => void;
+    updateDataHandler: (item: itemDS, newData: any) => void;
+    deleteDataHandler: (item: itemDS) => void;
 }> = (props) => {
     // console.log(props.item);
     const [title, setTitle] = useState<string>(props.item.title);
@@ -24,6 +27,8 @@ const ExpenseItem: React.FC<{
     const [prevDate, setPrevDate] = useState<string>(props.item.date);
     const [updatedCard, setUpdatedCard] = useState<boolean>(false);
 
+    const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
+
     // quantity
     const [quantity, setQuantity] = useState<number>(props.item.quantity!);
 
@@ -33,14 +38,16 @@ const ExpenseItem: React.FC<{
 
     const cardDeleteHandler = () => {
         console.log("In DelHandler", props.item);
-        deleteFromDB(props.item);
+        // deleteFromDB(props.item);
+        props.deleteDataHandler(props.item);
         props.reNewList(props.item);
     };
 
     const updateDataHandler = (item: itemDS, newData: any) => {
 
         setUpdatedCard(false);
-        updateDataOnDB(props.item, newData);
+        // updateDataOnDB(props.item, newData);
+        props.updateDataHandler(props.item, newData);
     }
 
     const cancelHandler = () => {
@@ -48,20 +55,23 @@ const ExpenseItem: React.FC<{
         setAmount(prevAmount);
         setDate(prevDate);
         setUpdatedCard(false);
+
+        setIsConfirmDelete(false);
     }
-
-
-    const month = date.slice(5, 7);
-    const day = date.slice(8);
-    const year = date.slice(0, 4);
 
     return (
         <div>
+            <WarningModal
+                isOpen={isConfirmDelete}
+                onCancel={cancelHandler}
+                message={"Are you sure you want to delete this expense?"}
+                actionMessage={"Delete"}
+                onAction={cardDeleteHandler}
+                heading={"Delete Expense"}
+            />
             <Card className="expense-item">
 
                 <ExpenseDate date={date} />
-
-                {/* <ExpenseDate date={props.item.date} /> */}
 
                 <div className="expense-item__description">
                     {/* Update Title */}
@@ -82,7 +92,7 @@ const ExpenseItem: React.FC<{
                     <Button variant="contained"
                         endIcon={<DeleteForeverIcon />}
                         size="small"
-                        onClick={cardDeleteHandler}
+                        onClick={() => setIsConfirmDelete(true)}
                     >Delete</Button>
                     {!updatedCard && (
                         <Button variant="contained" size="small" onClick={cardUpdateHandler}>Update</Button>

@@ -9,6 +9,7 @@ import AccountSpinner from '../UI/Spinners/AccountSpinner';
 import ErrorModal from '../UI/ErrorModal';
 import AccountUICard from '../UI/AccountUICard';
 import { useNavigate } from 'react-router-dom';
+import WarningModal from '../UI/WarningModal';
 
 const Account: React.FC = () => {
     const hasVisitedProfile: boolean = true;
@@ -34,6 +35,10 @@ const Account: React.FC = () => {
     const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
     const navigate = useNavigate();
+
+    const confirmCancel = () => {
+        setIsConfirmed(false);
+    }
 
     const updateAccount = async (data: any) => {
 
@@ -65,13 +70,12 @@ const Account: React.FC = () => {
 
         try {
 
+            setIsDeleted(true);
             await axios.delete(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, {
                 headers: {
                     'x-access-token': `${token}`
                 }
-            })
-
-            setIsDeleted(true);
+            });
 
         } catch (e) {
             setError("Really sorry, but currenly due to some technical issues we failed to delete your account. Please try again later.");
@@ -128,16 +132,18 @@ const Account: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        console.log(name, email, phone, age, budget, salary, category);
-    }, [name, email, phone, age, budget, salary, category]);
-
-    useEffect(() => {
         if (isDeleted) {
+            console.log('Account Deleted');
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
+            localStorage.removeItem('budget');
+            localStorage.removeItem('month');
+            localStorage.removeItem('year');
+            localStorage.removeItem('profilePic');
+            localStorage.removeItem('expenses');
             navigate('/');
         }
-    }, [isDeleted, navigate]);
+    }, [isDeleted]);
 
     return (
         <div className='bg-amber-400 h-screen overflow-y-scroll'>
@@ -167,20 +173,16 @@ const Account: React.FC = () => {
                             onClick={() => setIsConfirmed(true)}
                             className='w-full lg:w-1/3  bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Delete Account</button>
                     </div>
-                    {isConfirmed && <Modal isOpen={isConfirmed} >
-                        {/* create a yes or no div option */}
-                        <div className='flex flex-col justify-center'>
-                            <h2 className='font-semibold text-lg mb-6'>Are you sure you want to delete your account?</h2>
-                            <div className='flex justify-around'>
-                                <button
-                                    onClick={() => setIsConfirmed(false)}
-                                    className='w-1/3 bg-green-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>No</button>
-                                <button
-                                    onClick={deleteAccount}
-                                    className='w-1/3 bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Yes</button>
-                            </div>
-                        </div>
-                    </Modal>}
+
+                    <WarningModal
+                        isOpen={isConfirmed}
+                        message={'Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.'}
+                        actionMessage={'Deactivate'}
+                        onCancel={confirmCancel}
+                        onAction={deleteAccount}
+                        heading={'Deactivate Account'}
+                    />
+
                 </AccountUICard>
             </div>
         </div>

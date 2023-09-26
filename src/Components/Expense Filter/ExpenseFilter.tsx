@@ -54,14 +54,14 @@ const ExpensesFilter: React.FC<{
                         // defaultVal={currentMonth}
                         val={props.userSelectedMonth}
                         selectEventHandler={filterMonthHandler}
-                        style={{ backgroundColor: 'white' }}
+                        style={{ backgroundColor: 'white', width: '70px', height: '40px', fontSize: '14px' }}
                     />
                     <SelectBtn
                         options={yearList}
                         // defaultVal={currentYear}
                         val={props.userSelectedYear}
                         selectEventHandler={filterYearHandler}
-                        style={{ backgroundColor: 'white' }}
+                        style={{ backgroundColor: 'white', width: '80px', height: '40px', fontSize: '14px' }}
                     />
                 </div>
             </div>
@@ -72,7 +72,7 @@ const ExpensesFilter: React.FC<{
                     // defaultVal={'Recent'}
                     val={props.sortOrder}
                     selectEventHandler={sortEventHandler}
-                    style={{ backgroundColor: 'white' }}
+                    style={{ backgroundColor: 'white', width: '90px', height: '40px', fontSize: '14px' }}
                 />
             </div>
             

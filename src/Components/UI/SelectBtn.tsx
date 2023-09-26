@@ -18,7 +18,7 @@ const SelectBtn: React.FC<any> = (props) => {
             {/* <MenuItem value={`${defaultVal}`}>{defaultVal}</MenuItem> */}
             {options.map((option: string) => {
                 return (
-                    <MenuItem value={`${option}`}>{option}</MenuItem>
+                    <MenuItem value={`${option}`} sx={{fontSize: '14px'}}>{option}</MenuItem>
                 )
             })}
         </Select>

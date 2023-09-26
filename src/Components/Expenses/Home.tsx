@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import NewExpenses from '../NewExpenses/NewExpenses'
 import { UniversalData, UserContextProvider } from '../Store/UniversalData'
 import Expenses from './Expenses'
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +25,6 @@ const Home: React.FC = () => {
                     <UserContextProvider>
                         <>
                             <Nav />
-                            <NewExpenses />
                             <Expenses />
                         </>
                     </UserContextProvider>

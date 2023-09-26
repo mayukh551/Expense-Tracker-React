@@ -5,11 +5,12 @@ import "./ExpenseForm.css";
 import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import { TextField } from "@mui/material";
-
+// import sendNewExpenseToServer from "../../API/createExpense";
 
 const ConditionalForm: React.FC<{
     cancelHandler?: () => void;
     sendNewExpenseToServer?: (item: itemDS) => void;
+    addNewExpense?: (item: itemDS) => void;
     updateExpenseToServer?: (item: itemDS, data: any) => void;
     openModalHandler: Dispatch<SetStateAction<boolean>>
     setTitle?: Dispatch<SetStateAction<string>>;
@@ -23,7 +24,7 @@ const ConditionalForm: React.FC<{
     const expenseList = useContext(ListContext);
 
     // const categoryList: string[] = expenseList.category;
-    const categoryList: string[] = ["Home", "Food", "Travel", "Shopping", "Others"];
+    // const categoryList: string[] = ["Home", "Food", "Travel", "Shopping", "Others"];
     const [enteredTitle, setEnteredTitle] = useState<string>(props.item?.title || "");
     const [enteredAmount, setEnteredAmount] = useState<string>(props.item?.amount || "");
     const [enteredDate, setEnteredDate] = useState<string>(props.item?.date || "");
@@ -34,6 +35,8 @@ const ConditionalForm: React.FC<{
     const op = props.op;
 
     const submitHandler = (e: React.FormEvent) => {
+
+
         console.log("in Submit Handler of new data");
         e.preventDefault();
         // console.log("New Entered Date : ", enteredDate);
@@ -65,7 +68,10 @@ const ConditionalForm: React.FC<{
 
         if (op === "add") {
             expenseList.addItem(expenseData);
-            props.sendNewExpenseToServer!(expenseData);
+            // const response = sendNewExpenseToServer(expenseData);
+
+            props.addNewExpense!(expenseData);
+
         }
 
         else if (op === "update") {
@@ -82,6 +88,7 @@ const ConditionalForm: React.FC<{
             props.updateExpenseToServer!(props.item!, expenseData);
         }
 
+
         // close Modal
         props.openModalHandler(false);
     };
@@ -89,7 +96,7 @@ const ConditionalForm: React.FC<{
     const isQuantityDisabled: boolean = enteredAmount !== "" && enteredAmount !== "0" ? false : true;
 
     return (
-        <>
+        <div>
             <div className="new-expense__controls">
                 <TextField id="filled-basic" label="Title" variant="filled"
                     className="input_title"
@@ -145,13 +152,15 @@ const ConditionalForm: React.FC<{
                 <Button
                     variant="contained"
                     size='medium'
-                    onClick={submitHandler}
+                    onClick={(e: any) => {
+                        submitHandler(e);
+                    }}
                 >{op === 'update' ? 'Save' : 'Add'}</Button>
             </div>
             <div className="new-expense__empty-msg">
                 {isEmpty && <p>Please fill in all the details</p>}
             </div>
-        </>
+        </div>
     );
 };
 
