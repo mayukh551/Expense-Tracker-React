@@ -11,9 +11,10 @@ import Account from "./Components/Account/Account";
 import UserDetails from "./Components/Auth/UserDetails";
 import ProductPage from "./Components/Home/Home";
 
+
 function App() {
     return (
-
+        
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<ProductPage />} />
