@@ -51,8 +51,6 @@ const Account: React.FC = () => {
         })
         if (repsonse.status === 200) {
             console.log("Account Updated");
-
-            //TODO if Updated successfully, update the userContext
         }
         else {
             setError("Really sorry, but currenly due to some technical issues we failed to update your account. Please try again later.");
@@ -141,6 +139,7 @@ const Account: React.FC = () => {
             localStorage.removeItem('year');
             localStorage.removeItem('profilePic');
             localStorage.removeItem('expenses');
+            localStorage.removeItem('category');
             navigate('/');
         }
     }, [isDeleted]);

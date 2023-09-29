@@ -5,7 +5,11 @@ import Select from '@mui/material/Select';
 const SelectBtn: React.FC<any> = (props) => {
     const options = props.options;
     const style = props.style;
-    const val = props.val;
+    var val = props.val;
+    const fontSize = props.fontSize;
+    const defaultVal = props.defaultVal;
+
+    if (val === "") val = defaultVal
 
     return (
         <Select
@@ -15,10 +19,10 @@ const SelectBtn: React.FC<any> = (props) => {
             sx={style}
             onChange={props.selectEventHandler}
         >
-            {/* <MenuItem value={`${defaultVal}`}>{defaultVal}</MenuItem> */}
+            <MenuItem value={`${defaultVal}`}>{defaultVal}</MenuItem>
             {options.map((option: string) => {
                 return (
-                    <MenuItem value={`${option}`} sx={{fontSize: '14px'}}>{option}</MenuItem>
+                    <MenuItem value={`${option}`} sx={{ fontSize: fontSize || '14px' }}>{option}</MenuItem>
                 )
             })}
         </Select>

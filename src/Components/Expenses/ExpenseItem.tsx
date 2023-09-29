@@ -5,8 +5,6 @@ import { useState } from "react";
 import { itemDS } from "../../Models/Interfaces";
 import Button from '@mui/material/Button';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import updateDataOnDB from "../../API/updateExpense";
-import deleteFromDB from "../../API/deleteExpense";
 import ConditionalForm from "../NewExpenses/ConditionalForm";
 import Modal from "../UI/Modal";
 import WarningModal from "../UI/WarningModal";
@@ -14,46 +12,57 @@ import WarningModal from "../UI/WarningModal";
 
 const ExpenseItem: React.FC<{
     item: itemDS;
-    reNewList: (item: itemDS) => void;
-    updateDataHandler: (item: itemDS, newData: any) => void;
+    updateDataHandler: (item: itemDS, newData: any) => Promise<unknown>;
     deleteDataHandler: (item: itemDS) => void;
 }> = (props) => {
     // console.log(props.item);
     const [title, setTitle] = useState<string>(props.item.title);
-    const [prevTitle, setPrevTitle] = useState<string>(props.item.title);
+    const prevTitle = props.item.title;
     const [amount, setAmount] = useState<string>(props.item.amount);
-    const [prevAmount, setPrevAmount] = useState<string>(props.item.amount);
+    const prevAmount = props.item.amount;
     const [date, setDate] = useState<string>(props.item.date);
-    const [prevDate, setPrevDate] = useState<string>(props.item.date);
+    const prevDate = props.item.date;
     const [updatedCard, setUpdatedCard] = useState<boolean>(false);
 
     const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
 
     // quantity
     const [quantity, setQuantity] = useState<number>(props.item.quantity!);
+    const prevQuantity = props.item.quantity!;
+
+    const [category, setCategory] = useState<string>(props.item.category!);
+
+    const prevCategory = props.item.category!;
 
     const cardUpdateHandler = () => {
         setUpdatedCard(true);
     };
 
     const cardDeleteHandler = () => {
+        setIsConfirmDelete(false);
         console.log("In DelHandler", props.item);
-        // deleteFromDB(props.item);
         props.deleteDataHandler(props.item);
-        props.reNewList(props.item);
     };
 
-    const updateDataHandler = (item: itemDS, newData: any) => {
+    const updateDataHandler = async (item: itemDS, newData: any) => {
 
         setUpdatedCard(false);
-        // updateDataOnDB(props.item, newData);
-        props.updateDataHandler(props.item, newData);
+        console.log('before deleteDataHandler');
+        await props.updateDataHandler(props.item, newData);
+        console.log('after updateDataHandler');
+        setTitle(newData.title);
+        setAmount(newData.amount);
+        setDate(newData.date);
+        setQuantity(newData.quantity);
+        setCategory(newData.category);
     }
 
     const cancelHandler = () => {
         setTitle(prevTitle);
         setAmount(prevAmount);
         setDate(prevDate);
+        setQuantity(prevQuantity);
+        setCategory(prevCategory);
         setUpdatedCard(false);
 
         setIsConfirmDelete(false);
@@ -75,15 +84,19 @@ const ExpenseItem: React.FC<{
 
                 <div className="expense-item__description">
                     {/* Update Title */}
+                    <div className="flex flex-row space-x-1">
+                        <h2>{title}</h2>
+                        <div className="bg-green-600 rounded-md px-2 py-1 text-white">{category}</div>
+                    </div>
 
-                    <h2>{title}</h2>
+                    <div className="flex flex-row space-x-2 items-center">
+                        {/* Update Quantity */}
+                        <div className="py-1 px-2 rounded-md bg-gray-700 text-white">x{quantity}</div>
 
+                        {/* Update Amount */}
 
-                    <div className="py-1 px-2 rounded-md bg-gray-700 text-white">x{quantity}</div>
-
-                    {/* Update Amount */}
-
-                    <div className="expense-item__price">₹ {amount}</div>
+                        <div className="expense-item__price">₹ {parseInt(amount) * quantity}</div>
+                    </div>
 
                 </div>
             </Card>
@@ -101,17 +114,21 @@ const ExpenseItem: React.FC<{
 
                 {/* Open Update Modal */}
 
+                {/* eslint-disable-next-line react/style-prop-object */}
                 <Modal isOpen={updatedCard} style="w-1/2">
                     <ConditionalForm
                         cancelHandler={cancelHandler}
                         updateExpenseToServer={updateDataHandler}
-                        item={props.item}
+                        item={{
+                            id: props.item.id,
+                            title: title,
+                            amount: amount,
+                            date: date,
+                            quantity: quantity,
+                            category: category
+                        }}
                         openModalHandler={setUpdatedCard}
                         op="update"
-                        setTitle={setTitle}
-                        setAmount={setAmount}
-                        setDate={setDate}
-                        setQuantity={setQuantity}
                     />
                 </Modal>
             </div>

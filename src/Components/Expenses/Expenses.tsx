@@ -26,8 +26,6 @@ const Expenses = () => {
     const userData = useContext(UserContext);
     var monthList: string[] = expenseList.month;
 
-    console.log(userData);
-
     if (!localStorage.getItem('month'))
         localStorage.setItem('month', monthList[new Date().getMonth()]);
     if (!localStorage.getItem('year'))
@@ -61,42 +59,49 @@ const Expenses = () => {
         setUserSelectedMonth(month);
     };
 
-    const reNewList = (delItem: itemDS) => expenseList.removeItem(delItem.id);
-
     const updateSortOrder = (order: string): void => setSortOrder(order);
 
     const updateSearchTerm = (term: string) => setSearchTerm(term);
 
     const createData = (item: itemDS) => {
 
-        const response = sendNewExpenseToServer(item);
+        const toastId = toast.loading("Saving . . .");
 
-        toast.promise(response, {
-            loading: "Saving",
-            success: "Saved",
-            error: "Could not save"
+        sendNewExpenseToServer(item).then((response) => {
+            expenseList.addItem(item);
+            toast.dismiss(toastId);
+            toast.success("Saved");
+        }).catch((err) => {
+            toast.dismiss(toastId);
+            toast.error("Could not save");
         });
     };
 
-    const updateData = (item: itemDS, newData: any) => {
+    const updateData = async (item: itemDS, newData: any) => {
 
-        const response = updateDataOnDB(item, newData);
+        const toastId = toast.loading("Updating . . .");
 
-        toast.promise(response, {
-            loading: "Updating",
-            success: "Updated",
-            error: "Could not update"
+        await updateDataOnDB(item, newData).then((response) => {
+            expenseList.updateItem(newData);
+            toast.dismiss(toastId);
+            toast.success("Updated");
+        }).catch((err) => {
+            toast.dismiss(toastId);
+            toast.error("Could not update");
         });
     }
 
     const deleteData = (item: itemDS) => {
 
-        const response = deleteFromDB(item);
+        const toastId = toast.loading("Deleting . . .");
 
-        toast.promise(response, {
-            loading: "Deleting",
-            success: "Deleted",
-            error: "Could not delete"
+        deleteFromDB(item).then((response) => {
+            expenseList.removeItem(item.id);
+            toast.dismiss(toastId);
+            toast.success("Deleted");
+        }).catch((err) => {
+            toast.dismiss(toastId);
+            toast.error("Could not delete");
         });
     }
 
@@ -189,7 +194,6 @@ const Expenses = () => {
                             <ExpenseItem
                                 key={item.id}
                                 item={item}
-                                reNewList={reNewList}
                                 updateDataHandler={updateData}
                                 deleteDataHandler={deleteData}
                             />

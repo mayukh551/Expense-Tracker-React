@@ -10,10 +10,10 @@ function sortHelper<T>(a: T, b: T, v: number): number {
 const sortExpenses = (sortOrder: string | null, newExpense: itemDS[]): itemDS[] => {
 
     if (sortOrder === "Low - High")
-        newExpense.sort((a: itemDS, b: itemDS) => sortHelper(a.amount, b.amount, 1));
+        newExpense.sort((a: itemDS, b: itemDS) => sortHelper(parseInt(a.amount) * a.quantity, parseInt(b.amount) * b.quantity, 1));
 
     else if (sortOrder === "High - Low")
-        newExpense.sort((a: itemDS, b: itemDS) => sortHelper(a.amount, b.amount, -1));
+        newExpense.sort((a: itemDS, b: itemDS) => sortHelper(parseInt(a.amount) * a.quantity, parseInt(b.amount) * b.quantity, -1));
 
     else if (sortOrder === "A - Z")
         newExpense.sort((a: itemDS, b: itemDS) => sortHelper(a.title, b.title, 1));

@@ -1,11 +1,10 @@
-import React, { useState, useContext, SetStateAction, Dispatch } from "react";
+import React, { useState, SetStateAction, Dispatch } from "react";
 import { itemDS } from "../../Models/Interfaces";
-import ListContext from "../Store/context";
 import "./ExpenseForm.css";
 import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import { TextField } from "@mui/material";
-// import sendNewExpenseToServer from "../../API/createExpense";
+import SelectBtn from "../UI/SelectBtn";
 
 const ConditionalForm: React.FC<{
     cancelHandler?: () => void;
@@ -13,33 +12,33 @@ const ConditionalForm: React.FC<{
     addNewExpense?: (item: itemDS) => void;
     updateExpenseToServer?: (item: itemDS, data: any) => void;
     openModalHandler: Dispatch<SetStateAction<boolean>>
-    setTitle?: Dispatch<SetStateAction<string>>;
-    setAmount?: Dispatch<SetStateAction<string>>;
-    setDate?: Dispatch<SetStateAction<string>>;
-    setQuantity?: Dispatch<SetStateAction<number>>;
     item?: itemDS
     op: string;
 }> = (props) => {
 
-    const expenseList = useContext(ListContext);
-
-    // const categoryList: string[] = expenseList.category;
-    // const categoryList: string[] = ["Home", "Food", "Travel", "Shopping", "Others"];
+    const categoryList: string[] = JSON.parse(localStorage.getItem('category') || '[]');
     const [enteredTitle, setEnteredTitle] = useState<string>(props.item?.title || "");
     const [enteredAmount, setEnteredAmount] = useState<string>(props.item?.amount || "");
     const [enteredDate, setEnteredDate] = useState<string>(props.item?.date || "");
     const [enteredQuantity, setEnteredQuantity] = useState<number>(props.item?.quantity || 1);
+    const [enteredCategory, setEnteredCategory] = useState<string>(props.item?.category || "Select");
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
-    // const errorInputProp = isEmpty ? true : null;
+
+    const [hasSubmit, setHasSubmit] = useState<boolean>(false);
 
     const op = props.op;
 
     const submitHandler = (e: React.FormEvent) => {
 
+        setHasSubmit(true);
 
         console.log("in Submit Handler of new data");
         e.preventDefault();
-        // console.log("New Entered Date : ", enteredDate);
+
+        var defaultCategory: string | undefined = undefined;
+
+        if (enteredCategory === "Select") defaultCategory = "Others";
+
         const isInputEmpty: boolean =
             enteredTitle === "" || enteredAmount === "" || enteredDate === "";
 
@@ -55,9 +54,10 @@ const ConditionalForm: React.FC<{
         const expenseData: itemDS = {
             id: newId,
             title: enteredTitle,
-            amount: String(parseInt(enteredAmount) * enteredQuantity),
+            amount: enteredAmount,
             date: enteredDate,
-            quantity: enteredQuantity
+            quantity: enteredQuantity,
+            category: defaultCategory || enteredCategory
         };
 
         // Reseting user inputs to null
@@ -65,35 +65,30 @@ const ConditionalForm: React.FC<{
         setEnteredAmount("");
         setEnteredDate("");
         setEnteredQuantity(1);
+        setEnteredCategory("");
 
         if (op === "add") {
-            expenseList.addItem(expenseData);
-            // const response = sendNewExpenseToServer(expenseData);
-
             props.addNewExpense!(expenseData);
-
         }
 
         else if (op === "update") {
             console.log("Updating Expense Item", expenseData)
-            expenseList.updateItem(expenseData);
-
-            // update react expense state variables
-            props.setTitle!(expenseData.title);
-            props.setAmount!(expenseData.amount);
-            props.setDate!(expenseData.date);
-            props.setQuantity!(expenseData.quantity!);
-
             // update server
             props.updateExpenseToServer!(props.item!, expenseData);
         }
-
-
         // close Modal
         props.openModalHandler(false);
     };
 
     const isQuantityDisabled: boolean = enteredAmount !== "" && enteredAmount !== "0" ? false : true;
+
+    if (op === "update") {
+        // remove category from categoryList
+        const index = categoryList.indexOf(props.item!.category!);
+        if (index > -1) {
+            categoryList.splice(index, 1);
+        }
+    }
 
     return (
         <div>
@@ -101,6 +96,8 @@ const ConditionalForm: React.FC<{
                 <TextField id="filled-basic" label="Title" variant="filled"
                     className="input_title"
                     value={enteredTitle}
+                    error={hasSubmit && !enteredTitle}
+                    // helperText={hasSubmit && !enteredTitle ? `Enter Expense Name` : ''}
                     onChange={(e) => setEnteredTitle(e.target.value)} />
                 <TextField id="filled-basic" label="Amount" variant="filled"
                     className="input_title"
@@ -109,6 +106,8 @@ const ConditionalForm: React.FC<{
                     inputProps={{
                         min: 1
                     }}
+                    error={hasSubmit && !enteredAmount}
+                    // helperText={hasSubmit && !enteredAmount ? `Enter Amount` : ''}
                     onChange={(e) => {
                         setEnteredAmount(e.target.value);
                         // setEnteredQuantity(1);
@@ -121,6 +120,8 @@ const ConditionalForm: React.FC<{
                         min: "2019-01-01",
                         max: `${new Date().getFullYear()}-12-31`
                     }}
+                    error={hasSubmit && !enteredDate}
+                    // helperText={hasSubmit && !enteredDate ? `Enter Date` : ''}
                     onChange={(e) => setEnteredDate(e.target.value)} />
                 <TextField id="filled-basic" label="Quantity" variant="filled"
                     disabled={isQuantityDisabled}
@@ -131,6 +132,8 @@ const ConditionalForm: React.FC<{
                         min: 1,
                         max: 100000
                     }}
+                    error={hasSubmit && !enteredQuantity}
+                    // helperText={hasSubmit && !enteredQuantity ? `Enter Quantity` : ''}
                     onChange={(e) => {
                         const val: number = parseInt(e.target.value);
                         if (val < 1)
@@ -141,25 +144,42 @@ const ConditionalForm: React.FC<{
                             setEnteredQuantity(val);
                     }} />
                 {/* Put options for Category */}
-                {/* <SelectBtn options={categoryList} val={'Home'} style={{ backgroundColor: 'white' }} /> */}
-            </div>
-            <div className="new-expense__actions flex flex-row justify-end space-x-3">
-                <Button
-                    variant="contained"
-                    size='medium'
-                    onClick={props.cancelHandler}
-                >Cancel</Button>
-                <Button
-                    variant="contained"
-                    size='medium'
-                    onClick={(e: any) => {
-                        submitHandler(e);
+                <SelectBtn
+                    options={categoryList}
+                    val={enteredCategory}
+                    defaultVal={enteredCategory !== "Select" ? enteredCategory : 'Select'}
+                    fontSize={'16px'}
+                    selectEventHandler={(e: any) => {
+                        setEnteredCategory(e.target.value);
                     }}
-                >{op === 'update' ? 'Save' : 'Add'}</Button>
+                />
             </div>
-            <div className="new-expense__empty-msg">
-                {isEmpty && <p>Please fill in all the details</p>}
+            <div className="flex flex-row justify-between items-center mt-10">
+                <div className="flex flex-col items-start">
+                    {enteredAmount && <>
+                        <h1 className="text-lg font-semibold">Total Price</h1>
+                        <h2>
+                            <span className="text-sm">₹</span>{" "}
+                            <span className="text-lg">{parseInt(enteredAmount) * enteredQuantity}</span>
+                        </h2>
+                    </>}
+                </div>
+                <div className="new-expense__actions flex flex-row justify-end space-x-3">
+                    <Button
+                        variant="contained"
+                        size='medium'
+                        onClick={props.cancelHandler}
+                    >Cancel</Button>
+                    <Button
+                        variant="contained"
+                        size='medium'
+                        onClick={(e: any) => {
+                            submitHandler(e);
+                        }}
+                    >{op === 'update' ? 'Save' : 'Add'}</Button>
+                </div>
             </div>
+            {hasSubmit && isEmpty && <div className="text-right mt-3 text-base text-red-400">Please fill in all the details</div>}
         </div>
     );
 };

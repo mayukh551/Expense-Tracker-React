@@ -5,7 +5,8 @@ export interface itemDS {
     date: string,
     month?: string;
     year?: string;
-    quantity?: number
+    quantity: number;
+    category: string;
 }
 
 export interface User {

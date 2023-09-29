@@ -65,6 +65,7 @@ export default function SignIn() {
             if (user) {
                 localStorage.setItem('userId', user.userId);
                 localStorage.setItem('budget', JSON.stringify(user.budget));
+                localStorage.setItem('category', JSON.stringify(user.category));
             }
 
             if (isSuccess) {

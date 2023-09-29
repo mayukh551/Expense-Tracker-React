@@ -42,6 +42,8 @@ const Categories: React.FC<{
         setEnteredCategory("");
         setNewCategoryInput(false);
 
+        localStorage.setItem('category', JSON.stringify(updatedCategoryList));
+
         updateAccount({ category: updatedCategoryList });
     }
 
