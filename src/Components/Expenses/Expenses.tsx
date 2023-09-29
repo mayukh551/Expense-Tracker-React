@@ -20,6 +20,10 @@ import NewExpenses from "../NewExpenses/NewExpenses";
 import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
 
+// animatinos
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
 const Expenses = () => {
 
     const expenseList: ExpenseContextObj = useContext(ListContext);
@@ -145,62 +149,68 @@ const Expenses = () => {
             {/* Toast Messages */}
             <Toaster position="bottom-left" reverseOrder={true} />
 
-            <Card className="expenses">
+            <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <Card className="expenses">
 
-                {/* Create New Expense Component */}
-                <NewExpenses
-                    createData={createData}
-                />
+                    {/* Create New Expense Component */}
+                    <NewExpenses
+                        createData={createData}
+                    />
 
-                {/* Expense Options - For Sorting and Filtering */}
+                    {/* Expense Options - For Sorting and Filtering */}
 
-                <ExpenseFilter
-                    updateSelectedYear={updateSelectedYear}
-                    userSelectedYear={userSelectedYear}
-                    userSelectedMonth={userSelectedMonth}
-                    updateSelectedMonth={updateSelectedMonth}
-                    sortOrder={sortOrder}
-                    updateSortOrder={updateSortOrder}
-                />
+                    <ExpenseFilter
+                        updateSelectedYear={updateSelectedYear}
+                        userSelectedYear={userSelectedYear}
+                        userSelectedMonth={userSelectedMonth}
+                        updateSelectedMonth={updateSelectedMonth}
+                        sortOrder={sortOrder}
+                        updateSortOrder={updateSortOrder}
+                    />
 
-                {/* Expense Statistics */}
+                    {/* Expense Statistics */}
 
-                <div className="flex flex-row justify-start space-x-2">
-                    <SavedAmount expenses={newExpense} />
-                    <PurchasedAmount expenses={newExpense} />
-                    <TotalItems expenses={newExpense} />
-                </div>
+                    <div className="flex flex-row justify-start space-x-2">
+                        <SavedAmount expenses={newExpense} />
+                        <PurchasedAmount expenses={newExpense} />
+                        <TotalItems expenses={newExpense} />
+                    </div>
 
-                {/* Error Modal */}
-                <ErrorModal onClose={() => setError('')} message={error} />
+                    {/* Error Modal */}
+                    <ErrorModal onClose={() => setError('')} message={error} />
 
-                {/* Expense Search Bar */}
-                <div className="mt-8 mb-10">
-                    <SearchExpense
-                        searchTerm={searchTerm}
-                        updateSearchTerm={updateSearchTerm} />
-                </div>
+                    {/* Expense Search Bar */}
+                    <div className="mt-8 mb-10">
+                        <SearchExpense
+                            searchTerm={searchTerm}
+                            updateSearchTerm={updateSearchTerm} />
+                    </div>
 
-                {/* Expense List */}
+                    {/* Expense List */}
 
-                {isLoading && (
-                    <ExpenseSpinner />
-                )}
-                {!isLoading && newExpense.length === 0 ? (
-                    <p>No Expenses Found</p>
-                ) : (
-                    newExpense.map((item) => {
-                        return (
-                            <ExpenseItem
-                                key={item.id}
-                                item={item}
-                                updateDataHandler={updateData}
-                                deleteDataHandler={deleteData}
-                            />
-                        );
-                    })
-                )}
-            </Card>
+                    {isLoading && (
+                        <ExpenseSpinner />
+                    )}
+                    {!isLoading && newExpense.length === 0 ? (
+                        <p>No Expenses Found</p>
+                    ) : (
+                        newExpense.map((item) => {
+                            return (
+                                <ExpenseItem
+                                    key={item.id}
+                                    item={item}
+                                    updateDataHandler={updateData}
+                                    deleteDataHandler={deleteData}
+                                />
+                            );
+                        })
+                    )}
+                </Card>
+            </motion.div>
         </>
     );
 };
