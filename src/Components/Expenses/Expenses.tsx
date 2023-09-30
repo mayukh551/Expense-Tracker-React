@@ -74,8 +74,10 @@ const Expenses = () => {
     const selectAllHandler = () => {
         if (selectAll)
             setChosenCounter(0);
-        else
+        else {
             setChosenCounter(newExpense.length);
+            setChosenItems([...newExpense]);
+        }
 
         setSelectAll(!selectAll);
     }
@@ -168,6 +170,15 @@ const Expenses = () => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userSelectedYear, userSelectedMonth]);
+
+    useEffect(() => {
+
+        if (expenseList.list.length === 0) {
+            setChosenCounter(0);
+            setChosenItems([]);
+        }
+
+    }, [expenseList.list])
 
     const expenseLen = chosenCounter;
 
