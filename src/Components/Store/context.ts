@@ -7,7 +7,9 @@ const ListContext = React.createContext<ExpenseContextObj>({
     fillList: () => { },
     addItem: (item: itemDS) => { },
     removeItem: (id: string) => { },
-    updateItem: (item: itemDS) => { }
+    updateItem: (item: itemDS) => { },
+    chosenCounter: 0,
+    updateChosenCounter: (counter: number) => { },
 })
 
 export default ListContext;

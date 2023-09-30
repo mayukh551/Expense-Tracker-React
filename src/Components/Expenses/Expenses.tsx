@@ -19,6 +19,7 @@ import toast, { Toaster } from "react-hot-toast";
 import NewExpenses from "../NewExpenses/NewExpenses";
 import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
+import WarningModal from "../UI/WarningModal";
 
 const Expenses = () => {
 
@@ -39,8 +40,15 @@ const Expenses = () => {
     const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [selectAll, setSelectAll] = useState<boolean>(false);
+
+    const [chosenItems, setChosenItems] = useState<itemDS[]>([]);
 
     const [error, setError] = useState<string>('');
+
+    const [chosenCounter, setChosenCounter] = useState<number>(0);
+
+    const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
 
     var newExpense: itemDS[];
 
@@ -62,6 +70,15 @@ const Expenses = () => {
     const updateSortOrder = (order: string): void => setSortOrder(order);
 
     const updateSearchTerm = (term: string) => setSearchTerm(term);
+
+    const selectAllHandler = () => {
+        if (selectAll)
+            setChosenCounter(0);
+        else
+            setChosenCounter(newExpense.length);
+
+        setSelectAll(!selectAll);
+    }
 
     const createData = (item: itemDS) => {
 
@@ -93,10 +110,20 @@ const Expenses = () => {
 
     const deleteData = (item: itemDS) => {
 
+        setIsConfirmDelete(false);
+
         const toastId = toast.loading("Deleting . . .");
 
-        deleteFromDB(item).then((response) => {
-            expenseList.removeItem(item.id);
+        const itemIDs: string[] = [];
+
+        chosenItems.forEach((item) => {
+            itemIDs.push(item.id);
+        });
+
+        deleteFromDB(itemIDs, userSelectedMonth, userSelectedYear).then((response) => {
+            itemIDs.forEach((id) => {
+                expenseList.removeItem(id);
+            });
             toast.dismiss(toastId);
             toast.success("Deleted");
         }).catch((err) => {
@@ -104,6 +131,8 @@ const Expenses = () => {
             toast.error("Could not delete");
         });
     }
+
+
 
     useEffect(() => {
         async function fetchData() {
@@ -139,6 +168,8 @@ const Expenses = () => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userSelectedYear, userSelectedMonth]);
+
+    const expenseLen = chosenCounter;
 
     return (
         <>
@@ -186,19 +217,77 @@ const Expenses = () => {
                 {isLoading && (
                     <ExpenseSpinner />
                 )}
+                <div className="flex flex-row justify-between items-center mb-3">
+                    <div className="font-semibold text-white flex flex-row space-x-3">
+                        <span>Year: {userSelectedYear}</span>
+                        <span>Month: {userSelectedMonth}</span>
+                    </div>
+                    {chosenCounter > 0 && <div>
+                        <button
+                            className="font-medium bg-red-600 hover:bg-red-700 text-white py-1 px-2 rounded-md flex flex-row items-center space-x-1 cursor-pointer"
+                            onClick={() => setIsConfirmDelete(true)}
+                        >
+                            <span className="text-sm">Delete</span>
+                        </button>
+                    </div>}
+                    <WarningModal
+                        isOpen={isConfirmDelete}
+                        onCancel={() => setIsConfirmDelete(false)}
+                        message={`Are you sure you want to delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}?`}
+                        actionMessage={"Delete"}
+                        onAction={deleteData}
+                        heading={"Delete Expense"}
+                    />
+                </div>
                 {!isLoading && newExpense.length === 0 ? (
                     <p>No Expenses Found</p>
                 ) : (
-                    newExpense.map((item) => {
-                        return (
-                            <ExpenseItem
-                                key={item.id}
-                                item={item}
-                                updateDataHandler={updateData}
-                                deleteDataHandler={deleteData}
-                            />
-                        );
-                    })
+                    <div className="relative overflow-x-auto mb-6">
+                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th className="pl-6 py-4">
+                                        <input type="checkbox" className="form-checkbox cursor-pointer rounded h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                                            // onClick={() => setSelectAll(!selectAll)}
+                                            onClick={selectAllHandler}
+                                        />
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Day
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Product name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Category
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Quantity
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Total Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {newExpense.map((item) => {
+                                    return (
+                                        <ExpenseItem
+                                            key={item.id}
+                                            item={item}
+                                            updateDataHandler={updateData}
+                                            deleteDataHandler={deleteData}
+                                            selectAll={selectAll}
+                                            chosenCounter={chosenCounter}
+                                            setChosenCounter={setChosenCounter}
+                                            setChosenItems={setChosenItems}
+                                            chosenItems={chosenItems}
+                                        />
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </Card>
         </>

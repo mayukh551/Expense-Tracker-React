@@ -55,6 +55,8 @@ export const UniversalData: React.FC<{
         list
     );
 
+    const [chosenCounter, setChosenCounter] = useState<number>(0);
+
     const fillExpenseList = (list: itemDS[]) => {
         dispatchExpenseState({ type: "FILL", value: list });
     };
@@ -70,15 +72,22 @@ export const UniversalData: React.FC<{
         dispatchExpenseState({ type: "UPDATE", item: item });
     };
 
+    const updateChosenCounter = (counter: number) => {
+        console.log("In updateChosenCounter");
+        setChosenCounter(counter);
+    };
+
     return (
         <ListContext.Provider
             value={{
                 list: expenseState,
                 month: monthList,
                 fillList: fillExpenseList,
+                chosenCounter: chosenCounter,
                 addItem: addItemtoList,
                 removeItem: removeItemFromList,
                 updateItem: updateIteminList,
+                updateChosenCounter: updateChosenCounter,
             }}
         >
             {props.children}
