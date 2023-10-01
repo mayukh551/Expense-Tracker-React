@@ -4,8 +4,8 @@ import Analytics from './Analytics'
 import Nav from '../Navbar/Nav'
 import YearExpenseChart from './Chart/YearExpenseChart';
 import MonthExpenseChart from './Chart/MonthExpenseChart';
-import MonthlyCategoryExpenseChart from './Chart/MonthlyCategoryExpenseChart';
-import YearlyCategoryExpenseChart from './Chart/YearlyCategoryExpenseChart';
+import MonthlyExpensePieChart from './Chart/MonthlyExpensePieChart';
+import CategoryPieChart from './Chart/CategoryPieChart';
 
 const Profile: React.FC = () => {
 
@@ -15,8 +15,10 @@ const Profile: React.FC = () => {
             <Nav hasProfile={hasVisitedProfile} />
             <YearExpenseChart />
             <MonthExpenseChart />
-            <MonthlyCategoryExpenseChart/>
-            <YearlyCategoryExpenseChart/>
+            <div className='flex flex-row space-x-5 justify-center items-center my-10'>
+                <CategoryPieChart />
+                <MonthlyExpensePieChart />
+            </div>
             <Analytics />
         </div>
     )

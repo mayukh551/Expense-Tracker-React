@@ -10,7 +10,7 @@ import Profile from "./Components/Profile/Profile";
 import Account from "./Components/Account/Account";
 import UserDetails from "./Components/Auth/UserDetails";
 import ProductPage from "./Components/Home/Home";
-import YearlyCategoryExpenseChart from "./Components/Profile/Chart/YearlyCategoryExpenseChart";
+import YearlyCategoryExpenseChart from "./Components/Profile/Chart/MonthlyExpensePieChart";
 
 function App() {
     return (
