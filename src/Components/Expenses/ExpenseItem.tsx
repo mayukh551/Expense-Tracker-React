@@ -29,7 +29,7 @@ const ExpenseItem: React.FC<{
     const [updatedCard, setUpdatedCard] = useState<boolean>(false);
 
     const selectAll = props.selectAll;
-    const [chosen, setChosen] = useState<boolean>(props.selectAll);
+    const [chosen, setChosen] = useState<boolean>(false);
 
     useEffect(() => {
         setChosen(selectAll);
@@ -75,8 +75,10 @@ const ExpenseItem: React.FC<{
     const updateChosen = () => {
 
         if (chosen) {
-            if (props.chosenCounter > 0)
+            if (props.chosenCounter > 0) {
                 props.setChosenCounter(props.chosenCounter - 1);
+                props.setChosenItems(props.chosenItems.filter((item) => item.id !== props.item.id));
+            }
         }
 
         else {
@@ -104,6 +106,9 @@ const ExpenseItem: React.FC<{
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {date.slice(8)}
                 </th>
+                {/* <td className="px-6 py-4 text-white">
+                    {date.slice(8)}
+                </td> */}
                 <td className="px-6 py-4 text-white">
                     {title}
                 </td>

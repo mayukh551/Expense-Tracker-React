@@ -72,8 +72,10 @@ const Expenses = () => {
     const updateSearchTerm = (term: string) => setSearchTerm(term);
 
     const selectAllHandler = () => {
-        if (selectAll)
+        if (selectAll) {
             setChosenCounter(0);
+            setChosenItems([]);
+        }
         else {
             setChosenCounter(newExpense.length);
             setChosenItems([...newExpense]);
@@ -117,6 +119,9 @@ const Expenses = () => {
         const toastId = toast.loading("Deleting . . .");
 
         const itemIDs: string[] = [];
+
+        console.log('Chosen Items in deleteData', chosenItems);
+        console.log('Chosen Counter in deleteData', chosenCounter);
 
         chosenItems.forEach((item) => {
             itemIDs.push(item.id);
