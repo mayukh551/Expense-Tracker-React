@@ -10,6 +10,7 @@ import Profile from "./Components/Profile/Profile";
 import Account from "./Components/Account/Account";
 import UserDetails from "./Components/Auth/UserDetails";
 import ProductPage from "./Components/Home/Home";
+import YearlyCategoryExpenseChart from "./Components/Profile/Chart/MonthlyExpensePieChart";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="expenses" element={<Home />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="account" element={<Account />} />
+                <Route path="statistics" element={<YearlyCategoryExpenseChart/>} />
             </Routes >
         </BrowserRouter >
 
