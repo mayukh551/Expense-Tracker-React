@@ -131,6 +131,8 @@ const Expenses = () => {
             itemIDs.forEach((id) => {
                 expenseList.removeItem(id);
             });
+            setChosenCounter(0);
+            setChosenItems([]);
             toast.dismiss(toastId);
             toast.success("Deleted");
         }).catch((err) => {
@@ -187,6 +189,8 @@ const Expenses = () => {
 
     const expenseLen = chosenCounter;
 
+    const hasExpenses = newExpense.length > 0;
+
     return (
         <>
             {/* Toast Messages */}
@@ -222,30 +226,33 @@ const Expenses = () => {
                 <ErrorModal onClose={() => setError('')} message={error} />
 
                 {/* Expense Search Bar */}
-                <div className="mt-8 mb-10">
-                    <SearchExpense
-                        searchTerm={searchTerm}
-                        updateSearchTerm={updateSearchTerm} />
-                </div>
+                {hasExpenses &&
+                    <div className="mt-8 mb-10">
+                        <SearchExpense
+                            searchTerm={searchTerm}
+                            updateSearchTerm={updateSearchTerm} />
+                    </div>
+                }
 
                 {/* Expense List */}
 
                 {isLoading && (
                     <ExpenseSpinner />
                 )}
-                <div className="flex flex-row justify-between items-center mb-3">
-                    <div className="font-semibold text-white flex flex-row space-x-3">
-                        <span>Year: {userSelectedYear}</span>
-                        <span>Month: {userSelectedMonth}</span>
-                    </div>
-                    {chosenCounter > 0 && <div>
-                        <button
-                            className="font-medium bg-red-600 hover:bg-red-700 text-white py-1 px-2 rounded-md flex flex-row items-center space-x-1 cursor-pointer"
+                {hasExpenses && <div className="font-semibold text-white flex flex-row justify-center items-center space-x-3 py-1 mb-4">
+                    <span>Year: {userSelectedYear}</span>
+                    <span>Month: {userSelectedMonth}</span>
+                </div>}
+                <div className="text-start mb-3">
+                    <div>
+                        {hasExpenses && <button
+                            className={`${chosenCounter === 0 ? 'bg-gray-600 cursor-default' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} font-medium  text-white py-2 px-3 rounded-md flex flex-row items-center space-x-1`}
                             onClick={() => setIsConfirmDelete(true)}
+                            disabled={chosenCounter === 0}
                         >
-                            <span className="text-sm">Delete</span>
-                        </button>
-                    </div>}
+                            <span className="text-sm">{`Delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}`}</span>
+                        </button>}
+                    </div>
                     <WarningModal
                         isOpen={isConfirmDelete}
                         onCancel={() => setIsConfirmDelete(false)}
@@ -255,16 +262,15 @@ const Expenses = () => {
                         heading={"Delete Expense"}
                     />
                 </div>
-                {!isLoading && newExpense.length === 0 ? (
-                    <p>No Expenses Found</p>
+                {!isLoading && !hasExpenses ? (
+                    <p className="mt-9 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
                 ) : (
-                    <div className="relative overflow-x-auto mb-6">
+                    <div className="relative overflow-x-auto mb-6 rounded-lg">
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th className="pl-6 py-4">
                                         <input type="checkbox" className="form-checkbox cursor-pointer rounded h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                                            // onClick={() => setSelectAll(!selectAll)}
                                             onClick={selectAllHandler}
                                         />
                                     </th>

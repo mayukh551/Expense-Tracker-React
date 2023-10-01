@@ -9,7 +9,9 @@ const SelectBtn: React.FC<any> = (props) => {
     const fontSize = props.fontSize;
     const defaultVal = props.defaultVal;
 
-    if (val === "") val = defaultVal
+    if (val === "") val = defaultVal;
+
+    console.log("In SelectBtn", defaultVal, val);
 
     return (
         <Select
@@ -19,7 +21,7 @@ const SelectBtn: React.FC<any> = (props) => {
             sx={style}
             onChange={props.selectEventHandler}
         >
-            <MenuItem value={`${defaultVal}`}>{defaultVal}</MenuItem>
+            {defaultVal && <MenuItem value={`${defaultVal}`}>{defaultVal}</MenuItem>}
             {options.map((option: string) => {
                 return (
                     <MenuItem value={`${option}`} sx={{ fontSize: fontSize || '14px' }}>{option}</MenuItem>
