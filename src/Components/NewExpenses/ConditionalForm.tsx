@@ -26,6 +26,8 @@ const ConditionalForm: React.FC<{
 
     const [hasSubmit, setHasSubmit] = useState<boolean>(false);
 
+    const [hasChanged, setHasChanged] = useState<boolean>(false);
+
     const op = props.op;
 
     const submitHandler = (e: React.FormEvent) => {
@@ -78,6 +80,8 @@ const ConditionalForm: React.FC<{
         }
         // close Modal
         props.openModalHandler(false);
+
+        setHasChanged(false);
     };
 
     const isQuantityDisabled: boolean = enteredAmount !== "" && enteredAmount !== "0" ? false : true;
@@ -98,7 +102,7 @@ const ConditionalForm: React.FC<{
                     value={enteredTitle}
                     error={hasSubmit && !enteredTitle}
                     // helperText={hasSubmit && !enteredTitle ? `Enter Expense Name` : ''}
-                    onChange={(e) => setEnteredTitle(e.target.value)} />
+                    onChange={(e) => { setEnteredTitle(e.target.value); setHasChanged(true); }} />
                 <TextField id="filled-basic" label="Amount" variant="filled"
                     className="input_title"
                     value={parseInt(enteredAmount)}
@@ -110,7 +114,7 @@ const ConditionalForm: React.FC<{
                     // helperText={hasSubmit && !enteredAmount ? `Enter Amount` : ''}
                     onChange={(e) => {
                         setEnteredAmount(e.target.value);
-                        // setEnteredQuantity(1);
+                        setHasChanged(true);
                     }} />
                 <TextField id="filled-basic" label="" variant="filled"
                     className="input_title"
@@ -121,8 +125,7 @@ const ConditionalForm: React.FC<{
                         max: `${new Date().getFullYear()}-12-31`
                     }}
                     error={hasSubmit && !enteredDate}
-                    // helperText={hasSubmit && !enteredDate ? `Enter Date` : ''}
-                    onChange={(e) => setEnteredDate(e.target.value)} />
+                    onChange={(e) => { setEnteredDate(e.target.value); setHasChanged(true) }} />
                 <TextField id="filled-basic" label="Quantity" variant="filled"
                     disabled={isQuantityDisabled}
                     className="input_title"
@@ -142,6 +145,8 @@ const ConditionalForm: React.FC<{
                             setEnteredQuantity(100000);
                         else
                             setEnteredQuantity(val);
+
+                        setHasChanged(true);
                     }} />
                 {/* Put options for Category */}
                 <SelectBtn
@@ -151,6 +156,7 @@ const ConditionalForm: React.FC<{
                     fontSize={'16px'}
                     selectEventHandler={(e: any) => {
                         setEnteredCategory(e.target.value);
+                        setHasChanged(true);
                     }}
                 />
             </div>
@@ -168,11 +174,12 @@ const ConditionalForm: React.FC<{
                     <Button
                         variant="contained"
                         size='medium'
-                        onClick={props.cancelHandler}
+                        onClick={() => { props.cancelHandler!(); setHasChanged(false); }}
                     >Cancel</Button>
                     <Button
                         variant="contained"
                         size='medium'
+                        disabled={op === 'update' && !hasChanged}
                         onClick={(e: any) => {
                             submitHandler(e);
                         }}
