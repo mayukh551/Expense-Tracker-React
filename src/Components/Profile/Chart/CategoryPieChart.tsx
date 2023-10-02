@@ -35,19 +35,27 @@ function CategoryPieChart() {
   for (let year = currentYear; year >= 2019; year--) {
     yearList.push(String(year));
   }
-  // console.log(expenseData)
+
+  const generateBackgroundColors = (count: number) => {
+    const colors = [];
+    const hueStep = 360 / count;
+    let hue = 0;
+    for (let i = 0; i < count; i++) {
+      const saturation = Math.floor(Math.random() * 31) + 70;
+      const lightness = Math.floor(Math.random() * 31) + 50;
+      const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      colors.push(color);
+      hue += hueStep;
+    }
+    return colors;
+  };
 
   const data = {
     labels: labels,
     datasets: [{
       label: 'Expenses',
       data: expenseData,
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)',
-        'rgb(75, 192, 192)'
-      ],
+      backgroundColor: generateBackgroundColors(labels.length),
       hoverOffset: 4
     }]
   };
@@ -106,7 +114,7 @@ function CategoryPieChart() {
 
           {!isLoading && expenseData!.length > 0 && <Doughnut options={options} data={data} />}
         </div>
-        <h4 className='mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>Category Based Expenses</h4>
+        <h4 className='mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>Category Wise Expenses</h4>
       </div>
     </div>
   )
