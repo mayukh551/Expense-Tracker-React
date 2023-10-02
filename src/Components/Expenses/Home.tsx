@@ -19,7 +19,7 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <div className='bg-amber-400 h-screen overflow-y-scroll'>
+        <div className='bg-[#b887f5] h-screen overflow-y-scroll from-[#b887f5] to-[#ffffff]'>
             {isLoggedIn &&
                 <UniversalData>
                     <UserContextProvider>

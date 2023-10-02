@@ -1,13 +1,12 @@
 import axios from "axios";
-import { itemDS } from "../Models/Interfaces";
 
 
-async function deleteFromDB(item: itemDS) {
-    console.log("in deleteFromDB", item);
-    await axios.delete(`${process.env.REACT_APP_SERVER_URL}/expenses/delete/${item.id}/`, {
+async function deleteFromDB(ids: string[], month: string, year: string) {
+    console.log("in deleteFromDB", ids);
+    await axios.post(`${process.env.REACT_APP_SERVER_URL}/expenses/delete/`, { ids, month, year }, {
         headers: {
             'x-access-token': `${localStorage.getItem('token')}`
-        }
+        },
     });
 }
 

@@ -19,6 +19,7 @@ import toast, { Toaster } from "react-hot-toast";
 import NewExpenses from "../NewExpenses/NewExpenses";
 import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
+import WarningModal from "../UI/WarningModal";
 
 // animatinos
 import { motion } from "framer-motion";
@@ -43,8 +44,15 @@ const Expenses = () => {
     const [sortOrder, setSortOrder] = useState<string>("Recent");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [selectAll, setSelectAll] = useState<boolean>(false);
+
+    const [chosenItems, setChosenItems] = useState<itemDS[]>([]);
 
     const [error, setError] = useState<string>('');
+
+    const [chosenCounter, setChosenCounter] = useState<number>(0);
+
+    const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
 
     var newExpense: itemDS[];
 
@@ -66,6 +74,19 @@ const Expenses = () => {
     const updateSortOrder = (order: string): void => setSortOrder(order);
 
     const updateSearchTerm = (term: string) => setSearchTerm(term);
+
+    const selectAllHandler = () => {
+        if (selectAll) {
+            setChosenCounter(0);
+            setChosenItems([]);
+        }
+        else {
+            setChosenCounter(newExpense.length);
+            setChosenItems([...newExpense]);
+        }
+
+        setSelectAll(!selectAll);
+    }
 
     const createData = (item: itemDS) => {
 
@@ -97,10 +118,25 @@ const Expenses = () => {
 
     const deleteData = (item: itemDS) => {
 
+        setIsConfirmDelete(false);
+
         const toastId = toast.loading("Deleting . . .");
 
-        deleteFromDB(item).then((response) => {
-            expenseList.removeItem(item.id);
+        const itemIDs: string[] = [];
+
+        console.log('Chosen Items in deleteData', chosenItems);
+        console.log('Chosen Counter in deleteData', chosenCounter);
+
+        chosenItems.forEach((item) => {
+            itemIDs.push(item.id);
+        });
+
+        deleteFromDB(itemIDs, userSelectedMonth, userSelectedYear).then((response) => {
+            itemIDs.forEach((id) => {
+                expenseList.removeItem(id);
+            });
+            setChosenCounter(0);
+            setChosenItems([]);
             toast.dismiss(toastId);
             toast.success("Deleted");
         }).catch((err) => {
@@ -108,6 +144,8 @@ const Expenses = () => {
             toast.error("Could not delete");
         });
     }
+
+
 
     useEffect(() => {
         async function fetchData() {
@@ -144,73 +182,142 @@ const Expenses = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userSelectedYear, userSelectedMonth]);
 
+    useEffect(() => {
+
+        if (expenseList.list.length === 0) {
+            setChosenCounter(0);
+            setChosenItems([]);
+        }
+
+    }, [expenseList.list])
+
+    const expenseLen = chosenCounter;
+
+    const hasExpenses = newExpense.length > 0;
+
     return (
         <>
             {/* Toast Messages */}
             <Toaster position="bottom-left" reverseOrder={true} />
 
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-            >
-                <Card className="expenses">
+            <Card className="expenses">
 
-                    {/* Create New Expense Component */}
-                    <NewExpenses
-                        createData={createData}
-                    />
+                {/* Create New Expense Component */}
+                <NewExpenses
+                    createData={createData}
+                />
 
-                    {/* Expense Options - For Sorting and Filtering */}
+                {/* Expense Options - For Sorting and Filtering */}
 
-                    <ExpenseFilter
-                        updateSelectedYear={updateSelectedYear}
-                        userSelectedYear={userSelectedYear}
-                        userSelectedMonth={userSelectedMonth}
-                        updateSelectedMonth={updateSelectedMonth}
-                        sortOrder={sortOrder}
-                        updateSortOrder={updateSortOrder}
-                    />
+                <ExpenseFilter
+                    updateSelectedYear={updateSelectedYear}
+                    userSelectedYear={userSelectedYear}
+                    userSelectedMonth={userSelectedMonth}
+                    updateSelectedMonth={updateSelectedMonth}
+                    sortOrder={sortOrder}
+                    updateSortOrder={updateSortOrder}
+                />
 
-                    {/* Expense Statistics */}
+                {/* Expense Statistics */}
 
-                    <div className="flex flex-row justify-start space-x-2">
-                        <SavedAmount expenses={newExpense} />
-                        <PurchasedAmount expenses={newExpense} />
-                        <TotalItems expenses={newExpense} />
-                    </div>
+                <div className="flex flex-row justify-start space-x-2">
+                    <SavedAmount expenses={newExpense} />
+                    <PurchasedAmount expenses={newExpense} />
+                    <TotalItems expenses={newExpense} />
+                </div>
 
-                    {/* Error Modal */}
-                    <ErrorModal onClose={() => setError('')} message={error} />
+                {/* Error Modal */}
+                <ErrorModal onClose={() => setError('')} message={error} />
 
-                    {/* Expense Search Bar */}
-                    <div className="mt-8 mb-10">
-                        <SearchExpense
-                            searchTerm={searchTerm}
-                            updateSearchTerm={updateSearchTerm} />
-                    </div>
+                {/* Expense Search Bar */}
 
-                    {/* Expense List */}
+                <div className="mt-8 mb-8">
+                    <SearchExpense
+                        searchTerm={searchTerm}
+                        updateSearchTerm={updateSearchTerm} />
+                </div>
 
-                    {isLoading && (
+
+                {/* Expense List */}
+
+                {isLoading && (
+                    <div className="mt-16">
                         <ExpenseSpinner />
-                    )}
-                    {!isLoading && newExpense.length === 0 ? (
-                        <p>No Expenses Found</p>
-                    ) : (
-                        newExpense.map((item) => {
-                            return (
-                                <ExpenseItem
-                                    key={item.id}
-                                    item={item}
-                                    updateDataHandler={updateData}
-                                    deleteDataHandler={deleteData}
-                                />
-                            );
-                        })
-                    )}
-                </Card>
-            </motion.div>
+                    </div>
+                )}
+                {hasExpenses && <div className="font-semibold text-white flex flex-row justify-center items-center space-x-3 py-1 mb-4">
+                    <span>Year: {userSelectedYear}</span>
+                    <span>Month: {userSelectedMonth}</span>
+                </div>}
+                <div className="text-start mb-3">
+                    <div>
+                        {hasExpenses && <button
+                            className={`${chosenCounter === 0 ? 'bg-gray-600 cursor-default' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} font-medium  text-white py-2 px-3 rounded-md flex flex-row items-center space-x-1`}
+                            onClick={() => setIsConfirmDelete(true)}
+                            disabled={chosenCounter === 0}
+                        >
+                            <span className="text-sm">{`Delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}`}</span>
+                        </button>}
+                    </div>
+                    <WarningModal
+                        isOpen={isConfirmDelete}
+                        onCancel={() => setIsConfirmDelete(false)}
+                        message={`Are you sure you want to delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}?`}
+                        actionMessage={"Delete"}
+                        onAction={deleteData}
+                        heading={"Delete Expense"}
+                    />
+                </div>
+                {!isLoading && !hasExpenses &&
+                    <p className="mt-14 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
+                }
+                {!isLoading && hasExpenses &&
+                    <div className="relative overflow-x-auto mb-6 rounded-lg">
+                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th className="pl-6 py-4">
+                                        <input type="checkbox" className="form-checkbox cursor-pointer rounded h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                                            onClick={selectAllHandler}
+                                        />
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Day
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Product name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Category
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Quantity
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Total Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {newExpense.map((item) => {
+                                    return (
+                                        <ExpenseItem
+                                            key={item.id}
+                                            item={item}
+                                            updateDataHandler={updateData}
+                                            deleteDataHandler={deleteData}
+                                            selectAll={selectAll}
+                                            chosenCounter={chosenCounter}
+                                            setChosenCounter={setChosenCounter}
+                                            setChosenItems={setChosenItems}
+                                            chosenItems={chosenItems}
+                                        />
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>}
+            </Card>
         </>
     );
 };

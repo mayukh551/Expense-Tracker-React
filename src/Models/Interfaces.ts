@@ -7,6 +7,7 @@ export interface itemDS {
     year?: string;
     quantity: number;
     category: string;
+    chosen?: boolean;
 }
 
 export interface User {
@@ -22,7 +23,9 @@ export interface ExpenseContextObj {
     fillList: (list: itemDS[]) => void,
     addItem: (item: itemDS) => void,
     removeItem: (id: string) => void,
-    updateItem: (item: itemDS) => void
+    updateItem: (item: itemDS) => void,
+    chosenCounter: number,
+    updateChosenCounter: (counter: number) => void,
 }
 
 export interface User {

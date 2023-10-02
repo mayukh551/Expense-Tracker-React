@@ -54,7 +54,7 @@ const ExpensesFilter: React.FC<{
                         // defaultVal={currentMonth}
                         val={props.userSelectedMonth}
                         selectEventHandler={filterMonthHandler}
-                        style={{ backgroundColor: 'white', width: '70px', height: '40px', fontSize: '14px' }}
+                        style={{ backgroundColor: 'white', width: '79px', height: '40px', fontSize: '14px' }}
                     />
                     <SelectBtn
                         options={yearList}

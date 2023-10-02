@@ -1,21 +1,25 @@
 import "./ExpenseItem.css";
-import ExpenseDate from "./ExpenseDate";
-import Card from "../UI/Card";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { itemDS } from "../../Models/Interfaces";
-import Button from '@mui/material/Button';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ConditionalForm from "../NewExpenses/ConditionalForm";
 import Modal from "../UI/Modal";
-import WarningModal from "../UI/WarningModal";
+import ListContext from "../Store/context";
 
 
 const ExpenseItem: React.FC<{
     item: itemDS;
     updateDataHandler: (item: itemDS, newData: any) => Promise<unknown>;
     deleteDataHandler: (item: itemDS) => void;
+    selectAll: boolean;
+    chosenCounter: number;
+    setChosenCounter: Dispatch<SetStateAction<number>>;
+    setChosenItems: Dispatch<SetStateAction<itemDS[]>>;
+    chosenItems: itemDS[];
 }> = (props) => {
     // console.log(props.item);
+
+    const expenseList = useContext(ListContext);
+
     const [title, setTitle] = useState<string>(props.item.title);
     const prevTitle = props.item.title;
     const [amount, setAmount] = useState<string>(props.item.amount);
@@ -24,7 +28,14 @@ const ExpenseItem: React.FC<{
     const prevDate = props.item.date;
     const [updatedCard, setUpdatedCard] = useState<boolean>(false);
 
-    const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
+    const selectAll = props.selectAll;
+    const [chosen, setChosen] = useState<boolean>(false);
+
+    useEffect(() => {
+        setChosen(selectAll);
+    }, [selectAll])
+
+
 
     // quantity
     const [quantity, setQuantity] = useState<number>(props.item.quantity!);
@@ -34,14 +45,9 @@ const ExpenseItem: React.FC<{
 
     const prevCategory = props.item.category!;
 
+
     const cardUpdateHandler = () => {
         setUpdatedCard(true);
-    };
-
-    const cardDeleteHandler = () => {
-        setIsConfirmDelete(false);
-        console.log("In DelHandler", props.item);
-        props.deleteDataHandler(props.item);
     };
 
     const updateDataHandler = async (item: itemDS, newData: any) => {
@@ -64,75 +70,77 @@ const ExpenseItem: React.FC<{
         setQuantity(prevQuantity);
         setCategory(prevCategory);
         setUpdatedCard(false);
+    }
 
-        setIsConfirmDelete(false);
+    const updateChosen = () => {
+
+        if (chosen) {
+            if (props.chosenCounter > 0) {
+                props.setChosenCounter(props.chosenCounter - 1);
+                props.setChosenItems(props.chosenItems.filter((item) => item.id !== props.item.id));
+            }
+        }
+
+        else {
+            props.setChosenCounter(props.chosenCounter + 1);
+            props.setChosenItems([...props.chosenItems, props.item]);
+        }
+        setChosen(!chosen);
     }
 
     return (
-        <div>
-            <WarningModal
-                isOpen={isConfirmDelete}
-                onCancel={cancelHandler}
-                message={"Are you sure you want to delete this expense?"}
-                actionMessage={"Delete"}
-                onAction={cardDeleteHandler}
-                heading={"Delete Expense"}
-            />
-            <Card className="expense-item">
+        // <div>
 
-                <ExpenseDate date={date} />
-
-                <div className="expense-item__description">
-                    {/* Update Title */}
-                    <div className="flex flex-row space-x-1">
-                        <h2>{title}</h2>
-                        <div className="bg-green-600 rounded-md px-2 py-1 text-white">{category}</div>
-                    </div>
-
-                    <div className="flex flex-row space-x-2 items-center">
-                        {/* Update Quantity */}
-                        <div className="py-1 px-2 rounded-md bg-gray-700 text-white">x{quantity}</div>
-
-                        {/* Update Amount */}
-
-                        <div className="expense-item__price">₹ {parseInt(amount) * quantity}</div>
-                    </div>
-
-                </div>
-            </Card>
-            <div className="button-arrange">
-                <div className="action-buttons">
-                    <Button variant="contained"
-                        endIcon={<DeleteForeverIcon />}
-                        size="small"
-                        onClick={() => setIsConfirmDelete(true)}
-                    >Delete</Button>
-                    {!updatedCard && (
-                        <Button variant="contained" size="small" onClick={cardUpdateHandler}>Update</Button>
-                    )}
-                </div>
-
-                {/* Open Update Modal */}
-
-                {/* eslint-disable-next-line react/style-prop-object */}
-                <Modal isOpen={updatedCard} style="w-1/2">
-                    <ConditionalForm
-                        cancelHandler={cancelHandler}
-                        updateExpenseToServer={updateDataHandler}
-                        item={{
-                            id: props.item.id,
-                            title: title,
-                            amount: amount,
-                            date: date,
-                            quantity: quantity,
-                            category: category
-                        }}
-                        openModalHandler={setUpdatedCard}
-                        op="update"
+        <>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700"
+                onClick={cardUpdateHandler}
+            >
+                <td
+                    className="pl-6 py-4"
+                    onClick={(event) => event.stopPropagation()}>
+                    <input type="checkbox" className="form-checkbox rounded h-4 w-4 text-indigo-600 transition duration-150 ease-in-out cursor-pointer"
+                        onClick={updateChosen}
+                        checked={chosen}
                     />
-                </Modal>
-            </div>
-        </div >
+                </td>
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {date.slice(8)}
+                </th>
+                {/* <td className="px-6 py-4 text-white">
+                    {date.slice(8)}
+                </td> */}
+                <td className="px-6 py-4 text-white">
+                    {title}
+                </td>
+                <td className="px-6 py-4 text-white">
+                    {category}
+                </td>
+                <td className="px-6 py-4 text-white">
+                    {quantity}x
+                </td>
+                <td className="px-6 py-4 text-white">
+                    {parseInt(amount) * quantity}
+                </td>
+            </tr>
+
+            {/* eslint-disable-next-line react/style-prop-object */}
+            <Modal isOpen={updatedCard} style="w-1/2">
+                <ConditionalForm
+                    cancelHandler={cancelHandler}
+                    updateExpenseToServer={updateDataHandler}
+                    item={{
+                        id: props.item.id,
+                        title: title,
+                        amount: amount,
+                        date: date,
+                        quantity: quantity,
+                        category: category
+                    }}
+                    openModalHandler={setUpdatedCard}
+                    op="update"
+                />
+            </Modal>
+        </>
     );
 };
 
