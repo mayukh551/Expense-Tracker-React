@@ -226,18 +226,20 @@ const Expenses = () => {
                 <ErrorModal onClose={() => setError('')} message={error} />
 
                 {/* Expense Search Bar */}
-                {hasExpenses &&
-                    <div className="mt-8 mb-10">
-                        <SearchExpense
-                            searchTerm={searchTerm}
-                            updateSearchTerm={updateSearchTerm} />
-                    </div>
-                }
+
+                <div className="mt-8 mb-8">
+                    <SearchExpense
+                        searchTerm={searchTerm}
+                        updateSearchTerm={updateSearchTerm} />
+                </div>
+
 
                 {/* Expense List */}
 
                 {isLoading && (
-                    <ExpenseSpinner />
+                    <div className="mt-16">
+                        <ExpenseSpinner />
+                    </div>
                 )}
                 {hasExpenses && <div className="font-semibold text-white flex flex-row justify-center items-center space-x-3 py-1 mb-4">
                     <span>Year: {userSelectedYear}</span>
@@ -262,9 +264,10 @@ const Expenses = () => {
                         heading={"Delete Expense"}
                     />
                 </div>
-                {!isLoading && !hasExpenses ? (
-                    <p className="mt-9 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
-                ) : (
+                {!isLoading && !hasExpenses &&
+                    <p className="mt-14 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
+                }
+                {!isLoading && hasExpenses &&
                     <div className="relative overflow-x-auto mb-6 rounded-lg">
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -309,8 +312,7 @@ const Expenses = () => {
                                 })}
                             </tbody>
                         </table>
-                    </div>
-                )}
+                    </div>}
             </Card>
         </>
     );
