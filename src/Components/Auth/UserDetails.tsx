@@ -52,7 +52,9 @@ export default function UserDetails() {
             phone: phone
         });
 
-        if (validationErrors) {
+        console.log(validationErrors);
+
+        if (Object.values(validationErrors).every(val => val !== '')) {
 
             const { salary, monthly_budget, yearly_budget, age, phone } = validationErrors;
 
