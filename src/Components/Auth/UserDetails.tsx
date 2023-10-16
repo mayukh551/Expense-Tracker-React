@@ -39,7 +39,7 @@ export default function UserDetails() {
         event.preventDefault();
         setSubmitted(true);
 
-        // if (!salary || !monthlyBudget || !yearlyBudget || !age || !phone) return;
+        if (!salary || !monthlyBudget || !yearlyBudget || !age || !phone) return;
 
         console.log(salary, monthlyBudget, yearlyBudget, age, phone);
 
