@@ -10,11 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../UI/Spinners/AuthSpinner';
 import Modal from '../UI/Modal'
+import { validateUserDetails } from '../../utils/formValidators';
 
 const theme = createTheme();
 
 export default function UserDetails() {
     const navigate = useNavigate();
+
     const [salary, setSalary] = useState<string>('');
     const [monthlyBudget, setMonthlyBudget] = useState<string>('');
     const [yearlyBudget, setYearlyBudget] = useState<string>('');
@@ -25,11 +27,48 @@ export default function UserDetails() {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const [error, setError] = useState<any>({
+        salary: '',
+        monthly_budget: '',
+        yearly_budget: '',
+        age: '',
+        phone: ''
+    });
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setSubmitted(true);
 
         if (!salary || !monthlyBudget || !yearlyBudget || !age || !phone) return;
+
+        console.log(salary, monthlyBudget, yearlyBudget, age, phone);
+
+
+        const validationErrors = validateUserDetails({
+            salary: salary,
+            monthly_budget: monthlyBudget,
+            yearly_budget: yearlyBudget,
+            age: age,
+            phone: phone
+        });
+
+        console.log(validationErrors);
+
+        if (Object.values(validationErrors).every(val => val !== '')) {
+
+            const { salary, monthly_budget, yearly_budget, age, phone } = validationErrors;
+
+            setError({
+                salary: salary || '',
+                monthly_budget: monthly_budget || '',
+                yearly_budget: yearly_budget || '',
+                age: age || '',
+                phone: phone || '',
+            });
+
+            setIsLoading(false);
+            return;
+        }
 
         setIsLoading(true);
 
@@ -69,6 +108,16 @@ export default function UserDetails() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    console.log(submitted && !salary, error['salary']);
+
+    const salErr = submitted && !salary ? `Please enter your salary` : error['salary'];
+    const monErr = submitted && !monthlyBudget ? `Please enter your monthly budget` : error['monthly_budget'];
+    const yearErr = submitted && !yearlyBudget ? `Please enter your yearly budget` : error['yearly_budget'];
+    const ageErr = submitted && !age ? `Please enter your age` : error['age'];
+    const phoneErr = submitted && !phone ? `Please enter your phone number` : error['phone'];
+
+    console.log(error);
+
 
     return (
         <>
@@ -101,7 +150,7 @@ export default function UserDetails() {
                                 </Typography>
                                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                                     <TextField
-                                        error={submitted && !salary}
+                                        error={salErr.length > 0}
                                         margin="normal"
                                         required
                                         fullWidth
@@ -111,11 +160,13 @@ export default function UserDetails() {
                                         type='number'
                                         autoComplete="salary"
                                         autoFocus
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSalary(e.target.value)}
-                                        helperText={submitted && !salary ? `Please enter your salary` : ''}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setSalary(e.target.value); setError({ ...error, salary: validateUserDetails({ salary: e.target.value.trim() }).salary });
+                                        }}
+                                        helperText={salErr}
                                     />
                                     <TextField
-                                        error={submitted && !monthlyBudget}
+                                        error={monErr.length > 0}
                                         margin="normal"
                                         required
                                         fullWidth
@@ -124,11 +175,13 @@ export default function UserDetails() {
                                         type="number"
                                         id="monthly_budget"
                                         autoComplete="monthly_budget"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMonthlyBudget(e.target.value)}
-                                        helperText={submitted && !monthlyBudget ? `Please enter your monthly budget` : ''}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setMonthlyBudget(e.target.value); setError({ ...error, monthly_budget: validateUserDetails({ monthly_budget: e.target.value.trim() }).monthly_budget });
+                                        }}
+                                        helperText={monErr}
                                     />
                                     <TextField
-                                        error={submitted && !yearlyBudget}
+                                        error={yearErr.length > 0}
                                         margin="normal"
                                         required
                                         fullWidth
@@ -137,11 +190,13 @@ export default function UserDetails() {
                                         type="number"
                                         id="yearly_budget"
                                         autoComplete="yearly_budget"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setYearlyBudget(e.target.value)}
-                                        helperText={submitted && !yearlyBudget ? `Please enter your yearly budget` : ''}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setYearlyBudget(e.target.value); setError({ ...error, yearly_budget: validateUserDetails({ yearly_budget: e.target.value.trim() }).yearly_budget });
+                                        }}
+                                        helperText={yearErr}
                                     />
                                     <TextField
-                                        error={submitted && !age}
+                                        error={ageErr.length > 0}
                                         margin="normal"
                                         required
                                         fullWidth
@@ -150,11 +205,11 @@ export default function UserDetails() {
                                         type="number"
                                         id="age"
                                         autoComplete="age"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
-                                        helperText={submitted && !age ? `Please enter your age` : ''}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setAge(e.target.value); setError({ ...error, age: validateUserDetails({ age: e.target.value.trim() }).age }); }}
+                                        helperText={ageErr}
                                     />
                                     <TextField
-                                        error={submitted && !phone}
+                                        error={phoneErr.length > 0}
                                         margin="normal"
                                         required
                                         fullWidth
@@ -163,8 +218,8 @@ export default function UserDetails() {
                                         type="number"
                                         id="phone"
                                         autoComplete="phone"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
-                                        helperText={submitted && !phone ? `Please enter your phone number` : ''}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setPhone(e.target.value); if (submitted) setError({ ...error, phone: validateUserDetails({ phone: e.target.value.trim() }).phone }); }}
+                                        helperText={phoneErr}
                                     />
                                     {/* <div className="flex flex-col md:flex-row md:space-x-4 md:items-center"> */}
                                     <div className="flex flex-row space-x-4 items-center">
