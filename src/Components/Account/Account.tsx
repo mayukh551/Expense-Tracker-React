@@ -145,7 +145,7 @@ const Account: React.FC = () => {
     }, [isDeleted]);
 
     return (
-        <div className='bg-amber-400 h-screen overflow-y-scroll'>
+        <div className='bg-gradient-to-tr from-[#b887f5] to-[#ffffff] h-screen overflow-y-scroll'>
             <Nav hasProfile={hasVisitedProfile} />
             <ErrorModal onClose={() => setError('')} message={error} />
             <Modal isOpen={isLoading.cond} style={'px-12 py-8 pb-14'}><div className='font-semibold text-center mb-6'>{isLoading.message}</div> <AccountSpinner /></Modal>

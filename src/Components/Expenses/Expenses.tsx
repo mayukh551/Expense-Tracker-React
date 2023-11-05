@@ -196,7 +196,7 @@ const Expenses = () => {
     const hasExpenses = newExpense.length > 0;
 
     return (
-        <>
+        <div>
             {/* Toast Messages */}
             <Toaster position="bottom-left" reverseOrder={true} />
 
@@ -318,7 +318,7 @@ const Expenses = () => {
                         </table>
                     </div>}
             </Card>
-        </>
+        </div>
     );
 };
 

@@ -90,7 +90,7 @@ const MonthExpenseChart = () => {
 
   return (
     <div className="chart-wrapper">
-      <div className="chart" style={{ width: '600px', margin: 'auto', marginTop: '50px' }}>
+      <div className="chart bg-white" style={{ width: '600px', margin: 'auto', marginTop: '50px' }}>
         <SelectBtn
           options={monthList}
           val={chartMonth}
@@ -108,7 +108,7 @@ const MonthExpenseChart = () => {
         {!isLoading && expenseData!.length > 0 && <Line options={options} data={data} />}
 
       </div>
-      <h4 className='mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>{chartMonth}, {chartYear}</h4>
+      <h4 className='bg-white mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>Daily Expense in {chartMonth}, {chartYear}</h4>
     </div>
   )
 }
