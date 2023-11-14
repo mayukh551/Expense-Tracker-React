@@ -84,8 +84,8 @@ const YearExpenseChart: React.FC = () => {
 
 
     return (
-        <div className="chart-wrapper">
-            <div className="chart" style={{ width: '600px', margin: 'auto', marginTop: '20px' }}>
+        <div className="chart-wrapper ">
+            <div className="chart bg-white" style={{ width: '600px', margin: 'auto', marginTop: '20px' }}>
                 <SelectBtn
                     options={yearList}
                     val={chartYear}
@@ -96,7 +96,7 @@ const YearExpenseChart: React.FC = () => {
                 {!isLoading && expenseData!.length === 0 && <h4 className='mt-8 mb-4 font-medium text-lg'>You have no expenses for {chartYear}</h4>}
                 {!isLoading && expenseData!.length > 0 && <Line options={options} data={data} />}
             </div>
-            <h4 className='mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>{chartYear}</h4>
+            <h4 className='bg-white mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>Monthly Expense in {chartYear}</h4>
         </div>
     )
 }

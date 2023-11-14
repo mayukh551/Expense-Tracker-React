@@ -65,7 +65,7 @@ const Analytics: React.FC = () => {
 
     return (
         <div className="analytics-stats-container">
-            <Card sx={{ minWidth: 275, maxWidth: 400, backgroundColor: '#ffb703', boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
+            <Card sx={{display:'flex',justifyContent:'center', minWidth: 275, maxWidth: 400, backgroundColor: '#ffb703', boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
                 <CardContent>
                     <Typography sx={{ fontSize: 25 }} color="text.primary" fontWeight={600} gutterBottom>
                         Year Stats

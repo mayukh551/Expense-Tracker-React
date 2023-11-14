@@ -11,7 +11,7 @@ const Profile: React.FC = () => {
 
     const hasVisitedProfile: boolean = true;
     return (
-        <div>
+        <div className='bg-gradient-to-tr from-[#b887f5] to-[#ffffff]'>
             <Nav hasProfile={hasVisitedProfile} />
             <YearExpenseChart />
             <MonthExpenseChart />

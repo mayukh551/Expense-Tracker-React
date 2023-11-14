@@ -102,7 +102,7 @@ function CategoryPieChart() {
   return (
     <div>
       <div className="chart-wrapper">
-        <div className="chart" style={{ width: '370px', margin: 'auto', marginTop: '20px' }}>
+        <div className="chart bg-white" style={{ width: '370px', margin: 'auto', marginTop: '20px' }}>
           <SelectBtn
             options={yearList}
             val={chartYear}
@@ -114,7 +114,7 @@ function CategoryPieChart() {
 
           {!isLoading && expenseData!.length > 0 && <Doughnut options={options} data={data} />}
         </div>
-        <h4 className='mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>Category Wise Expenses</h4>
+        <h4 className='bg-white mt-4 text-base font-bold px-4 py-2 rounded-md shadow-md w-fit mx-auto'>Category Wise Expenses</h4>
       </div>
     </div>
   )
