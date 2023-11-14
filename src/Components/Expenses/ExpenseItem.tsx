@@ -52,6 +52,12 @@ const ExpenseItem: React.FC<{
 
     const updateDataHandler = async (item: itemDS, newData: any) => {
 
+        newData = {
+            ...newData,
+            month: expenseList.month[newData.date.slice(5, 7) - 1],
+            year: newData.date.slice(0, 4),
+        }
+
         setUpdatedCard(false);
         console.log('before deleteDataHandler');
         await props.updateDataHandler(props.item, newData);

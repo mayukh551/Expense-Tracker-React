@@ -154,10 +154,7 @@ const Expenses = () => {
 
                 setIsLoading(true);
                 var chosenMonth: string;
-                if (expenseList.month.indexOf(userSelectedMonth) + 1 <= 9)
-                    chosenMonth = `0${expenseList.month.indexOf(userSelectedMonth) + 1}`
-                else
-                    chosenMonth = `${expenseList.month.indexOf(userSelectedMonth) + 1}`
+                chosenMonth = userSelectedMonth;
 
                 const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, '');
                 var ls: itemDS[] = [];

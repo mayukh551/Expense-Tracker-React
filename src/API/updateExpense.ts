@@ -4,16 +4,13 @@ import { itemDS } from "../Models/Interfaces";
 async function updateDataOnDB(item: itemDS, updatedData: any) {
     console.log("updateDataOnDB");
 
-    const { date, title, amount, quantity, category } = updatedData;
+    const { date, title, amount, quantity, category, month, year } = updatedData;
 
     const newItem: itemDS = {
         id: item.id,
-        date: date,
-        title: title,
-        amount: amount,
-        quantity: quantity,
-        category: category,
+        date, title, amount, quantity, category, month, year
     };
+    
     console.log(newItem);
     await axios.put(
         `${process.env.REACT_APP_SERVER_URL}/expenses/update/${item.id}`, newItem, {
