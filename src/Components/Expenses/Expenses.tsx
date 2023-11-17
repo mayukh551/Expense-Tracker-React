@@ -217,7 +217,7 @@ const Expenses = () => {
 
                 {/* Expense Statistics */}
 
-                <div className="flex flex-row justify-start space-x-2">
+                <div className="flex justify-center space-y-2 flex-wrap md:justify-start md:space-x-2">
                     <SavedAmount expenses={newExpense} />
                     <PurchasedAmount expenses={newExpense} />
                     <TotalItems expenses={newExpense} />

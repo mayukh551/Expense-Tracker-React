@@ -130,7 +130,7 @@ const ExpenseItem: React.FC<{
             </tr>
 
             {/* eslint-disable-next-line react/style-prop-object */}
-            <Modal isOpen={updatedCard} style="w-1/2">
+            <Modal isOpen={updatedCard} style="w-[90%] md:w-1/2">
                 <ConditionalForm
                     cancelHandler={cancelHandler}
                     updateExpenseToServer={updateDataHandler}

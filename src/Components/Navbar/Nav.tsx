@@ -26,12 +26,16 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
     }
 
     return (
-        <div className='sticky z-50 w-full'>
-            <Container maxWidth='xl'
+        // <div className='sticky z-50 w-full'>
+            <div
+                style={{ textAlign: 'right' }}
+                className="top-0 z-50 bg-gray-900 py-2 px-3 w-screen"
+            >
+            {/* <Container maxWidth='xl'
                 sx={{ textAlign: 'right' }}
                 className={`${classes.nav}`}
-            >
-                <div className={`${classes.tabs}`}>
+            > */}
+                <div className={`${classes.tabs} py-2`}>
 
                     {/* Conditional Back to home btn */}
                     {props.hasProfile ? (
@@ -63,17 +67,14 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
                                 cursor: 'pointer'
                             }} />
                         </Link>
-                        <Button
-                            variant="contained"
-                            size='medium'
-                            sx={{ color: '#FFFFFF' }}
+                        <button className="bg-cyan-700 mr-8 text-white px-4 py-2 rounded-md"
                             onClick={handleLogOut}>
                             Logout
-                        </Button>
+                        </button>
                     </div>
                 </div>
-            </Container >
-        </div >
+            </div >
+        // </div >
     )
 }
 
