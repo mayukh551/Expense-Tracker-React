@@ -44,11 +44,11 @@ const ProfileCard: React.FC<{
             <div>
                 <h3 className='font-bold text-2xl mb-6'>Profile</h3>
                 {/* image field */}
-                <div className='mb-6 flex flex-row space-x-7'>
+                {/* <div className='mb-6 flex flex-row space-x-7'>
                     <div className='w-1/3'>
                         <img src={profilePic} alt="" className='w-40 h-40 rounded-full shadow-xl' />
                     </div>
-                </div>
+                </div> */}
                 <div className='mb-6 flex flex-col space-y-8'>
                     <TextField
                         id="name"

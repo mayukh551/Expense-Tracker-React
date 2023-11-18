@@ -46,7 +46,7 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
                             <div>Back</div>
                         </div>
                     ) : (
-                        <div style={{ color: 'white' }} className='font-extrabold text-2xl'>
+                        <div style={{ color: 'white' }} className='font-extrabold text-base sm:text-xl md:text-2xl'>
                             CoinWise
                         </div>
                     )}

@@ -90,19 +90,21 @@ const MonthExpenseChart = () => {
 
   return (
     <div className="chart-wrapper">
-      <div className="chart bg-white" style={{ width: '600px', margin: 'auto', marginTop: '50px' }}>
-        <SelectBtn
-          options={monthList}
-          val={chartMonth}
-          selectEventHandler={monthSelectEventHandler}
-          style={{ backgroundColor: 'white', width: '100px' }}
-        />
-        <SelectBtn
-          options={yearList}
-          val={chartYear}
-          selectEventHandler={yearSelectEventHandler}
-          style={{ backgroundColor: 'white', width: '100px', marginLeft: '40px' }}
-        />
+      <div className="chart bg-white w-[300px] md:w-[600px] m-auto mt-[20px]">
+        <div className='flex flex-col justify-start items-start md:flex-row space-y-3 md:space-y-0 space-x-0 md:space-x-8'>
+          <SelectBtn
+            options={monthList}
+            val={chartMonth}
+            selectEventHandler={monthSelectEventHandler}
+            style={{ backgroundColor: 'white', width: '100px', height: '30px', marginBottom: '10px' }}
+          />
+          <SelectBtn
+            options={yearList}
+            val={chartYear}
+            selectEventHandler={yearSelectEventHandler}
+            style={{ backgroundColor: 'white', width: '100px', height: '30px', marginBottom: '10px' }}
+          />
+        </div>
         {isLoading && <ChartSpinner />}
         {!isLoading && expenseData!.length === 0 && <h4 className='mt-8 mb-4 font-medium text-lg'>You have no expenses for {chartMonth}</h4>}
         {!isLoading && expenseData!.length > 0 && <Line options={options} data={data} />}

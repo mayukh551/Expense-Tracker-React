@@ -22,7 +22,7 @@ const NewExpenses: React.FC<any> = (props) => {
     return (
         <div className="new-expense">
             {/* eslint-disable-next-line react/style-prop-object */}
-            <Modal isOpen={isModalOpen} style="w-1/2">
+            <Modal isOpen={isModalOpen} style="w-[90%] md:w-1/2">
                 <ConditionalForm
                     addNewExpense={addNewExpense}
                     cancelHandler={cancelHandler}

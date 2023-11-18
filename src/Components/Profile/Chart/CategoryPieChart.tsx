@@ -102,7 +102,8 @@ function CategoryPieChart() {
   return (
     <div>
       <div className="chart-wrapper">
-        <div className="chart bg-white" style={{ width: '370px', margin: 'auto', marginTop: '20px' }}>
+        {/* <div className="chart bg-white" style={{ width: '370px', margin: 'auto', marginTop: '20px' }}> */}
+        <div className="chart bg-white w-[320px] md:w-[370px] m-auto mt-[20px]">
           <SelectBtn
             options={yearList}
             val={chartYear}
