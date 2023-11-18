@@ -11,15 +11,17 @@ const Profile: React.FC = () => {
 
     const hasVisitedProfile: boolean = true;
     return (
-        <div className='bg-gradient-to-tr from-[#b887f5] to-[#ffffff]'>
+        <div>
             <Nav hasProfile={hasVisitedProfile} />
-            <YearExpenseChart />
-            <MonthExpenseChart />
-            <div className='flex flex-row space-x-5 justify-center items-center my-10'>
-                <CategoryPieChart />
-                <MonthlyExpensePieChart />
+            <div className='w-screen overflow-x-hidden bg-gradient-to-tr from-[#b887f5] to-[#ffffff]'>
+                <YearExpenseChart />
+                <MonthExpenseChart />
+                <div className='flex flex-col md:flex-row space-y-5 md:space-y-0 space-x-0 md:space-x-5 justify-center items-center my-10'>
+                    <CategoryPieChart />
+                    <MonthlyExpensePieChart />
+                </div>
+                <Analytics />
             </div>
-            <Analytics />
         </div>
     )
 }

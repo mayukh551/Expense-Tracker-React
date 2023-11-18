@@ -4,6 +4,8 @@
     z-index: 30;
     background-color: #1F1F1F;
     padding: 0.8em 0.9em;
+    width: 100vw;
+    height: auto;
 }
 
 .tabs {

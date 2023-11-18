@@ -19,7 +19,7 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <div className='bg-gradient-to-tr from-[#b887f5] to-[#ffffff] h-screen overflow-y-scroll '>
+        <div className='bg-gradient-to-tr from-[#b887f5] to-[#ffffff] h-screen overflow-y-scroll w-screen overflow-x-hidden'>
             {isLoggedIn &&
                 <UniversalData>
                     <UserContextProvider>

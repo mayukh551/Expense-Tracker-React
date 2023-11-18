@@ -21,10 +21,6 @@ import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
 import WarningModal from "../UI/WarningModal";
 
-// animatinos
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-
 const Expenses = () => {
 
     const expenseList: ExpenseContextObj = useContext(ListContext);
@@ -217,7 +213,7 @@ const Expenses = () => {
 
                 {/* Expense Statistics */}
 
-                <div className="flex flex-row justify-start space-x-2">
+                <div className="flex justify-center space-y-2 flex-wrap md:justify-start md:space-x-2">
                     <SavedAmount expenses={newExpense} />
                     <PurchasedAmount expenses={newExpense} />
                     <TotalItems expenses={newExpense} />

@@ -84,13 +84,13 @@ const YearExpenseChart: React.FC = () => {
 
 
     return (
-        <div className="chart-wrapper ">
-            <div className="chart bg-white" style={{ width: '600px', margin: 'auto', marginTop: '20px' }}>
+        <div className="chart-wrapper">
+            <div className="chart bg-white w-[300px] md:w-[600px] m-auto mt-[20px]">
                 <SelectBtn
                     options={yearList}
                     val={chartYear}
                     selectEventHandler={selectEventHandler}
-                    style={{ backgroundColor: 'white', width: '100px' }}
+                    style={{ backgroundColor: 'white', width: '100px', height: '30px', marginBottom: '10px' }}
                 />
                 {isLoading && <ChartSpinner />}
                 {!isLoading && expenseData!.length === 0 && <h4 className='mt-8 mb-4 font-medium text-lg'>You have no expenses for {chartYear}</h4>}

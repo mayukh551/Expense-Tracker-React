@@ -63,7 +63,7 @@ const Categories: React.FC<{
                 <h1 className='font-bold text-2xl mb-6 '>Categories</h1>
                 {newCategoryInput &&
                     <div className='flex flex-row'>
-                        <input className='mb-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow'
+                        <input className='w-32 md:w-auto mb-6 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow'
                             value={enteredCategory}
                             onChange={(e) => setEnteredCategory(e.target.value)} />
                     </div>
