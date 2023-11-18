@@ -21,10 +21,6 @@ import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
 import WarningModal from "../UI/WarningModal";
 
-// animatinos
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-
 const Expenses = () => {
 
     const expenseList: ExpenseContextObj = useContext(ListContext);
