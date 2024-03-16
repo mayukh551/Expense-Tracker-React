@@ -54,6 +54,8 @@ const Expenses = () => {
 
     const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
 
+    const [enableOutofBudget, setEnableOutofBudget] = useState<boolean>(true);
+
     var newExpense: itemDS[];
 
     const expensesHolder: itemDS[] = expenseList.list.slice(); // gets a copy of original list
@@ -238,7 +240,7 @@ const Expenses = () => {
                 {/* Expense List */}
 
                 {isLoading && (
-                    <div className="mt-16">
+                    <div className="mt-1</div>6">
                         <ExpenseSpinner />
                     </div>
                 )}
@@ -256,9 +258,12 @@ const Expenses = () => {
                             <span className="text-sm">{`Delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}`}</span>
                         </button>}
                     </div>
-                    <div className="flex flex-row space-x-2 place-items-center">
-                        <span className="bg-red-500 h-4 w-10 inline-block rounded-sm"></span>
-                        <span className="text-white font-semibold"> Out of Budget </span>
+                    <div className="flex flex-row space-x-2 place-items-center cursor-pointer"
+                        onClick={() => setEnableOutofBudget(!enableOutofBudget)}
+                        style={{ "userSelect": "none"}}
+                    >
+                        <span className={`bg-red-500 h-4 w-10 inline-block rounded-sm`}></span>
+                        <span className={`font-semibold ${enableOutofBudget ? 'text-white' : 'line-through text-gray-400'}`}> Out of Budget </span>
                     </div>
                     <WarningModal
                         isOpen={isConfirmDelete}
@@ -312,6 +317,7 @@ const Expenses = () => {
                                             setChosenCounter={setChosenCounter}
                                             setChosenItems={setChosenItems}
                                             chosenItems={chosenItems}
+                                            enableOutofBudget={enableOutofBudget}
                                         />
                                     );
                                 })}

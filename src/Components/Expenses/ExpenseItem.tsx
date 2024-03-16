@@ -18,6 +18,7 @@ const ExpenseItem: React.FC<{
     setChosenCounter: Dispatch<SetStateAction<number>>;
     setChosenItems: Dispatch<SetStateAction<itemDS[]>>;
     chosenItems: itemDS[];
+    enableOutofBudget: boolean;
 }> = (props) => {
     // console.log(props.item);
 
@@ -98,7 +99,7 @@ const ExpenseItem: React.FC<{
     }
 
 
-    const itemBgColor = itemBudget > 0 && parseInt(amount) * quantity > itemBudget ?
+    const itemBgColor = props.enableOutofBudget && itemBudget > 0 && parseInt(amount) * quantity > itemBudget ?
         "bg-red-700 border-b hover:bg-red-900 dark:border-gray-700" :
         "border-b bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700";
 
@@ -107,7 +108,7 @@ const ExpenseItem: React.FC<{
 
         <>
             <tr
-                className={`${itemBgColor} `}
+                className={`${itemBgColor} transition duration-150 transform`}
                 onClick={cardUpdateHandler}
             >
                 <td
@@ -118,22 +119,23 @@ const ExpenseItem: React.FC<{
                         checked={chosen}
                     />
                 </td>
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {/* text-gray-900 whitespace-nowrap dark:text-white */}
+                <th scope="row" className="px-6 py-4 font-medium">
                     {date.slice(8)}
                 </th>
                 {/* <td className="px-6 py-4 text-white">
                     {date.slice(8)}
                 </td> */}
-                <td className="px-6 py-4 text-white">
+                <td className="px-6 py-4 text-white font-medium">
                     {title}
                 </td>
-                <td className="px-6 py-4 text-white">
+                <td className="px-6 py-4">
                     {category}
                 </td>
-                <td className="px-6 py-4 text-white">
+                <td className="px-6 py-4">
                     {quantity}x
                 </td>
-                <td className="px-6 py-4 text-white">
+                <td className="px-6 py-4">
                     {parseInt(amount) * quantity}
                 </td>
             </tr>
