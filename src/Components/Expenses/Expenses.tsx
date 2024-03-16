@@ -9,6 +9,7 @@ import sortExpenses from "../Services/sortExpenses";
 import fetchFromDB from "../../API/fetchExpenses";
 import { UserContext } from "../Store/userContext";
 import filterExpensesByName from "../Services/searchFilter";
+import filterExpenseByNDays from "../Services/getRecentExpenses";
 import SearchExpense from "../Expense Filter/SearchExpense";
 import ExpenseSpinner from "../UI/Spinners/ExpenseSpinner";
 import ErrorModal from "../UI/ErrorModal";
@@ -20,6 +21,7 @@ import NewExpenses from "../NewExpenses/NewExpenses";
 import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
 import WarningModal from "../UI/WarningModal";
+import LastNdays from "./LastNdays";
 
 // animatinos
 // import { motion } from "framer-motion";
@@ -56,12 +58,20 @@ const Expenses = () => {
 
     const [enableOutofBudget, setEnableOutofBudget] = useState<boolean>(true);
 
+    const [range, setRange] = useState<number>(30);
+
     var newExpense: itemDS[];
 
     const expensesHolder: itemDS[] = expenseList.list.slice(); // gets a copy of original list
     newExpense = sortExpenses(sortOrder, expensesHolder); // sort by user's choice / default value
 
     newExpense = filterExpensesByName(newExpense, searchTerm);
+
+    newExpense = filterExpenseByNDays(newExpense, range);
+
+    const setDaysRange = (days: number) => {
+        setRange(days);
+    }
 
     const updateSelectedYear = (year: string): any => {
         localStorage.setItem("year", year);
@@ -260,11 +270,12 @@ const Expenses = () => {
                     </div>
                     <div className="flex flex-row space-x-2 place-items-center cursor-pointer"
                         onClick={() => setEnableOutofBudget(!enableOutofBudget)}
-                        style={{ "userSelect": "none"}}
+                        style={{ "userSelect": "none" }}
                     >
                         <span className={`bg-red-500 h-4 w-10 inline-block rounded-sm`}></span>
                         <span className={`font-semibold ${enableOutofBudget ? 'text-white' : 'line-through text-gray-400'}`}> Out of Budget </span>
                     </div>
+                    <LastNdays setRange={setDaysRange}/>
                     <WarningModal
                         isOpen={isConfirmDelete}
                         onCancel={() => setIsConfirmDelete(false)}
