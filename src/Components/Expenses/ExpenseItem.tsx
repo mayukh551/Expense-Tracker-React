@@ -5,8 +5,8 @@ import ConditionalForm from "../NewExpenses/ConditionalForm";
 import Modal from "../UI/Modal";
 import ListContext from "../Store/context";
 
-var budget = JSON.parse(localStorage.getItem('budget') as string);
-const itemBudget = budget.item;
+const budget = JSON.parse(localStorage.getItem('budget') as string);
+const itemBudget = budget?.item ?? 0;
 console.log('itemBudget', itemBudget);
 
 const ExpenseItem: React.FC<{
