@@ -22,8 +22,8 @@ import deleteFromDB from "../../API/deleteExpense";
 import WarningModal from "../UI/WarningModal";
 
 // animatinos
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+// import { motion } from "framer-motion";
+// import { useInView } from "react-intersection-observer";
 
 const Expenses = () => {
 
@@ -246,7 +246,7 @@ const Expenses = () => {
                     <span>Year: {userSelectedYear}</span>
                     <span>Month: {userSelectedMonth}</span>
                 </div>}
-                <div className="text-start mb-3">
+                <div className="flex flex-row text-start mb-3 space-x-6 items-center">
                     <div>
                         {hasExpenses && <button
                             className={`${chosenCounter === 0 ? 'bg-gray-600 cursor-default' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} font-medium  text-white py-2 px-3 rounded-md flex flex-row items-center space-x-1`}
@@ -255,6 +255,10 @@ const Expenses = () => {
                         >
                             <span className="text-sm">{`Delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}`}</span>
                         </button>}
+                    </div>
+                    <div className="flex flex-row space-x-2 place-items-center">
+                        <span className="bg-red-500 h-4 w-10 inline-block rounded-sm"></span>
+                        <span className="text-white font-semibold"> Out of Budget </span>
                     </div>
                     <WarningModal
                         isOpen={isConfirmDelete}

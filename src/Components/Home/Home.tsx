@@ -111,17 +111,6 @@ const ProductPage = () => {
 
                 </div>
 
-                {/* Footer */}
-
-                <div className='w-screen h-[10%] flex flex-row justify-center items-center bg-black text-white'>
-                    <p className='text-sm md:text-lg font-light'>
-                        Made with ❤️ by {" "}
-                        <a href="https://www.linkedin.com/in/mayukhbhowmick" rel="noreferrer" target="_blank" className='no-underline'>
-                            Mayukh Bhowmick</a> and {" "}
-                        <a href="https://www.linkedin.com/in/rounak-hazra-b5a743147/" rel="noreferrer" target="_blank" className='no-underline'>
-                            Rounak Hazra</a>
-                    </p>
-                </div>
             </div>
 
         </div>

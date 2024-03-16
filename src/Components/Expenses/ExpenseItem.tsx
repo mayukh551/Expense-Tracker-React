@@ -5,6 +5,9 @@ import ConditionalForm from "../NewExpenses/ConditionalForm";
 import Modal from "../UI/Modal";
 import ListContext from "../Store/context";
 
+var budget = JSON.parse(localStorage.getItem('budget') as string);
+const itemBudget = budget.item;
+console.log('itemBudget', itemBudget);
 
 const ExpenseItem: React.FC<{
     item: itemDS;
@@ -94,11 +97,17 @@ const ExpenseItem: React.FC<{
         setChosen(!chosen);
     }
 
+
+    const itemBgColor = itemBudget > 0 && parseInt(amount) * quantity > itemBudget ?
+        "bg-red-700 border-b hover:bg-red-900 dark:border-gray-700" :
+        "border-b bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700";
+
     return (
         // <div>
 
         <>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700"
+            <tr
+                className={`${itemBgColor} `}
                 onClick={cardUpdateHandler}
             >
                 <td

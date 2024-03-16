@@ -21,7 +21,8 @@ const Account: React.FC = () => {
     const [age, setAge] = useState<number>(0);
     const [budget, setBudget] = useState<any>({
         monthly: 0,
-        yearly: 0
+        yearly: 0,
+        item: 0
     });
     const [salary, setSalary] = useState<number>(0);
     const [category, setCategory] = useState<string[]>([]);
@@ -112,7 +113,8 @@ const Account: React.FC = () => {
                     setCategory([...category]);
                     setBudget({
                         monthly: budget.monthly,
-                        yearly: budget.yearly
+                        yearly: budget.yearly,
+                        item: budget.item
                     });
                     setProfilePic(profile_img);
                 }
@@ -162,7 +164,13 @@ const Account: React.FC = () => {
                     setPhone={setPhone}
                     setAge={setAge}
                 />
-                <Budget setBudget={setBudget} monthly={budget.monthly} yearly={budget.yearly} updateAccount={updateAccount} />
+                <Budget
+                    setBudget={setBudget}
+                    monthly={budget.monthly}
+                    yearly={budget.yearly}
+                    item={budget.item}
+                    updateAccount={updateAccount}
+                />
                 <Categories updateAccount={updateAccount} categories={category} setCategory={setCategory} />
                 <AccountUICard>
                     {/* create a delete account section */}
