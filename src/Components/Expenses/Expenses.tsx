@@ -59,10 +59,13 @@ const Expenses = () => {
 
     const expensesHolder: itemDS[] = expenseList.list.slice(); // gets a copy of original list
     newExpense = sortExpenses(sortOrder, expensesHolder); // sort by user's choice / default value
+    console.log("After sorting", newExpense);
 
     newExpense = filterExpensesByName(newExpense, searchTerm);
+    console.log("After search term", newExpense)
 
     newExpense = filterExpenseByNDays(newExpense, range);
+    console.log("After filtering by recent days", newExpense);
 
     const setDaysRange = (days: number) => {
         setRange(days);
