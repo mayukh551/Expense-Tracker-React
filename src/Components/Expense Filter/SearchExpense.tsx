@@ -1,13 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const SearchExpense: React.FC<{ searchTerm: string; updateSearchTerm: (term: string) => void }> = (props) => {
-
-    // const [searchTerm, setSearchTerm] = useState<string>('');
-
-    // const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     console.log(event.target.value);
-    //     // setSearchTerm(event.target.value);
-    // }
 
     const searchTerm = props.searchTerm;
 

@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import ExpenseItem from "./ExpenseItem";
 import "./Expenses.css";
 import Card from "../UI/Card";
-import ExpenseFilter from "../Expense Filter/ExpenseFilter";
 import ListContext from "../Store/context";
 import { ExpenseContextObj, itemDS } from "../../Models/Interfaces";
 import sortExpenses from "../Services/sortExpenses";
@@ -21,11 +20,7 @@ import NewExpenses from "../NewExpenses/NewExpenses";
 import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
 import WarningModal from "../UI/WarningModal";
-import LastNdays from "./LastNdays";
-
-// animatinos
-// import { motion } from "framer-motion";
-// import { useInView } from "react-intersection-observer";
+import ExpenseControls from "./ExpenseControls";
 
 const Expenses = () => {
 
@@ -158,6 +153,12 @@ const Expenses = () => {
     }
 
 
+    // expense filters and sorting
+    var yearList: number[] = [];
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 2019; year--) {
+        yearList.push(year)
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -216,20 +217,9 @@ const Expenses = () => {
                     createData={createData}
                 />
 
-                {/* Expense Options - For Sorting and Filtering */}
-
-                <ExpenseFilter
-                    updateSelectedYear={updateSelectedYear}
-                    userSelectedYear={userSelectedYear}
-                    userSelectedMonth={userSelectedMonth}
-                    updateSelectedMonth={updateSelectedMonth}
-                    sortOrder={sortOrder}
-                    updateSortOrder={updateSortOrder}
-                />
-
                 {/* Expense Statistics */}
 
-                <div className="flex flex-row justify-start space-x-2">
+                <div className="flex flex-row justify-start space-x-4">
                     <SavedAmount expenses={newExpense} />
                     <PurchasedAmount expenses={newExpense} />
                     <TotalItems expenses={newExpense} />
@@ -254,37 +244,37 @@ const Expenses = () => {
                         <ExpenseSpinner />
                     </div>
                 )}
-                {hasExpenses && <div className="font-semibold text-white flex flex-row justify-center items-center space-x-3 py-1 mb-4">
-                    <span>Year: {userSelectedYear}</span>
-                    <span>Month: {userSelectedMonth}</span>
-                </div>}
-                <div className="flex flex-row text-start mb-3 space-x-6 items-center">
-                    <div>
-                        {hasExpenses && <button
-                            className={`${chosenCounter === 0 ? 'bg-gray-600 cursor-default' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} font-medium  text-white py-2 px-3 rounded-md flex flex-row items-center space-x-1`}
-                            onClick={() => setIsConfirmDelete(true)}
-                            disabled={chosenCounter === 0}
-                        >
-                            <span className="text-sm">{`Delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}`}</span>
-                        </button>}
-                    </div>
-                    <div className="flex flex-row space-x-2 place-items-center cursor-pointer"
-                        onClick={() => setEnableOutofBudget(!enableOutofBudget)}
-                        style={{ "userSelect": "none" }}
-                    >
-                        <span className={`bg-red-500 h-4 w-10 inline-block rounded-sm`}></span>
-                        <span className={`font-semibold ${enableOutofBudget ? 'text-white' : 'line-through text-gray-400'}`}> Out of Budget </span>
-                    </div>
-                    <LastNdays setRange={setDaysRange}/>
-                    <WarningModal
-                        isOpen={isConfirmDelete}
-                        onCancel={() => setIsConfirmDelete(false)}
-                        message={`Are you sure you want to delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}?`}
-                        actionMessage={"Delete"}
-                        onAction={deleteData}
-                        heading={"Delete Expense"}
-                    />
-                </div>
+
+
+                {/* Expense Options - For Sorting and Filtering */}
+
+                <ExpenseControls
+                    hasExpenses={hasExpenses}
+                    chosenCounter={chosenCounter}
+                    expenseLen={expenseLen}
+                    setIsConfirmDelete={setIsConfirmDelete}
+                    enableOutofBudget={enableOutofBudget}
+                    setEnableOutofBudget={setEnableOutofBudget}
+                    setDaysRange={setDaysRange}
+                    userSelectedMonth={userSelectedMonth}
+                    updateSelectedMonth={updateSelectedMonth}
+                    userSelectedYear={userSelectedYear}
+                    updateSelectedYear={updateSelectedYear}
+                    sortOrder={sortOrder}
+                    updateSortOrder={updateSortOrder}
+                    monthList={monthList}
+                    yearList={yearList}
+                />
+
+                <WarningModal
+                    isOpen={isConfirmDelete}
+                    onCancel={() => setIsConfirmDelete(false)}
+                    message={`Are you sure you want to delete ${expenseLen} ${expenseLen > 1 ? 'expenses' : 'expense'}?`}
+                    actionMessage={"Delete"}
+                    onAction={deleteData}
+                    heading={"Delete Expense"}
+                />
+
                 {!isLoading && !hasExpenses &&
                     <p className="mt-14 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
                 }
