@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-async function fetchFromDB(month: string, year: string, sortBy: string) {
+async function fetchFromDB(month: string, year: string, currentPage: number, sortBy: string) {
 
-    const query: string = `month=${month}&year=${year}&sortBy=${sortBy}`;
+    const query: string = `month=${month}&year=${year}&page=${currentPage}&sortBy=${sortBy}`;
 
     try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/expenses?${query}`, {

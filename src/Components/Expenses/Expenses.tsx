@@ -21,6 +21,7 @@ import updateDataOnDB from "../../API/updateExpense";
 import deleteFromDB from "../../API/deleteExpense";
 import WarningModal from "../UI/WarningModal";
 import ExpenseControls from "./ExpenseControls";
+import Pagination from "./Pagination";
 
 const Expenses = () => {
 
@@ -102,7 +103,7 @@ const Expenses = () => {
 
         const toastId = toast.loading("Saving . . .");
 
-        sendNewExpenseToServer(item).then((response) => {
+        sendNewExpenseToServer(item, currentPage).then((response) => {
             expenseList.addItem(item);
             toast.dismiss(toastId);
             toast.success("Saved");
@@ -116,7 +117,7 @@ const Expenses = () => {
 
         const toastId = toast.loading("Updating . . .");
 
-        await updateDataOnDB(item, newData).then((response) => {
+        await updateDataOnDB(item, newData, currentPage).then((response) => {
             expenseList.updateItem(newData);
             toast.dismiss(toastId);
             toast.success("Updated");
@@ -141,7 +142,7 @@ const Expenses = () => {
             itemIDs.push(item.id);
         });
 
-        deleteFromDB(itemIDs, userSelectedMonth, userSelectedYear).then((response) => {
+        deleteFromDB(itemIDs, userSelectedMonth, userSelectedYear, currentPage).then((response) => {
             itemIDs.forEach((id) => {
                 expenseList.removeItem(id);
             });
@@ -154,6 +155,9 @@ const Expenses = () => {
             toast.error("Could not delete");
         });
     }
+
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
 
     // expense filters and sorting
@@ -172,7 +176,7 @@ const Expenses = () => {
                 var chosenMonth: string;
                 chosenMonth = userSelectedMonth;
 
-                const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, '');
+                const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, currentPage, '');
                 var ls: itemDS[] = [];
                 for (let i = 0; i < response.length; i++)
                     ls.push(response[i]);
@@ -193,7 +197,7 @@ const Expenses = () => {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userSelectedYear, userSelectedMonth]);
+    }, [userSelectedYear, userSelectedMonth, currentPage]);
 
     useEffect(() => {
 
@@ -240,15 +244,6 @@ const Expenses = () => {
                 </div>
 
 
-                {/* Expense List */}
-
-                {isLoading && (
-                    <div className="mt-1</div>6">
-                        <ExpenseSpinner />
-                    </div>
-                )}
-
-
                 {/* Expense Options - For Sorting and Filtering */}
 
                 <ExpenseControls
@@ -278,12 +273,20 @@ const Expenses = () => {
                     heading={"Delete Expense"}
                 />
 
+                {/* Expense List */}
+
+                {isLoading && (
+                    <div className="mt-1</div>6">
+                        <ExpenseSpinner />
+                    </div>
+                )}
+
                 {!isLoading && !hasExpenses &&
                     <p className="mt-14 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
                 }
                 {!isLoading && hasExpenses &&
                     <div className="relative overflow-x-auto mb-6 rounded-lg">
-                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-6">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th className="pl-6 py-4">
@@ -327,6 +330,9 @@ const Expenses = () => {
                                 })}
                             </tbody>
                         </table>
+
+                        <Pagination expenseLen={newExpense.length} page={currentPage} setPage={setCurrentPage} />
+
                     </div>}
             </Card>
         </div>

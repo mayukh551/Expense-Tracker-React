@@ -1,7 +1,7 @@
 import axios from "axios";
 import { itemDS } from "../Models/Interfaces";
 
-async function updateDataOnDB(item: itemDS, updatedData: any) {
+async function updateDataOnDB(item: itemDS, updatedData: any, page: number) {
     console.log("updateDataOnDB");
 
     const { date, title, amount, quantity, category, month, year } = updatedData;
@@ -13,7 +13,7 @@ async function updateDataOnDB(item: itemDS, updatedData: any) {
     
     console.log(newItem);
     await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/expenses/update/${item.id}`, newItem, {
+        `${process.env.REACT_APP_SERVER_URL}/expenses/update/${item.id}?page=${page}`, newItem, {
         headers: {
             "content-type": "application/json",
             'x-access-token': `${localStorage.getItem('token')}`
