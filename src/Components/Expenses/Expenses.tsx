@@ -55,21 +55,22 @@ const Expenses = () => {
 
     const [range, setRange] = useState<number>(30);
 
+    const [reload, setReload] = useState<boolean>(false);
+
+
+
     var newExpense: itemDS[];
 
     const expensesHolder: itemDS[] = expenseList.list.slice(); // gets a copy of original list
+
+    //* filters and sorts the expenses
     newExpense = sortExpenses(sortOrder, expensesHolder); // sort by user's choice / default value
-    console.log("After sorting", newExpense);
-
     newExpense = filterExpensesByName(newExpense, searchTerm);
-    console.log("After search term", newExpense)
-
     newExpense = filterExpenseByNDays(newExpense, range);
-    console.log("After filtering by recent days", newExpense);
 
-    const setDaysRange = (days: number) => {
-        setRange(days);
-    }
+
+    //* functions to update the state variables
+    const setDaysRange = (days: number) => setRange(days);
 
     const updateSelectedYear = (year: string): any => {
         localStorage.setItem("year", year);
@@ -98,6 +99,8 @@ const Expenses = () => {
         setSelectAll(!selectAll);
     }
 
+
+    //* functions to interact with the server, react context and send react-toast messages
     const createData = (item: itemDS) => {
 
         const toastId = toast.loading("Saving . . .");
@@ -134,9 +137,6 @@ const Expenses = () => {
 
         const itemIDs: string[] = [];
 
-        console.log('Chosen Items in deleteData', chosenItems);
-        console.log('Chosen Counter in deleteData', chosenCounter);
-
         chosenItems.forEach((item) => {
             itemIDs.push(item.id);
         });
@@ -163,37 +163,53 @@ const Expenses = () => {
         yearList.push(year)
     }
 
-    useEffect(() => {
-        async function fetchData() {
 
-            try {
+    async function fetchData() {
 
-                setIsLoading(true);
-                var chosenMonth: string;
-                chosenMonth = userSelectedMonth;
+        try {
 
-                const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, '');
-                var ls: itemDS[] = [];
-                for (let i = 0; i < response.length; i++)
-                    ls.push(response[i]);
+            setIsLoading(true);
+            var chosenMonth: string;
+            chosenMonth = userSelectedMonth;
 
-                expenseList.fillList(ls);
+            const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, '');
+            var ls: itemDS[] = [];
+            for (let i = 0; i < response.length; i++)
+                ls.push(response[i]);
 
-                console.log(userData);
+            expenseList.fillList(ls);
 
-                setIsLoading(false);
+            console.log(userData);
 
-                setError('');
-            }
-            catch (error) {
-                setIsLoading(false);
-                setError("Due to some Server Error, we failed to load your expenses. Our team is working on it. Please Try again later.");
-            }
+            setIsLoading(false);
+
+            setReload(false);
+
+            setError('');
         }
+        catch (error) {
+            setIsLoading(false);
+            setError("Due to some Server Error, we failed to load your expenses. Our team is working on it. Please Try again later.");
+        }
+    }
+
+
+    //* useEffect to fetch data from the server based on user's selected month and year and to reload the data when reload is true
+
+    useEffect(() => {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userSelectedYear, userSelectedMonth]);
+
+
+    useEffect(() => {
+
+        if (reload) fetchData();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reload]);
+
 
     useEffect(() => {
 
@@ -239,16 +255,6 @@ const Expenses = () => {
                         updateSearchTerm={updateSearchTerm} />
                 </div>
 
-
-                {/* Expense List */}
-
-                {isLoading && (
-                    <div className="mt-1</div>6">
-                        <ExpenseSpinner />
-                    </div>
-                )}
-
-
                 {/* Expense Options - For Sorting and Filtering */}
 
                 <ExpenseControls
@@ -267,6 +273,7 @@ const Expenses = () => {
                     updateSortOrder={updateSortOrder}
                     monthList={monthList}
                     yearList={yearList}
+                    refresh={() => setReload(true)}
                 />
 
                 <WarningModal
@@ -277,6 +284,15 @@ const Expenses = () => {
                     onAction={deleteData}
                     heading={"Delete Expense"}
                 />
+
+
+                {/* Spinner */}
+
+                {isLoading && (
+                    <div className="mt-1</div>6">
+                        <ExpenseSpinner />
+                    </div>
+                )}
 
                 {!isLoading && !hasExpenses &&
                     <p className="mt-14 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
