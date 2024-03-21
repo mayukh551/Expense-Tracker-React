@@ -89,11 +89,15 @@ const ExpenseControls: React.FC<Props> = (props) => {
                     style={{ height: '40px', backgroundColor: 'rgb(75 85 99 / 1)', font: 'inherit', color: "white", fontSize: '14px' }}
                 />
             </div>
-            <CachedIcon
-                className="cursor-pointer mr-4"
-                onClick={refresh}
-                style={{ color: "white" }}
-            />
+            <div 
+            className='flex flex-row space-x-2 cursor-pointer p-2 rounded-md'
+            style={{ backgroundColor: 'rgb(75 85 99 / 1)'}}>
+                <CachedIcon
+                    className="cursor-pointer"
+                    onClick={refresh}
+                    style={{ color: "white" }}
+                />
+            </div>
         </div>
     );
 };
