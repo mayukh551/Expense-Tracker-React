@@ -57,11 +57,15 @@ const ExpenseControls: React.FC<Props> = (props) => {
                 )}
             </div>
             <div className="flex flex-row space-x-2 place-items-center cursor-pointer"
-                onClick={() => setEnableOutofBudget(!enableOutofBudget)}
                 style={{ "userSelect": "none" }}
+                onClick={() => setEnableOutofBudget(!enableOutofBudget)}
             >
-                <span className={`bg-red-500 h-4 w-10 inline-block rounded-sm`}></span>
-                <span className={`font-semibold ${enableOutofBudget ? 'text-white' : 'line-through text-gray-400'}`}> Out of Budget </span>
+                {/* <label className="inline-flex items-center me-5 cursor-pointer space-x-2"> */}
+                <input type="checkbox" value="" className="sr-only peer" checked={enableOutofBudget}
+                />
+                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                <span className={`font-semibold ${enableOutofBudget ? 'text-white' : 'text-gray-400'}`}> Limit </span>
+                {/* </label> */}
             </div>
 
 
@@ -89,9 +93,9 @@ const ExpenseControls: React.FC<Props> = (props) => {
                     style={{ height: '40px', backgroundColor: 'rgb(75 85 99 / 1)', font: 'inherit', color: "white", fontSize: '14px' }}
                 />
             </div>
-            <div 
-            className='flex flex-row space-x-2 cursor-pointer p-2 rounded-md'
-            style={{ backgroundColor: 'rgb(75 85 99 / 1)'}}>
+            <div
+                className='flex flex-row space-x-2 cursor-pointer p-2 rounded-md'
+                style={{ backgroundColor: 'rgb(75 85 99 / 1)' }}>
                 <CachedIcon
                     className="cursor-pointer"
                     onClick={refresh}
