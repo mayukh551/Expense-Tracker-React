@@ -1,7 +1,7 @@
 import axios from "axios";
 import { itemDS } from "../Models/Interfaces";
 
-const sendNewExpenseToServer = async (userData: itemDS, page: number): Promise<string> => {
+const sendNewExpenseToServer = async (userData: itemDS, page: number, itemsPerPage: number): Promise<string> => {
 
     return new Promise(async (resolve, reject) => {
         try {

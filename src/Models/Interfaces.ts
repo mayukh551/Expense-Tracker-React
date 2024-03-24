@@ -26,6 +26,8 @@ export interface ExpenseContextObj {
     updateItem: (item: itemDS) => void,
     chosenCounter: number,
     updateChosenCounter: (counter: number) => void,
+    totalExpenses: number,
+    updateTotalExpenses: (total: number) => void
 }
 
 export interface User {

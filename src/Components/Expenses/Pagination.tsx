@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react';
 
 const Pagination: React.FC<any> = (props) => {
 
@@ -6,13 +6,14 @@ const Pagination: React.FC<any> = (props) => {
 
     const page = props.page;
     const setPage = props.setPage;
+    const itemsPerPage = props.itemsPerPage;
 
-    var pageCount = 2;
-    // if (expenseLen <= 15) pageCount = 1;
+    var pageCount = 1;
+    if (expenseLen <= itemsPerPage) pageCount = 1;
 
-    // else if (expenseLen % 15 === 0) pageCount = expenseLen / 15;
+    else if (expenseLen % itemsPerPage === 0) pageCount = expenseLen / itemsPerPage;
 
-    // else pageCount = Math.floor(expenseLen / 15) + 1;
+    else pageCount = Math.floor(expenseLen / itemsPerPage) + 1;
 
 
     const pageNos = Array.from({ length: pageCount }, (_, i) => i + 1);

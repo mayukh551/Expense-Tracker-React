@@ -56,6 +56,11 @@ export const UniversalData: React.FC<{
     );
 
     const [chosenCounter, setChosenCounter] = useState<number>(0);
+    const [totalExpenses, setTotalExpenses] = useState<number>(0);
+
+    const updateTotalExpenses = (total: number) => {
+        setTotalExpenses(total);
+    }
 
     const fillExpenseList = (list: itemDS[]) => {
         dispatchExpenseState({ type: "FILL", value: list });
@@ -88,6 +93,8 @@ export const UniversalData: React.FC<{
                 removeItem: removeItemFromList,
                 updateItem: updateIteminList,
                 updateChosenCounter: updateChosenCounter,
+                totalExpenses: totalExpenses,
+                updateTotalExpenses: updateTotalExpenses
             }}
         >
             {props.children}

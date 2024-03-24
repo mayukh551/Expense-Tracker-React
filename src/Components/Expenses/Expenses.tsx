@@ -22,6 +22,7 @@ import deleteFromDB from "../../API/deleteExpense";
 import WarningModal from "../UI/WarningModal";
 import ExpenseControls from "./ExpenseControls";
 import Pagination from "./Pagination";
+import SelectBtn from "../UI/SelectBtn";
 
 const Expenses = () => {
 
@@ -55,6 +56,21 @@ const Expenses = () => {
     const [enableOutofBudget, setEnableOutofBudget] = useState<boolean>(true);
 
     const [range, setRange] = useState<number>(30);
+
+    const [option, setOption] = useState("10 / page");
+    const [itemsPerPage, setItemPerPage] = useState<number>(10);
+
+    const itemsPerPageHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setOption(event.target.value);
+
+        if (event.target.value === "10 / page")
+            setItemPerPage(10);
+
+        if (event.target.value === "20 / page")
+            setItemPerPage(20);
+        if (event.target.value === "30 / page")
+            setItemPerPage(30);
+    }
 
     var newExpense: itemDS[];
 
@@ -103,8 +119,9 @@ const Expenses = () => {
 
         const toastId = toast.loading("Saving . . .");
 
-        sendNewExpenseToServer(item, currentPage).then((response) => {
+        sendNewExpenseToServer(item, currentPage, itemsPerPage).then((response) => {
             expenseList.addItem(item);
+            expenseList.updateTotalExpenses(expenseList.totalExpenses + 1);
             toast.dismiss(toastId);
             toast.success("Saved");
         }).catch((err) => {
@@ -117,7 +134,7 @@ const Expenses = () => {
 
         const toastId = toast.loading("Updating . . .");
 
-        await updateDataOnDB(item, newData, currentPage).then((response) => {
+        await updateDataOnDB(item, newData, currentPage, itemsPerPage).then((response) => {
             expenseList.updateItem(newData);
             toast.dismiss(toastId);
             toast.success("Updated");
@@ -142,9 +159,10 @@ const Expenses = () => {
             itemIDs.push(item.id);
         });
 
-        deleteFromDB(itemIDs, userSelectedMonth, userSelectedYear, currentPage).then((response) => {
+        deleteFromDB(itemIDs, userSelectedMonth, userSelectedYear, currentPage, itemsPerPage).then((response) => {
             itemIDs.forEach((id) => {
                 expenseList.removeItem(id);
+                expenseList.updateTotalExpenses(expenseList.totalExpenses - 1);
             });
             setChosenCounter(0);
             setChosenItems([]);
@@ -176,12 +194,21 @@ const Expenses = () => {
                 var chosenMonth: string;
                 chosenMonth = userSelectedMonth;
 
-                const response: itemDS[] = await fetchFromDB(chosenMonth, userSelectedYear, currentPage, '');
+                const response: { data: itemDS[], total: number } = await fetchFromDB(chosenMonth,
+                    userSelectedYear,
+                    currentPage,
+                    '',
+                    itemsPerPage
+                );
+
+                const expenses = response.data;
+
                 var ls: itemDS[] = [];
-                for (let i = 0; i < response.length; i++)
-                    ls.push(response[i]);
+                for (let i = 0; i < expenses.length; i++)
+                    ls.push(expenses[i]);
 
                 expenseList.fillList(ls);
+                expenseList.updateTotalExpenses(response.total);
 
                 console.log(userData);
 
@@ -197,7 +224,7 @@ const Expenses = () => {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userSelectedYear, userSelectedMonth, currentPage]);
+    }, [userSelectedYear, userSelectedMonth, currentPage, itemsPerPage]);
 
     useEffect(() => {
 
@@ -211,6 +238,8 @@ const Expenses = () => {
     const expenseLen = chosenCounter;
 
     const hasExpenses = newExpense.length > 0;
+
+    console.log("Actual Expense Length in db", expenseList.totalExpenses);
 
     return (
         <div>
@@ -285,7 +314,7 @@ const Expenses = () => {
                     <p className="mt-14 mb-3">No Expenses Found for {userSelectedMonth}, {userSelectedYear}</p>
                 }
                 {!isLoading && hasExpenses &&
-                    <div className="relative overflow-x-auto mb-6 rounded-lg">
+                    <div className="relative overflow-x-auto mb-6 rounded-lg overflow-y-hidden">
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-6">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -331,8 +360,16 @@ const Expenses = () => {
                             </tbody>
                         </table>
 
-                        <Pagination expenseLen={newExpense.length} page={currentPage} setPage={setCurrentPage} />
-
+                        <div className="flex flex-row justify-between">
+                            <SelectBtn
+                                options={['20 / page', '30 / page']}
+                                defaultVal={"10 / page"}
+                                val={option}
+                                selectEventHandler={itemsPerPageHandler}
+                                style={{ height: '40px', backgroundColor: 'rgb(75 85 99 / 1)', font: 'inherit', color: "white", fontSize: '14px' }}
+                            />
+                            <Pagination expenseLen={expenseList.totalExpenses} page={currentPage} setPage={setCurrentPage} itemsPerPage={itemsPerPage} />
+                        </div>
                     </div>}
             </Card>
         </div>

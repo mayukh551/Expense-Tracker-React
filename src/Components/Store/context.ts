@@ -10,6 +10,8 @@ const ListContext = React.createContext<ExpenseContextObj>({
     updateItem: (item: itemDS) => { },
     chosenCounter: 0,
     updateChosenCounter: (counter: number) => { },
+    totalExpenses: 0,
+    updateTotalExpenses: (total: number) => { }
 })
 
 export default ListContext;
