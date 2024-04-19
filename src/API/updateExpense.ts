@@ -13,7 +13,7 @@ async function updateDataOnDB(item: itemDS, updatedData: any, page: number, item
     
     console.log(newItem);
     await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/expenses/update/${item.id}?page=${page}`, newItem, {
+        `${process.env.REACT_APP_SERVER_URL}/expenses/update/${item.id}?itemsPerPage=${itemsPerPage}&page=${page}`, newItem, {
         headers: {
             "content-type": "application/json",
             'x-access-token': `${localStorage.getItem('token')}`
