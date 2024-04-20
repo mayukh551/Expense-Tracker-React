@@ -74,29 +74,23 @@ const Account: React.FC = () => {
         try {
 
             setIsDeleted(true);
-            console.log("Before Delete");
+            // console.log("Before Delete");
             await axios.delete(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, {
                 headers: {
                     'x-access-token': `${token}`
                 }
             });
 
-        } catch (e) {
-            setError("Really sorry, but currenly due to some technical issues we failed to delete your account. Please try again later.");
-        } finally {
-
-            console.log("Before Redirect")
             setRedirect(true);
-
             setTimeout(() => {
-                console.log("Redirecting");
                 setRedirect(false);
                 clearCache();
-                console.log("Cleared Cache");
                 navigate('/');
             }, 5000);
 
-            console.log("After Redirect");
+        } catch (e: any) {
+            if (e.message) { console.log(e); setError(e.message); }
+            else setError("Really sorry, but currenly due to some technical issues we failed to delete your account. Please try again later.");
         }
 
     }
@@ -138,8 +132,15 @@ const Account: React.FC = () => {
                     setProfilePic(profile_img);
                 }
 
-            } catch (e) {
-                setError("Really sorry, but currenly due to some technical issues we failed to get you account details. Please try again later.");
+            } catch (e: any) {
+                if (e.name === 'AxiosError') {
+                    if (e.response?.status === 401) {
+                        console.log(e.response.data.message);
+                        setError(e.response.data.message);
+                    }
+                }
+
+                else setError("Really sorry, but currenly due to some technical issues we failed to get you account details. Please try again later.");
             }
 
             setIsLoading({ cond: false, message: isLoading.message });
