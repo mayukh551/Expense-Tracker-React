@@ -6,6 +6,7 @@ import classes from './Nav.module.css';
 import { lightBlue } from '@mui/material/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
+import clearCache from '../../utils/clearCache';
 
 const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
     const navigate = useNavigate();
@@ -16,12 +17,7 @@ const Nav: React.FC<{ hasProfile?: boolean | null }> = (props) => {
     }
 
     const handleLogOut = (): void => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('month');
-        localStorage.removeItem('year');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('budget');
-        localStorage.removeItem('category');
+        clearCache();
         navigate('/');
     }
 
