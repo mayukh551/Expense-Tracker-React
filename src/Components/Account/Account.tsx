@@ -74,7 +74,6 @@ const Account: React.FC = () => {
         try {
 
             setIsDeleted(true);
-            // console.log("Before Delete");
             await axios.delete(`${process.env.REACT_APP_SERVER_URL}/account/${userId}`, {
                 headers: {
                     'x-access-token': `${token}`
@@ -86,7 +85,7 @@ const Account: React.FC = () => {
                 setRedirect(false);
                 clearCache();
                 navigate('/');
-            }, 5000);
+            }, 2000);
 
         } catch (e: any) {
             if (e.message) { console.log(e); setError(e.message); }

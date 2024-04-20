@@ -18,8 +18,6 @@ const SelectBtn: React.FC<any> = (props) => {
 
     if (val === "") val = defaultVal;
 
-    console.log("In SelectBtn", defaultVal, val);
-
     return (
         <Select
             labelId="demo-simple-select-autowidth-label"
