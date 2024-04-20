@@ -70,6 +70,8 @@ const Expenses = () => {
             setItemPerPage(20);
         if (event.target.value === "30 / page")
             setItemPerPage(30);
+
+        setCurrentPage(1);
     }
     const [reload, setReload] = useState<boolean>(false);
 
@@ -187,6 +189,8 @@ const Expenses = () => {
 
     async function fetchData() {
 
+        setIsLoading(true);
+
         try {
 
                 const response: { data: itemDS[], total: number } = await fetchFromDB(userSelectedMonth,
@@ -232,6 +236,8 @@ const Expenses = () => {
 
 
     useEffect(() => {
+
+        console.log(reload);
 
         if (reload) fetchData();
 
