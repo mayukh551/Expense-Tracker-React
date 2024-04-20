@@ -10,6 +10,8 @@ import ErrorModal from '../UI/ErrorModal';
 import AccountUICard from '../UI/AccountUICard';
 import { useNavigate } from 'react-router-dom';
 import WarningModal from '../UI/WarningModal';
+import clearCache from '../../utils/clearCache';
+import ExpenseSpinner from '../UI/Spinners/ExpenseSpinner';
 
 const Account: React.FC = () => {
     const hasVisitedProfile: boolean = true;
@@ -34,6 +36,8 @@ const Account: React.FC = () => {
     const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
 
     const [isDeleted, setIsDeleted] = useState<boolean>(false);
+
+    const [redirect, setRedirect] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -76,8 +80,16 @@ const Account: React.FC = () => {
                 }
             });
 
-        } catch (e) {
-            setError("Really sorry, but currenly due to some technical issues we failed to delete your account. Please try again later.");
+            setRedirect(true);
+            setTimeout(() => {
+                setRedirect(false);
+                clearCache();
+                navigate('/');
+            }, 2000);
+
+        } catch (e: any) {
+            if (e.message) { console.log(e); setError(e.message); }
+            else setError("Really sorry, but currenly due to some technical issues we failed to delete your account. Please try again later.");
         }
 
     }
@@ -119,8 +131,15 @@ const Account: React.FC = () => {
                     setProfilePic(profile_img);
                 }
 
-            } catch (e) {
-                setError("Really sorry, but currenly due to some technical issues we failed to get you account details. Please try again later.");
+            } catch (e: any) {
+                if (e.name === 'AxiosError') {
+                    if (e.response?.status === 401) {
+                        console.log(e.response.data.message);
+                        setError(e.response.data.message);
+                    }
+                }
+
+                else setError("Really sorry, but currenly due to some technical issues we failed to get you account details. Please try again later.");
             }
 
             setIsLoading({ cond: false, message: isLoading.message });
@@ -130,21 +149,6 @@ const Account: React.FC = () => {
         // console.log(name, email, phone, age, budget, salary, category)
 
     }, []);
-
-    useEffect(() => {
-        if (isDeleted) {
-            console.log('Account Deleted');
-            localStorage.removeItem('token');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('budget');
-            localStorage.removeItem('month');
-            localStorage.removeItem('year');
-            localStorage.removeItem('profilePic');
-            localStorage.removeItem('expenses');
-            localStorage.removeItem('category');
-            navigate('/');
-        }
-    }, [isDeleted]);
 
     return (
         <div className='bg-gradient-to-tr from-[#b887f5] to-[#ffffff] h-screen overflow-y-scroll'>
@@ -181,16 +185,25 @@ const Account: React.FC = () => {
                             className='w-full lg:w-1/3  bg-red-500 text-white px-4 py-2 rounded-md font-semibold text-lg'>Delete Account</button>
                     </div>
 
-                    <WarningModal
-                        isOpen={isConfirmed}
-                        message={'Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.'}
-                        actionMessage={'Deactivate'}
-                        onCancel={confirmCancel}
-                        onAction={deleteAccount}
-                        heading={'Deactivate Account'}
-                    />
 
                 </AccountUICard>
+
+                <Modal isOpen={redirect} style={'px-20 pt-8'}>
+                    <div className='font-semibold text-center'>
+                        <span className='text-purple-600'>Redirecting</span> to Home Page
+                        <ExpenseSpinner />
+                    </div>
+                </Modal>
+
+
+                <WarningModal
+                    isOpen={isConfirmed}
+                    message={'Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.'}
+                    actionMessage={'Deactivate'}
+                    onCancel={confirmCancel}
+                    onAction={deleteAccount}
+                    heading={'Deactivate Account'}
+                />
             </div>
         </div>
     )
