@@ -12,7 +12,7 @@ import filterExpenseByNDays from "../Services/getRecentExpenses";
 import SearchExpense from "../Expense Filter/SearchExpense";
 import ExpenseSpinner from "../UI/Spinners/ExpenseSpinner";
 import ErrorModal from "../UI/ErrorModal";
-import { PurchasedAmount, SavedAmount, TotalItems } from './ExpenseStats';
+import ExpenseStats from './ExpenseStats';
 import sendNewExpenseToServer from "../../API/createExpense";
 
 import toast, { Toaster } from "react-hot-toast";
@@ -276,11 +276,7 @@ const Expenses = () => {
 
                 {/* Expense Statistics */}
 
-                <div className="flex flex-row justify-start space-x-4">
-                    <SavedAmount expenses={newExpense} />
-                    <PurchasedAmount expenses={newExpense} />
-                    <TotalItems expenses={newExpense} />
-                </div>
+                <ExpenseStats month={userSelectedMonth} year={userSelectedYear} />
 
                 {/* Error Modal */}
                 <ErrorModal onClose={() => setError('')} message={error} />

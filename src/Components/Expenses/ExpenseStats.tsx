@@ -1,68 +1,78 @@
-import React from 'react'
-import { itemDS } from '../../Models/Interfaces';
+import React, { useEffect } from 'react'
+import axios from 'axios';
 
-export const SavedAmount: React.FC<any> = (props) => {
 
-    const expenses: itemDS[] = props.expenses;
+const ExpenseStats: React.FC<any> = (props) => {
 
-    var totalAmount: number = 0;
-    var budget = JSON.parse(localStorage.getItem('budget') as string);
+    const [purchasedAmount, setPurchasedAmount] = React.useState<number>(0);
+    const [savedAmount, setSavedAmount] = React.useState<number>(0);
+    const [totalItems, setTotalItems] = React.useState<number>(0);
 
-    if (!budget) return null;
 
-    var monthlyBudget = budget.monthly;
+    useEffect(() => {
 
-    expenses.forEach((expense) => {
-        totalAmount += parseInt(expense.amount);
-    });
+        const query = `month=${props.month}&year=${props.year}`;
 
-    var saved = monthlyBudget - totalAmount;
+        axios.get(`${process.env.REACT_APP_SERVER_URL}/expenses/stats?${query}`, {
+            headers: {
+                'x-access-token': `${localStorage.getItem('token')}`
+            }
+        })
+            .then((response) => {
+                const { purchasedAmount, savedAmount, totalItems } = response.data.data;
+                setPurchasedAmount(purchasedAmount);
+                setSavedAmount(savedAmount);
+                setTotalItems(totalItems);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
+    }, [])
+
+
+    return (
+        <div className="flex flex-row justify-start space-x-4">
+            <PurchasedAmount data={purchasedAmount} />
+            <SavedAmount data={savedAmount} />
+            <TotalItems data={totalItems} />
+        </div>
+    )
+}
+
+const SavedAmount: React.FC<any> = ({ data }) => {
 
     return (
         // create a card to display the saved amount with light green background using tailwindcss
         <div className="bg-green-600 rounded-md py-2 px-8 w-fit flex flex-col justify-center">
             <div className="text-black text-xs md:text-sm font-bold">Saved Amount</div>
-            <div className="text-black text-base md:text-2xl font-bold"><span className='text-lg'>₹</span> {saved}</div>
+            <div className="text-black text-base md:text-2xl font-bold"><span className='text-lg'>₹</span> {data}</div>
         </div>
     )
 }
 
 
-export const PurchasedAmount: React.FC<any> = (props) => {
-
-    const expenses: itemDS[] = props.expenses;
-
-    var totalAmount: number = 0;
-
-    expenses.forEach((expense) => {
-        totalAmount += parseInt(expense.amount);
-    });
+const PurchasedAmount: React.FC<any> = ({ data }) => {
 
     return (
         // create a card to display the saved amount with light green background using tailwindcss
         <div className="bg-purple-600 rounded-md px-8 w-fit flex flex-col justify-center">
             <div className="text-black text-xs md:text-sm font-bold">Total Purchased</div>
-            <div className="text-black text-base md:text-2xl font-bold"><span className='text-lg'>₹</span> {totalAmount}</div>
+            <div className="text-black text-base md:text-2xl font-bold"><span className='text-lg'>₹</span> {data}</div>
         </div>
     )
 }
 
-export const TotalItems: React.FC<any> = (props) => {
-
-    const expenses: itemDS[] = props.expenses;
-
-    let totalItems: number = 0;
-
-    expenses.forEach(expense => {
-        totalItems += expense.quantity!;
-    })
+const TotalItems: React.FC<any> = ({ data }) => {
 
     return (
         // create a card to display the saved amount with light green background using tailwindcss
         <div className="bg-yellow-400 rounded-md px-8 w-fit flex flex-col justify-center">
             <div className="text-black text-xs md:text-sm font-bold">Total Items</div>
-            <div className="text-black text-base md:text-2xl font-bold">{totalItems}</div>
+            <div className="text-black text-base md:text-2xl font-bold">{data}</div>
         </div>
     )
 }
 
+
+export default ExpenseStats;
