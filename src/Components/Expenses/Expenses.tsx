@@ -118,6 +118,9 @@ const Expenses = () => {
     }
 
 
+    const refresh = () => setReload(true);
+
+
     //* functions to interact with the server, react context and send react-toast messages
     const createData = (item: itemDS) => {
 
@@ -187,27 +190,28 @@ const Expenses = () => {
     }
 
 
-    async function fetchData() {
+    async function fetchData(isReload: boolean = false) {
 
         setIsLoading(true);
 
         try {
 
-                const response: { data: itemDS[], total: number } = await fetchFromDB(userSelectedMonth,
-                    userSelectedYear,
-                    currentPage,
-                    '',
-                    itemsPerPage
-                );
+            const response: { data: itemDS[], total: number } = await fetchFromDB(userSelectedMonth,
+                userSelectedYear,
+                currentPage,
+                '',
+                itemsPerPage,
+                isReload
+            );
 
-                const expenses = response.data;
+            const expenses = response.data;
 
-                var ls: itemDS[] = [];
-                for (let i = 0; i < expenses.length; i++)
-                    ls.push(expenses[i]);
+            var ls: itemDS[] = [];
+            for (let i = 0; i < expenses.length; i++)
+                ls.push(expenses[i]);
 
-                expenseList.fillList(ls);
-                expenseList.updateTotalExpenses(response.total);
+            expenseList.fillList(ls);
+            expenseList.updateTotalExpenses(response.total);
 
             expenseList.fillList(ls);
 
@@ -230,16 +234,14 @@ const Expenses = () => {
 
     useEffect(() => {
 
-        fetchData();
+        fetchData(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userSelectedYear, userSelectedMonth, currentPage, itemsPerPage]);
 
 
     useEffect(() => {
 
-        console.log(reload);
-
-        if (reload) fetchData();
+        if (reload === true) fetchData(reload);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload]);
@@ -309,7 +311,7 @@ const Expenses = () => {
                     updateSortOrder={updateSortOrder}
                     monthList={monthList}
                     yearList={yearList}
-                    refresh={() => setReload(true)}
+                    refresh={refresh}
                 />
 
                 <WarningModal

@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-async function fetchFromDB(month: string, year: string, currentPage: number, sortBy: string, itemsPerPage: number) {
+async function fetchFromDB(month: string, year: string, currentPage: number, sortBy: string, itemsPerPage: number, isReload: boolean = false) {
 
-    const query: string = `month=${month}&year=${year}&sortBy=${sortBy}&itemsPerPage=${itemsPerPage}&page=${currentPage}`;
+    console.log(isReload)
+
+    const query: string = `month=${month}&year=${year}&sortBy=${sortBy}&itemsPerPage=${itemsPerPage}&page=${currentPage}&reload=${isReload}`;
 
     try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/expenses?${query}`, {
