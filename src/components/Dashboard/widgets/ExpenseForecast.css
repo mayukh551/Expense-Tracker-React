@@ -1,0 +1,134 @@
+.expense-forecast-widget {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.confidence-badge {
+  background: var(--success-bg);
+  color: var(--success-color);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: 'SF Pro Display', -apple-system, sans-serif;
+}
+
+.forecast-chart {
+  flex: 1;
+  min-height: 200px;
+  margin-bottom: 20px;
+}
+
+.forecast-insights {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.insight-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.insight-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-family: 'SF Pro Display', -apple-system, sans-serif;
+}
+
+.insight-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+
+.trend-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: capitalize;
+  font-family: 'SF Pro Display', -apple-system, sans-serif;
+}
+
+.trend-badge.increasing {
+  background: var(--error-bg);
+  color: var(--error-color);
+}
+
+.trend-badge.decreasing {
+  background: var(--success-bg);
+  color: var(--success-color);
+}
+
+.recommendation {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  background: var(--warning-bg);
+  border-radius: 8px;
+  border-left: 3px solid var(--warning-color);
+}
+
+.recommendation-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.recommendation-text {
+  font-size: 13px;
+  color: var(--warning-color);
+  font-weight: 500;
+  line-height: 1.4;
+  font-family: 'SF Pro Display', -apple-system, sans-serif;
+}
+
+/* Loading States */
+.chart-skeleton {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .widget-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .forecast-insights {
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .insight-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .recommendation {
+    padding: 10px;
+  }
+}
